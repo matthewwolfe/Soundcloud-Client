@@ -2,6 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 
 import User from './user.jsx';
+import SideMenu from './sideMenu.jsx';
 
 class App extends React.Component {
 
@@ -10,6 +11,7 @@ class App extends React.Component {
             <div>
                 <div id="left-side-bar">
                     <User />
+                    <SideMenu />
                 </div>
 
                 <div id="music-list">

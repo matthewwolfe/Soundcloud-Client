@@ -13,8 +13,6 @@ class User extends React.Component {
 
         window.soundCloudAPI.getMe(function(response){
             that.setState({data: response});
-
-            console.log(that.state);
         });
     }
 
@@ -24,8 +22,11 @@ class User extends React.Component {
 
     render () {
         return (
-            <div>
-                <h1>{this.state.data.username}</h1>
+            <div id="user">
+                <img className="profile-picture" src={this.state.data.avatar_url} />
+                <h4 className="username">{this.state.data.username}</h4>
+                <p className="followers-count">Followers: {this.state.data.followers_count}</p>
+                <p className="followings-count">Following: {this.state.data.followings_count}</p>
             </div>
         );
     }

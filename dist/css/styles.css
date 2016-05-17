@@ -1,12 +1,48 @@
 body, html, div {
   margin: 0;
-  padding: 0; }
+  padding: 0;
+  color: #B4B4B4;
+  font-family: verdana, arial; }
+
+p {
+  font-size: 12px; }
 
 #app #left-side-bar {
   height: 100%;
   width: 240px;
   float: left;
   background-color: #282828; }
+  #app #left-side-bar #user {
+    margin-top: 40px;
+    margin-left: 20px; }
+    #app #left-side-bar #user .profile-picture {
+      display: inline-block;
+      width: 60px;
+      height: 60px; }
+    #app #left-side-bar #user .username {
+      margin-left: 10px;
+      display: inline-block;
+      vertical-align: top; }
+    #app #left-side-bar #user .followers_count {
+      clear: both; }
+    #app #left-side-bar #user .followings-count {
+      clear: both; }
+  #app #left-side-bar #side-menu {
+    margin-top: 60px; }
+    #app #left-side-bar #side-menu ul {
+      list-style-type: none;
+      padding-left: 0px; }
+      #app #left-side-bar #side-menu ul li {
+        padding-left: 20px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        text-decoration: none; }
+      #app #left-side-bar #side-menu ul li:hover {
+        cursor: pointer; }
+      #app #left-side-bar #side-menu ul li.active {
+        padding-left: 19px;
+        background-color: #464646;
+        border-left: 1px solid #B4B4B4; }
 #app #music-list {
   height: 100%;
   width: calc(100% - 240px);

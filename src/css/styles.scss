@@ -1,6 +1,15 @@
+$primary-color: #B4B4B4;
+$secondary-color: #464646;
+
 body, html, div {
     margin: 0;
     padding: 0;
+    color: $primary-color;
+    font-family: verdana, arial;
+}
+
+p {
+    font-size: 12px;
 }
 
 #app {
@@ -9,6 +18,57 @@ body, html, div {
         width: 240px;
         float: left;
         background-color: #282828;
+
+        #user {
+            margin-top: 40px;
+            margin-left: 20px;
+
+            .profile-picture {
+                display: inline-block;
+                width: 60px;
+                height: 60px;
+            }
+
+            .username {
+                margin-left: 10px;
+                display: inline-block;
+                vertical-align: top;
+            }
+
+            .followers_count {
+                clear: both;
+            }
+
+            .followings-count {
+                clear: both;
+            }
+        }
+
+        #side-menu {
+            margin-top: 60px;
+
+            ul {
+                list-style-type: none;
+                padding-left: 0px;
+
+                li {
+                    padding-left: 20px;
+                    padding-top: 15px;
+                    padding-bottom: 15px;
+                    text-decoration: none;
+                }
+
+                li:hover {
+                    cursor: pointer;
+                }
+
+                li.active {
+                    padding-left: 19px;
+                    background-color: $secondary-color;
+                    border-left: 1px solid $primary-color;
+                }
+            }
+        }
     }
 
     #music-list {
