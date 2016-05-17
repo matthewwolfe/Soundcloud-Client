@@ -1,0 +1,16 @@
+body, html, div {
+  margin: 0;
+  padding: 0; }
+
+#app #left-side-bar {
+  height: 100%;
+  width: 240px;
+  float: left;
+  background-color: #282828; }
+#app #music-list {
+  height: 100%;
+  width: calc(100% - 240px);
+  float: right;
+  background-color: #141414; }
+
+/*# sourceMappingURL=styles.css.map */
