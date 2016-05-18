@@ -193,9 +193,27 @@ var SoundcloudAPI = function (_Core) {
             });
         }
     }, {
+        key: 'getLikedTracks',
+        value: function getLikedTracks(callback) {
+            var url = this.baseUrl + '/users/' + window.user.id + '/favorites?limit=100&offset=0&client_id=' + this.clientID;
+
+            this.get(url, function (response) {
+                callback(response);
+            });
+        }
+    }, {
         key: 'getTracks',
         value: function getTracks(callback) {
-            var url = this.baseUrl + '/users/' + window.user.id + '/favorites?limit=100&offset=0&client_id=' + this.clientID;
+            var url = this.baseUrl + '/users/' + window.user.id + '/tracks?limit=100&offset=0&client_id=' + this.clientID;
+
+            this.get(url, function (response) {
+                callback(response);
+            });
+        }
+    }, {
+        key: 'getStream',
+        value: function getStream(callback) {
+            var url = this.baseUrl + '/me/activities?limit=100&oauth_token=' + this.userToken.access_token;
 
             this.get(url, function (response) {
                 callback(response);

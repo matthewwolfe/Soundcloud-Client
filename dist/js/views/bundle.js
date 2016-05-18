@@ -20949,19 +20949,36 @@
 	        value: function getStream() {
 	            var that = this;
 	
-	            window.soundCloudAPI.getTracks(function (tracks) {
+	            window.soundCloudAPI.getStream(function (tracks) {
 	                that.setState({ data: { tracks: tracks } });
 	            });
 	        }
 	    }, {
 	        key: 'getLikes',
-	        value: function getLikes() {}
+	        value: function getLikes() {
+	            var that = this;
+	
+	            window.soundCloudAPI.getLikedTracks(function (tracks) {
+	                that.setState({ data: { tracks: tracks } });
+	            });
+	        }
 	    }, {
 	        key: 'getTracks',
-	        value: function getTracks() {}
+	        value: function getTracks() {
+	            var that = this;
+	
+	            window.soundCloudAPI.getTracks(function (tracks) {
+	                that.setState({ data: { tracks: tracks } });
+	            });
+	        }
 	    }, {
 	        key: 'getPlaylists',
 	        value: function getPlaylists() {}
+	    }, {
+	        key: 'ucFirst',
+	        value: function ucFirst(string) {
+	            return string.charAt(0).toUpperCase() + string.slice(1);
+	        }
 	    }, {
 	        key: 'setActive',
 	        value: function setActive(data) {
@@ -20989,7 +21006,20 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { id: 'music-list' },
-	                tracks
+	                _react2.default.createElement(
+	                    'h2',
+	                    { className: 'section-title' },
+	                    this.ucFirst(this.state.selected)
+	                ),
+	                _react2.default.createElement(
+	                    'table',
+	                    null,
+	                    _react2.default.createElement(
+	                        'tbody',
+	                        null,
+	                        tracks
+	                    )
+	                )
 	            );
 	        }
 	    }]);
@@ -21039,15 +21069,45 @@
 	    }
 	
 	    _createClass(Track, [{
+	        key: 'convertDuration',
+	        value: function convertDuration(millis) {
+	            var hours = Math.floor(millis / 36e5),
+	                mins = Math.floor(millis % 36e5 / 6e4),
+	                secs = Math.floor(millis % 6e4 / 1000);
+	            return (hours > 0 ? hours + ":" : '') + (mins < 10 && hours > 0 ? '0' : '') + mins + ":" + (secs < 10 ? '0' : '') + secs;
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
-	                'div',
-	                null,
+	                'tr',
+	                { className: 'track', id: this.props.data.id, stream_url: this.props.data.stream_url },
 	                _react2.default.createElement(
-	                    'h4',
-	                    null,
-	                    this.props.data.title
+	                    'td',
+	                    { className: 'track-title' },
+	                    _react2.default.createElement(
+	                        'p',
+	                        null,
+	                        this.props.data.title
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'td',
+	                    { className: 'track-user-username' },
+	                    _react2.default.createElement(
+	                        'p',
+	                        null,
+	                        this.props.data.user.username
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'td',
+	                    { className: 'track-duration' },
+	                    _react2.default.createElement(
+	                        'p',
+	                        null,
+	                        this.convertDuration(this.props.data.duration)
+	                    )
 	                )
 	            );
 	        }

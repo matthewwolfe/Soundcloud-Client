@@ -1,6 +1,10 @@
 $primary-color: #B4B4B4;
 $secondary-color: #464646;
 
+html, body {
+    height: 100%;
+}
+
 body, html, div {
     margin: 0;
     padding: 0;
@@ -9,7 +13,7 @@ body, html, div {
 }
 
 p {
-    font-size: 12px;
+    font-size: 14px;
 }
 
 #app {
@@ -72,9 +76,45 @@ p {
     }
 
     #music-list {
-        height: 100%;
+        height: 100vh;
         width: calc(100% - 240px);
         float: right;
         background-color: #141414;
+        overflow-y: scroll;
+
+        .section-title {
+            margin-left: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+
+            .track {
+                width: 100%;
+
+                td {
+                    border-bottom: 1px solid #282828;
+                    margin: 0px;
+                    color: #fff;
+                }
+
+                .track-title {
+                    width: 69%;
+                    padding: 15px;
+                }
+
+                .track-user-username {
+                    width: 35%;
+                    padding: 15px;
+                }
+
+                .track-duration {
+                    width: 5%;
+                    padding: 15px;
+                    text-align: right;
+                }
+            }
+        }
     }
 }

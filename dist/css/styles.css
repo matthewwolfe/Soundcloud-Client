@@ -1,3 +1,6 @@
+html, body {
+  height: 100%; }
+
 body, html, div {
   margin: 0;
   padding: 0;
@@ -5,7 +8,7 @@ body, html, div {
   font-family: verdana, arial; }
 
 p {
-  font-size: 12px; }
+  font-size: 14px; }
 
 #app #left-side-bar {
   height: 100%;
@@ -44,9 +47,31 @@ p {
         background-color: #464646;
         border-left: 1px solid #B4B4B4; }
 #app #music-list {
-  height: 100%;
+  height: 100vh;
   width: calc(100% - 240px);
   float: right;
-  background-color: #141414; }
+  background-color: #141414;
+  overflow-y: scroll; }
+  #app #music-list .section-title {
+    margin-left: 15px; }
+  #app #music-list table {
+    width: 100%;
+    border-collapse: collapse; }
+    #app #music-list table .track {
+      width: 100%; }
+      #app #music-list table .track td {
+        border-bottom: 1px solid #282828;
+        margin: 0px;
+        color: #fff; }
+      #app #music-list table .track .track-title {
+        width: 69%;
+        padding: 15px; }
+      #app #music-list table .track .track-user-username {
+        width: 35%;
+        padding: 15px; }
+      #app #music-list table .track .track-duration {
+        width: 5%;
+        padding: 15px;
+        text-align: right; }
 
 /*# sourceMappingURL=styles.css.map */

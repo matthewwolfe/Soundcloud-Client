@@ -30,21 +30,33 @@ class MusicList extends React.Component {
     getStream(){
         let that = this;
 
-        window.soundCloudAPI.getTracks(function(tracks){
+        window.soundCloudAPI.getStream(function(tracks){
             that.setState({data: {tracks: tracks}});
         });
     }
 
     getLikes(){
+        let that = this;
 
+        window.soundCloudAPI.getLikedTracks(function(tracks){
+            that.setState({data: {tracks: tracks}});
+        });
     }
 
     getTracks(){
+        let that = this;
 
+        window.soundCloudAPI.getTracks(function(tracks){
+            that.setState({data: {tracks: tracks}});
+        });
     }
 
     getPlaylists(){
 
+    }
+
+    ucFirst(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
     setActive(data){
@@ -70,7 +82,13 @@ class MusicList extends React.Component {
 
         return (
             <div id="music-list">
-                {tracks}
+                <h2 className="section-title">{this.ucFirst(this.state.selected)}</h2>
+
+                <table>
+                    <tbody>
+                        {tracks}
+                    </tbody>
+                </table>
             </div>
         );
     }
