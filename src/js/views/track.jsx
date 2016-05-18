@@ -8,6 +8,10 @@ class Track extends React.Component {
         this.state = {data: {}};
     }
 
+    playTrack(props){
+        
+    }
+
     convertDuration(millis){
         var hours = Math.floor(millis / 36e5),
             mins = Math.floor((millis % 36e5) / 6e4),
@@ -17,7 +21,7 @@ class Track extends React.Component {
 
     render () {
         return (
-            <tr className="track" id={this.props.data.id} stream_url={this.props.data.stream_url}>
+            <tr className="track" onClick={this.playTrack.bind(this, this.props)}>
                 <td className="track-title"><p>{this.props.data.title}</p></td>
                 <td className="track-user-username"><p>{this.props.data.user.username}</p></td>
                 <td className="track-duration"><p>{this.convertDuration(this.props.data.duration)}</p></td>

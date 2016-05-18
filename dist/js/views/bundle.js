@@ -106,8 +106,15 @@
 	    return App;
 	}(_react2.default.Component);
 	
+	// initialize the publish/subscribe messenger
+	
+	
 	window.messenger = new Messenger();
 	
+	// Initialize the music handler
+	window.music = new Music();
+	
+	// Initialize the connection to the SoundCloud API and then render the app
 	window.soundCloudAPI = new SoundcloudAPI(function () {
 	    (0, _reactDom.render)(_react2.default.createElement(App, null), document.getElementById('app'));
 	});
@@ -21069,6 +21076,9 @@
 	    }
 	
 	    _createClass(Track, [{
+	        key: 'playTrack',
+	        value: function playTrack(props) {}
+	    }, {
 	        key: 'convertDuration',
 	        value: function convertDuration(millis) {
 	            var hours = Math.floor(millis / 36e5),
@@ -21081,7 +21091,7 @@
 	        value: function render() {
 	            return _react2.default.createElement(
 	                'tr',
-	                { className: 'track', id: this.props.data.id, stream_url: this.props.data.stream_url },
+	                { className: 'track', onClick: this.playTrack.bind(this, this.props) },
 	                _react2.default.createElement(
 	                    'td',
 	                    { className: 'track-title' },

@@ -21,8 +21,13 @@ class App extends React.Component {
     }
 }
 
+// initialize the publish/subscribe messenger
 window.messenger = new Messenger();
 
+// Initialize the music handler
+window.music = new Music();
+
+// Initialize the connection to the SoundCloud API and then render the app
 window.soundCloudAPI = new SoundcloudAPI(function(){
     render(<App/>, document.getElementById('app'));
 });
