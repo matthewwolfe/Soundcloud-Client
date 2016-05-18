@@ -11,9 +11,7 @@ class User extends React.Component {
     loadUser(){
         let that = this;
 
-        window.soundCloudAPI.getMe(function(response){
-            that.setState({data: response});
-        });
+        that.setState({data: window.user});
     }
 
     componentDidMount(){

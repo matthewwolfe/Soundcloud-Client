@@ -16,8 +16,6 @@ function createWindow(){
         let url_parts = url.parse(newUrl, true);
         let query = url_parts.query;
 
-        console.log(query);
-
         if(query.code){
             mainWindow.loadURL('file://' + __dirname + '/index.html?userAuthCode=' + query.code);
         }

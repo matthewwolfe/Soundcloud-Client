@@ -65,6 +65,10 @@
 	
 	var _sideMenu2 = _interopRequireDefault(_sideMenu);
 	
+	var _musicList = __webpack_require__(/*! ./musicList.jsx */ 170);
+	
+	var _musicList2 = _interopRequireDefault(_musicList);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -94,13 +98,15 @@
 	                    _react2.default.createElement(_user2.default, null),
 	                    _react2.default.createElement(_sideMenu2.default, null)
 	                ),
-	                _react2.default.createElement('div', { id: 'music-list' })
+	                _react2.default.createElement(_musicList2.default, null)
 	            );
 	        }
 	    }]);
 	
 	    return App;
 	}(_react2.default.Component);
+	
+	window.messenger = new Messenger();
 	
 	window.soundCloudAPI = new SoundcloudAPI(function () {
 	    (0, _reactDom.render)(_react2.default.createElement(App, null), document.getElementById('app'));
@@ -20742,9 +20748,7 @@
 	        value: function loadUser() {
 	            var that = this;
 	
-	            window.soundCloudAPI.getMe(function (response) {
-	                that.setState({ data: response });
-	            });
+	            that.setState({ data: window.user });
 	        }
 	    }, {
 	        key: "componentDidMount",
@@ -20835,10 +20839,11 @@
 	        key: 'setActive',
 	        value: function setActive(value) {
 	            this.setState({ selected: value });
+	
+	            window.messenger.publish('side-menu-click', {
+	                selected: value
+	            });
 	        }
-	    }, {
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {}
 	    }, {
 	        key: 'render',
 	        value: function render() {
@@ -20877,6 +20882,181 @@
 	}(_react2.default.Component);
 	
 	exports.default = SideMenu;
+
+/***/ },
+/* 170 */
+/*!************************************!*\
+  !*** ./src/js/views/musicList.jsx ***!
+  \************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _track = __webpack_require__(/*! ./track.jsx */ 171);
+	
+	var _track2 = _interopRequireDefault(_track);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var MusicList = function (_React$Component) {
+	    _inherits(MusicList, _React$Component);
+	
+	    function MusicList(props) {
+	        _classCallCheck(this, MusicList);
+	
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MusicList).call(this, props));
+	
+	        _this.state = {
+	            data: {
+	                tracks: []
+	            },
+	            selected: 'stream'
+	        };
+	        return _this;
+	    }
+	
+	    _createClass(MusicList, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            // initialize the selected view
+	            this.setActive({ selected: 'stream' });
+	
+	            // set up the listener
+	            var that = this;
+	
+	            window.messenger.subscribe('side-menu-click', function (data) {
+	                that.setActive(data);
+	            });
+	        }
+	    }, {
+	        key: 'getStream',
+	        value: function getStream() {
+	            var that = this;
+	
+	            window.soundCloudAPI.getTracks(function (tracks) {
+	                that.setState({ data: { tracks: tracks } });
+	            });
+	        }
+	    }, {
+	        key: 'getLikes',
+	        value: function getLikes() {}
+	    }, {
+	        key: 'getTracks',
+	        value: function getTracks() {}
+	    }, {
+	        key: 'getPlaylists',
+	        value: function getPlaylists() {}
+	    }, {
+	        key: 'setActive',
+	        value: function setActive(data) {
+	            this.setState({ selected: data.selected });
+	
+	            if (data.selected === 'stream') {
+	                this.getStream();
+	            } else if (data.selected === 'likes') {
+	                this.getLikes();
+	            } else if (data.selected === 'tracks') {
+	                this.getTracks();
+	            } else if (data.selected === 'playlists') {
+	                this.getPlaylists();
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var tracks = [];
+	
+	            for (var i = 0; i < this.state.data.tracks.length; i++) {
+	                tracks.push(_react2.default.createElement(_track2.default, { data: this.state.data.tracks[i], key: i }));
+	            }
+	
+	            return _react2.default.createElement(
+	                'div',
+	                { id: 'music-list' },
+	                tracks
+	            );
+	        }
+	    }]);
+	
+	    return MusicList;
+	}(_react2.default.Component);
+	
+	exports.default = MusicList;
+
+/***/ },
+/* 171 */
+/*!********************************!*\
+  !*** ./src/js/views/track.jsx ***!
+  \********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Track = function (_React$Component) {
+	    _inherits(Track, _React$Component);
+	
+	    function Track(props) {
+	        _classCallCheck(this, Track);
+	
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Track).call(this, props));
+	
+	        _this.state = { data: {} };
+	        return _this;
+	    }
+	
+	    _createClass(Track, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'h4',
+	                    null,
+	                    this.props.data.title
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return Track;
+	}(_react2.default.Component);
+	
+	exports.default = Track;
 
 /***/ }
 /******/ ]);

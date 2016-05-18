@@ -64,6 +64,63 @@ var Core = function () {
 
     return Core;
 }();
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Messenger = function (_Core) {
+    _inherits(Messenger, _Core);
+
+    function Messenger() {
+        _classCallCheck(this, Messenger);
+
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Messenger).call(this));
+
+        _this.queue = {};
+        _this.exists = _this.queue.hasOwnProperty;
+        return _this;
+    }
+
+    _createClass(Messenger, [{
+        key: "subscribe",
+        value: function subscribe(action, listener) {
+            // Create the action's object if not yet created
+            if (!this.exists.call(this.queue, action)) {
+                this.queue[action] = [];
+            }
+
+            // add the listener to the queue
+            var index = this.queue[action].push(listener) - 1;
+
+            // provide a way to remove an action
+            return {
+                remove: function remove() {
+                    delete this.queue[action][index];
+                }
+            };
+        }
+    }, {
+        key: "publish",
+        value: function publish(action, data) {
+            // don't do anything if there are no listeners
+            if (!this.exists.call(this.queue, action)) {
+                return;
+            }
+
+            this.queue[action].forEach(function (actionItem) {
+                actionItem(data != undefined ? data : {});
+            });
+        }
+    }]);
+
+    return Messenger;
+}(Core);
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -92,7 +149,13 @@ var SoundcloudAPI = function (_Core) {
 
         _this.getToken(function (response) {
             that.userToken = response;
-            callback();
+
+            that.getMe(function (response) {
+
+                window.user = response;
+
+                callback();
+            });
         });
         return _this;
     }
@@ -129,17 +192,16 @@ var SoundcloudAPI = function (_Core) {
                 callback(response);
             });
         }
+    }, {
+        key: 'getTracks',
+        value: function getTracks(callback) {
+            var url = this.baseUrl + '/users/' + window.user.id + '/favorites?limit=100&offset=0&client_id=' + this.clientID;
+
+            this.get(url, function (response) {
+                callback(response);
+            });
+        }
     }]);
 
     return SoundcloudAPI;
 }(Core);
-"use strict";
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Track = function Track(id, name) {
-	_classCallCheck(this, Track);
-
-	this.id = id;
-	this.name = name;
-};

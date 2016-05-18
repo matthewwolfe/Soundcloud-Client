@@ -15,7 +15,13 @@ class SoundcloudAPI extends Core {
 
         this.getToken(function(response){
             that.userToken = response;
-            callback();
+            
+            that.getMe(function(response){
+
+                window.user = response;
+
+                callback();
+            });
         });
     }
 
@@ -42,6 +48,14 @@ class SoundcloudAPI extends Core {
 
     getMe(callback){
         let url = this.baseUrl + '/me?oauth_token=' + this.userToken.access_token;
+
+        this.get(url, function(response){
+            callback(response);
+        });
+    }
+
+    getTracks(callback){
+        let url = this.baseUrl + '/users/' + window.user.id + '/favorites?limit=100&offset=0&client_id=' + this.clientID;
 
         this.get(url, function(response){
             callback(response);

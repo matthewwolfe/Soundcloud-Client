@@ -17,10 +17,10 @@ class SideMenu extends React.Component {
 
     setActive(value){
         this.setState({selected: value});
-    }
 
-    componentDidMount(){
-
+        window.messenger.publish('side-menu-click', {
+            selected: value
+        });
     }
 
     render () {
