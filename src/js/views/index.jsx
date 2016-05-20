@@ -4,6 +4,7 @@ import {render} from 'react-dom';
 import User from './user.jsx';
 import SideMenu from './sideMenu.jsx';
 import MusicList from './musicList.jsx';
+import MusicPlayer from './musicPlayer.jsx';
 
 class App extends React.Component {
 
@@ -16,6 +17,7 @@ class App extends React.Component {
                 </div>
 
                 <MusicList />
+                <MusicPlayer />
             </div>
         );
     }

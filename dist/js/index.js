@@ -121,29 +121,124 @@ var Messenger = function (_Core) {
 
     return Messenger;
 }(Core);
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Music = function () {
-	function Music() {
-		_classCallCheck(this, Music);
-	}
+    function Music() {
+        _classCallCheck(this, Music);
 
-	_createClass(Music, [{
-		key: "play",
-		value: function play() {}
-	}, {
-		key: "pause",
-		value: function pause() {}
-	}, {
-		key: "resume",
-		value: function resume() {}
-	}]);
+        var that = this;
 
-	return Music;
+        soundManager.setup({
+            url: '/path/to/swf-files/',
+            flashVersion: 9, // optional: shiny features (default = 8)
+            // optional: ignore Flash where possible, use 100% HTML5 mode
+            // preferFlash: false,
+            onready: function onready() {
+                // Everything is loaded and ready
+                that.isPlayerReady = true;
+            }
+        });
+
+        this.currentlyPlaying = null;
+        this.currentSoundObject = null;
+    }
+
+    _createClass(Music, [{
+        key: 'play',
+        value: function play(id, url, title, onStartPlaying, onFinished) {
+            if (!this.isPlayerReady) {
+                return;
+            }
+
+            soundManager.stopAll();
+            this.reset();
+
+            this.currentSoundObject = soundManager.createSound({
+                id: id,
+                url: url + '?client_id=173bf9df509c48cf53b70c83eaf5cbbd',
+                title: title,
+                volume: 50
+            });
+
+            this.setCurrentlyPlaying(id, url, title, onStartPlaying, onFinished);
+
+            var that = this;
+
+            this.currentSoundObject.play({
+                onplay: function onplay() {
+                    that.currentlyPlaying.isPlaying = true;
+                    that.currentlyPlaying.onStartPlaying();
+                },
+                onfinish: function onfinish() {
+                    that.currentlyPlaying.onFinished();
+                }
+            });
+        }
+    }, {
+        key: 'pause',
+        value: function pause() {
+            if (this.currentlyPlaying !== null) {
+                if (this.currentlyPlaying.isPlaying) {
+                    this.currentlyPlaying.isPlaying = false;
+                    soundManager.pauseAll();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }, {
+        key: 'resume',
+        value: function resume() {
+            if (this.currentlyPlaying !== null) {
+                if (!this.currentlyPlaying.isPlaying) {
+                    if (this.currentSoundObject !== null) {
+                        this.currentlyPlaying.isPlaying = true;
+                        this.currentSoundObject.resume();
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+    }, {
+        key: 'setCurrentlyPlaying',
+        value: function setCurrentlyPlaying(id, url, title, onStartPlaying, onFinished) {
+            if (onStartPlaying === undefined) {
+                onStartPlaying = function onStartPlaying() {};
+            }
+
+            if (onFinished === undefined) {
+                onFinished = function onFinished() {};
+            }
+
+            this.currentlyPlaying = {
+                id: id,
+                url: url,
+                title: title,
+                onStartPlaying: onStartPlaying,
+                onFinished: onFinished,
+                isPlaying: false
+            };
+        }
+    }, {
+        key: 'reset',
+        value: function reset() {
+            if (this.currentSoundObject !== null) {
+                this.currentSoundObject.clearOnPosition();
+            }
+            this.currentSoundObject = null;
+            this.currentlyPlaying = null;
+        }
+    }]);
+
+    return Music;
 }();
 'use strict';
 

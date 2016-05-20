@@ -3,6 +3,8 @@ $secondary-color: #464646;
 
 html, body {
     height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 body, html, div {
@@ -76,7 +78,7 @@ p {
     }
 
     #music-list {
-        height: 100vh;
+        height: 100%;
         width: calc(100% - 240px);
         float: right;
         background-color: #141414;
@@ -92,8 +94,16 @@ p {
 
             .track {
                 width: 100%;
+                -webkit-touch-callout: none; /* iOS Safari */
+                -webkit-user-select: none;   /* Chrome/Safari/Opera */
+                -khtml-user-select: none;    /* Konqueror */
+                -moz-user-select: none;      /* Firefox */
+                -ms-user-select: none;       /* Internet Explorer/Edge */
+                user-select: none;           /* Non-prefixed version, currently
+                                          not supported by any browser */
 
                 td {
+                    cursor: pointer;
                     border-bottom: 1px solid #282828;
                     margin: 0px;
                     color: #fff;
@@ -115,6 +125,28 @@ p {
                     text-align: right;
                 }
             }
+
+            .track:hover {
+                background-color: #282828;
+            }
+        }
+    }
+
+    #music-player {
+        height: 60px;
+        width: 100%;
+        margin: 0;
+        position: fixed;
+        bottom: 0px;
+        background-color: #282828;
+        border-top: 1px solid $secondary-color;
+
+        #play-button,
+        #pause-button {
+            font-size: 26px;
+            line-height: 60px;
+            vertical-align: center;
+            cursor: pointer;
         }
     }
 }

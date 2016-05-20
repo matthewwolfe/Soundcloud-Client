@@ -69,6 +69,10 @@
 	
 	var _musicList2 = _interopRequireDefault(_musicList);
 	
+	var _musicPlayer = __webpack_require__(/*! ./musicPlayer.jsx */ 172);
+	
+	var _musicPlayer2 = _interopRequireDefault(_musicPlayer);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -98,7 +102,8 @@
 	                    _react2.default.createElement(_user2.default, null),
 	                    _react2.default.createElement(_sideMenu2.default, null)
 	                ),
-	                _react2.default.createElement(_musicList2.default, null)
+	                _react2.default.createElement(_musicList2.default, null),
+	                _react2.default.createElement(_musicPlayer2.default, null)
 	            );
 	        }
 	    }]);
@@ -21077,7 +21082,19 @@
 	
 	    _createClass(Track, [{
 	        key: 'playTrack',
-	        value: function playTrack(props) {}
+	        value: function playTrack(props) {
+	            window.music.play(props.data.id, props.data.stream_url, props.data.title,
+	
+	            // on start
+	            function () {
+	                window.messenger.publish('music-state-change', { playing: true });
+	            },
+	
+	            // on finished
+	            function () {
+	                window.messenger.publish('music-state-change', { playing: false });
+	            });
+	        }
 	    }, {
 	        key: 'convertDuration',
 	        value: function convertDuration(millis) {
@@ -21091,7 +21108,7 @@
 	        value: function render() {
 	            return _react2.default.createElement(
 	                'tr',
-	                { className: 'track', onClick: this.playTrack.bind(this, this.props) },
+	                { className: 'track', onDoubleClick: this.playTrack.bind(this, this.props) },
 	                _react2.default.createElement(
 	                    'td',
 	                    { className: 'track-title' },
@@ -21127,6 +21144,91 @@
 	}(_react2.default.Component);
 	
 	exports.default = Track;
+
+/***/ },
+/* 172 */
+/*!**************************************!*\
+  !*** ./src/js/views/musicPlayer.jsx ***!
+  \**************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var MusicPlayer = function (_React$Component) {
+	    _inherits(MusicPlayer, _React$Component);
+	
+	    function MusicPlayer(props) {
+	        _classCallCheck(this, MusicPlayer);
+	
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MusicPlayer).call(this, props));
+	
+	        _this.state = { data: {} };
+	
+	        var that = _this;
+	
+	        window.messenger.subscribe('music-state-change', function (data) {
+	            that.setState({ playing: data.playing });
+	        });
+	        return _this;
+	    }
+	
+	    _createClass(MusicPlayer, [{
+	        key: 'play',
+	        value: function play() {
+	            if (window.music.resume()) {
+	                this.setState({ playing: true });
+	            }
+	        }
+	    }, {
+	        key: 'pause',
+	        value: function pause() {
+	            if (window.music.pause()) {
+	                this.setState({ playing: false });
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var playClass = 'glyphicon glyphicon-play';
+	            var pauseClass = 'glyphicon glyphicon-pause';
+	
+	            if (this.state.playing) {
+	                playClass += ' hide';
+	            } else {
+	                pauseClass += 'hide';
+	            }
+	
+	            return _react2.default.createElement(
+	                'div',
+	                { id: 'music-player' },
+	                _react2.default.createElement('span', { id: 'play-button', onClick: this.play.bind(this), className: playClass }),
+	                _react2.default.createElement('span', { id: 'pause-button', onClick: this.pause.bind(this), className: pauseClass })
+	            );
+	        }
+	    }]);
+	
+	    return MusicPlayer;
+	}(_react2.default.Component);
+	
+	exports.default = MusicPlayer;
 
 /***/ }
 /******/ ]);

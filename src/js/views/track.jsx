@@ -9,7 +9,20 @@ class Track extends React.Component {
     }
 
     playTrack(props){
-        
+        window.music.play(
+            props.data.id,
+            props.data.stream_url,
+            props.data.title,
+
+            // on start
+            function(){
+                window.messenger.publish('music-state-change', {playing: true});
+            },
+
+            // on finished
+            function(){
+                window.messenger.publish('music-state-change', {playing: false});
+            });
     }
 
     convertDuration(millis){
@@ -21,7 +34,7 @@ class Track extends React.Component {
 
     render () {
         return (
-            <tr className="track" onClick={this.playTrack.bind(this, this.props)}>
+            <tr className="track" onDoubleClick={this.playTrack.bind(this, this.props)}>
                 <td className="track-title"><p>{this.props.data.title}</p></td>
                 <td className="track-user-username"><p>{this.props.data.user.username}</p></td>
                 <td className="track-duration"><p>{this.convertDuration(this.props.data.duration)}</p></td>
