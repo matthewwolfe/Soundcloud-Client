@@ -3,7 +3,7 @@ A personal project to learn React.js and Electron.js
 
 
 ##To Build
-```shell
+```
 // clone
 git clone https://github.com/matthewwolfe/Soundcloud-Client.git
 
