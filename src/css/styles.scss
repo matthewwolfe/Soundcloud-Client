@@ -14,7 +14,7 @@ body, html, div {
     font-family: verdana, arial;
 }
 
-p {
+p, span {
     font-size: 14px;
 }
 
@@ -142,11 +142,37 @@ p {
         border-top: 1px solid $secondary-color;
 
         #play-button,
-        #pause-button {
-            font-size: 26px;
+        #pause-button,
+        #random-button,
+        #repeat-button,
+        #volume-control {
+            font-size: 24px;
             line-height: 60px;
-            vertical-align: center;
+            vertical-align: middle;
             cursor: pointer;
+        }
+
+        #volume-control {
+            margin-left: 20px;
+        }
+
+        #random-button,
+        #repeat-button {
+            margin-right: 20px;
+        }
+
+        #track-controller {
+            margin-left: 20px;
+            margin-right: 20px;
+            vertical-align: middle;
+            line-height: 60px;
+            display: inline-block;
+
+            #track-title {
+                vertical-align: middle;
+                line-height: 60px;
+                display: inline-block;
+            }
         }
     }
 }
