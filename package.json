@@ -4,8 +4,10 @@
   "main": "main.js",
   "scripts": {
     "start": "./node_modules/.bin/electron .",
-    "dev": "webpack -d --watch",
-    "build": "webpack -p"
+    "webpack": "webpack -d --watch",
+    "build": "webpack -p",
+    "gulp": "gulp",
+    "sass": "sass --watch src/css:dist/css"
   },
   "devDependencies": {
     "fs": "0.0.2",
@@ -23,6 +25,7 @@
     "babel-preset-react": "^6.5.0",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
-    "webpack": "^1.13.0"
+    "webpack": "^1.13.0",
+    "electron-prebuilt": "latest"
   }
 }
