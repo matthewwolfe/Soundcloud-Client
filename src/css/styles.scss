@@ -51,7 +51,7 @@ p, span {
         }
 
         #side-menu {
-            margin-top: 60px;
+            margin-top: 40px;
 
             ul {
                 list-style-type: none;
@@ -59,8 +59,8 @@ p, span {
 
                 li {
                     padding-left: 20px;
-                    padding-top: 15px;
-                    padding-bottom: 15px;
+                    padding-top: 2px;
+                    padding-bottom: 2px;
                     text-decoration: none;
                 }
 
@@ -69,32 +69,43 @@ p, span {
                 }
 
                 li.active {
-                    padding-left: 19px;
-                    background-color: $secondary-color;
-                    border-left: 1px solid $primary-color;
+                    padding-left: 17px;
+                    color: #fff;
+                    border-left: 3px solid $primary-color;
                 }
             }
         }
 
 
         #track-controller {
-            margin-left: 20px;
-            margin-right: 20px;
+            padding-left: 10px;
+            padding-right: 10px;
+            overflow: hidden;
             position: fixed;
             bottom: 60px;
             height: 120px;
-            width: 200px;
-            border: 1px solid #f00;
+            width: 240px;
+            border-top: 1px solid $secondary-color;
 
             #track-image {
-                width: 60px;
-                height: 60px;
+                width: 50px;
+                height: 50px;
+                margin-bottom: 10px;
+                margin-top: 10px;
+            }
+
+            #track-title,
+            #track-creator {
+                width: 170px;
+                height: 20px;
+                font-size: 12px;
+                white-space: nowrap;
             }
         }
     }
 
     #music-list {
-        height: 100%;
+        height: calc(100% - 60px);
         width: calc(100% - 240px);
         float: right;
         background-color: #141414;
@@ -142,7 +153,8 @@ p, span {
                 }
             }
 
-            .track:hover {
+            .track:hover,
+            .track.playing {
                 background-color: #282828;
             }
         }

@@ -18,7 +18,7 @@ class Music {
         this.currentSoundObject = null;
     }
 
-    play(id, url, title, onStartPlaying, onFinished){
+    play(track, onStartPlaying, onFinished){
         if(!this.isPlayerReady){
             return;
         }
@@ -27,13 +27,13 @@ class Music {
         this.reset();
 
         this.currentSoundObject = soundManager.createSound({
-            id: id,
-            url: url + '?client_id=173bf9df509c48cf53b70c83eaf5cbbd',
-            title: title,
+            id: track.id,
+            url: track.stream_url + '?client_id=173bf9df509c48cf53b70c83eaf5cbbd',
+            title: track.title,
             volume: 50
         });
 
-        this.setCurrentlyPlaying(id, url, title, onStartPlaying, onFinished);
+        this.setCurrentlyPlaying(track, onStartPlaying, onFinished);
 
         let that = this;
 
@@ -74,7 +74,7 @@ class Music {
         return false;
     }
 
-    setCurrentlyPlaying(id, url, title, onStartPlaying, onFinished){
+    setCurrentlyPlaying(track, onStartPlaying, onFinished){
         if(onStartPlaying === undefined){
             onStartPlaying = function(){};
         }
@@ -83,10 +83,8 @@ class Music {
             onFinished = function(){};
         }
 
-        this.currentlyPlaying = {
-            id: id,
-            url: url,
-            title: title,
+        this.currentlyPlaying = {   
+            track: track,
             onStartPlaying: onStartPlaying,
             onFinished: onFinished,
             isPlaying: false

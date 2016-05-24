@@ -5,9 +5,7 @@ class TrackController extends React.Component {
     constructor(props){
         super(props);
 
-        this.state = {title: '',
-                      creator: '',
-                      image: ''};
+        this.state = {track: {}};
 
         let that = this;
 
@@ -15,25 +13,23 @@ class TrackController extends React.Component {
             that.setState({playing: data.playing});
 
             if(data.playing){
-                that.setState({title: window.music.currentlyPlaying.title});
+                that.setState({track: window.music.currentlyPlaying.track});
             }
         });
     }
 
     render () {
-        var className  = "";
-
-        if(!this.state.playing){
-            className += 'hide';
+        if(this.state.playing){ 
+            return (
+                <div id="track-controller">
+                    <img id="track-image" src={this.state.track.artwork_url} />
+                    <div id="track-title">{this.state.track.title}</div>
+                    <div id="track-creator">{this.state.track.user.username}</div>
+                </div>
+            );
+        } else {
+            return null;
         }
-
-        return (
-            <div id="track-controller" className={className}>
-                <img id="track-image" src={this.state.image} />
-                <h4 id="track-title">{this.state.title}</h4>
-                <p id="track-creator">{this.state.creator}</p>
-            </div>
-        );
     }
 }
 
