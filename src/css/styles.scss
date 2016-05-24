@@ -171,6 +171,10 @@ p, span {
         padding-left: 20px;
         padding-right: 20px;
 
+        span {
+            display: inline-block;
+        }
+
         #play-button,
         #pause-button,
         #random-button,
@@ -188,6 +192,73 @@ p, span {
 
         #repeat-button {
             margin-right: 20px;
+        }
+
+        #progress-bar {
+            display: inline-block;
+            vertical-align: top;
+            margin-top: 7px;
+            margin-left: 40px;
+            width: 500px;
+
+            #current-time {
+                display: inline-block;
+                margin: 0;
+                padding: 0;
+                vertical-align: top;
+                margin-top: 14px;
+            }
+
+            #duration-time {
+                display: inline-block;
+                margin: 0;
+                padding: 0;
+                vertical-align: top;
+                margin-left: 20px;
+                margin-top: 14px;
+            }
+
+            #track-timeline {
+                cursor: pointer;
+                position: relative;
+                display: inline-block;
+                width: 400px;
+                vertical-align: top;
+                margin-top: 14px;
+                margin-left: 20px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+
+
+                #progress-background {
+                    position: absolute;
+                    width: 100%;
+                    margin: 0;
+                    padding: 0;
+                    background-color: #999;
+                    height: 1px;
+                }
+
+                #progress-bar {
+                    position: absolute;
+                    width: 0;
+                    margin: 0;
+                    padding: 0;
+                    background-color: #ADD498;
+                    height: 1px;
+                }
+
+                #progress-bar-handle {
+                    display: none;
+                    top: 6px;
+                    position: absolute;
+                    width: 9px;
+                    height: 9px;
+                    border: 1px solid #333;
+                    background-color: #333;
+                    border-radius: 50%;
+                }
+            }
         }
     }
 }
