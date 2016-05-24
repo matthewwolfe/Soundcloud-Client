@@ -1,7 +1,5 @@
 import React from 'react';
 
-import TrackController from './trackController.jsx';
-
 class MusicPlayer extends React.Component {
 
     constructor(props){
@@ -49,7 +47,6 @@ class MusicPlayer extends React.Component {
                 <span id="play-button" onClick={this.play.bind(this)} className={playClass}></span>
                 <span id="pause-button" onClick={this.pause.bind(this)} className={pauseClass}></span>
                 <span id="volume-control" className="glyphicon glyphicon-volume-up"></span>
-                <TrackController />
                 <span id="random-button" className="glyphicon glyphicon-random pull-right"></span>
                 <span id="repeat-button" className="glyphicon glyphicon-retweet pull-right"></span>
             </div>

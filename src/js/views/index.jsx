@@ -5,6 +5,7 @@ import User from './user.jsx';
 import SideMenu from './sideMenu.jsx';
 import MusicList from './musicList.jsx';
 import MusicPlayer from './musicPlayer.jsx';
+import TrackController from './trackController.jsx';
 
 class App extends React.Component {
 
@@ -14,6 +15,7 @@ class App extends React.Component {
                 <div id="left-side-bar">
                     <User />
                     <SideMenu />
+                    <TrackController />
                 </div>
 
                 <MusicList />

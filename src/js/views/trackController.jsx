@@ -5,7 +5,9 @@ class TrackController extends React.Component {
     constructor(props){
         super(props);
 
-        this.state = {title: ''};
+        this.state = {title: '',
+                      creator: '',
+                      image: ''};
 
         let that = this;
 
@@ -26,11 +28,11 @@ class TrackController extends React.Component {
         }
 
         return (
-            <span id="track-controller" className={className}>
-                <span id="track-title">
-                    {this.state.title}
-                </span>
-            </span>
+            <div id="track-controller" className={className}>
+                <img id="track-image" src={this.state.image} />
+                <h4 id="track-title">{this.state.title}</h4>
+                <p id="track-creator">{this.state.creator}</p>
+            </div>
         );
     }
 }

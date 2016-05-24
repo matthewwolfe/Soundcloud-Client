@@ -7,7 +7,7 @@ html, body {
     padding: 0;
 }
 
-body, html, div {
+body, html, div, h1, h2, h3, h4, p {
     margin: 0;
     padding: 0;
     color: $primary-color;
@@ -75,6 +75,22 @@ p, span {
                 }
             }
         }
+
+
+        #track-controller {
+            margin-left: 20px;
+            margin-right: 20px;
+            position: fixed;
+            bottom: 60px;
+            height: 120px;
+            width: 200px;
+            border: 1px solid #f00;
+
+            #track-image {
+                width: 60px;
+                height: 60px;
+            }
+        }
     }
 
     #music-list {
@@ -140,6 +156,8 @@ p, span {
         bottom: 0px;
         background-color: #282828;
         border-top: 1px solid $secondary-color;
+        padding-left: 20px;
+        padding-right: 20px;
 
         #play-button,
         #pause-button,
@@ -156,23 +174,8 @@ p, span {
             margin-left: 20px;
         }
 
-        #random-button,
         #repeat-button {
             margin-right: 20px;
-        }
-
-        #track-controller {
-            margin-left: 20px;
-            margin-right: 20px;
-            vertical-align: middle;
-            line-height: 60px;
-            display: inline-block;
-
-            #track-title {
-                vertical-align: middle;
-                line-height: 60px;
-                display: inline-block;
-            }
         }
     }
 }
