@@ -3,6 +3,8 @@ class SoundcloudAPI extends Core {
     constructor(callback){
         super();
 
+        this.authenticationURL = 'https://api.soundcloud.com/connect?client_id=173bf9df509c48cf53b70c83eaf5cbbd&redirect_uri=my-app%3A%2F%2Fcallback.html&response_type=code';
+
         this.clientID = '173bf9df509c48cf53b70c83eaf5cbbd';
         this.clientSecret = '7ddbd6fcdc2d313abfb65758c751486e';
         this.baseUrl = 'https://api.soundcloud.com';
@@ -37,6 +39,17 @@ class SoundcloudAPI extends Core {
                 callback();
             });
         }
+
+        let that = this;
+
+        window.messenger.subscribe('logout', function(data){
+            that.logout();
+        });
+    }
+
+    logout(){
+        window.storageManager.set('token', null);
+        window.location.href = this.authenticationURL;
     }
 
     getAuthCode(callback){
@@ -49,7 +62,7 @@ class SoundcloudAPI extends Core {
 
         // if we don't yet have the authentication code, then the user needs to connect and authorize the application
         } else {
-            window.location.href = 'https://api.soundcloud.com/connect?client_id=173bf9df509c48cf53b70c83eaf5cbbd&redirect_uri=my-app%3A%2F%2Fcallback.html&response_type=code';
+            window.location.href = this.authenticationURL;
         }
     }
 

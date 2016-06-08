@@ -9,22 +9,25 @@ class User extends React.Component {
     }
 
     loadUser(){
-        let that = this;
+        this.setState({data: window.user});
+    }
 
-        that.setState({data: window.user});
+    logout(){
+        window.messenger.publish('logout', {});
     }
 
     componentDidMount(){
         this.loadUser();
     }
 
-    render () {
+    render (){
         return (
             <div id="user">
                 <img className="profile-picture" src={this.state.data.avatar_url} />
                 <h4 className="username">{this.state.data.username}</h4>
                 <p className="followers-count">Followers: {this.state.data.followers_count}</p>
                 <p className="followings-count">Following: {this.state.data.followings_count}</p>
+                <p className="logout" onClick={this.logout}>Logout</p>
             </div>
         );
     }
