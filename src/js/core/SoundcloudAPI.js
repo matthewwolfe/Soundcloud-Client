@@ -7,25 +7,36 @@ class SoundcloudAPI extends Core {
         this.clientSecret = '7ddbd6fcdc2d313abfb65758c751486e';
         this.baseUrl = 'https://api.soundcloud.com';
 
-        let that = this;
+        this.userToken = window.storageManager.get('token');
 
-        // get the auth code or prompt the user to authorize the application
-        this.getAuthCode(function(response){
+        if(this.userToken === null){
+            let that = this;
 
-            that.userAuthCode = response;
+            // get the auth code or prompt the user to authorize the application
+            this.getAuthCode(function(response){
 
-            // get the token
-            that.getToken(function(response){
-                that.userToken = response;
-                
-                // start rendering the view by getting the user
-                that.getMe(function(response){
-                    window.user = response;
+                that.userAuthCode = response;
 
-                    callback();
+                // get the token
+                that.getToken(function(response){
+                    that.userToken = response;
+                    
+                    // start rendering the view by getting the user
+                    that.getMe(function(response){
+                        window.user = response;
+
+                        callback();
+                    });
                 });
             });
-        });
+        } else {
+            // start rendering the view by getting the user
+            this.getMe(function(response){
+                window.user = response;
+
+                callback();
+            });
+        }
     }
 
     getAuthCode(callback){
@@ -57,6 +68,10 @@ class SoundcloudAPI extends Core {
             window.storageManager.set('token', response);
             callback(response);
         });
+    }
+
+    refreshToken(callback){
+
     }
 
     getMe(callback){

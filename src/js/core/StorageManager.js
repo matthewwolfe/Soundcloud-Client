@@ -1,6 +1,6 @@
 class StorageManager extends Core {
 
-	constructor(){
+	constructor(callback){
         super();
 
 		this.fs = require('fs');
@@ -8,11 +8,13 @@ class StorageManager extends Core {
 
         this.readFromStorage(function(data){
             this.data = data;
+            callback();
+
         }.bind(this));
 	}
 
     get(property){
-        this.propertyExists(property) ? this.data.property : null;
+        return this.propertyExists(property) ? this.data[property] : null;
     }
 
     set(property, value){
@@ -26,7 +28,7 @@ class StorageManager extends Core {
     }
 
     propertyExists(property){
-        this.data.hasOwnProperty(property) ? true : false;
+        return this.data.hasOwnProperty(property) ? true : false;
     }
 
     writeToStorage(){

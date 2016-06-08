@@ -25,7 +25,6 @@ class App extends React.Component {
     }
 }
 
-window.storageManager = new StorageManager();
 
 // initialize the publish/subscribe messenger
 window.messenger = new Messenger();
@@ -33,7 +32,9 @@ window.messenger = new Messenger();
 // Initialize the music handler
 window.music = new Music();
 
-// Initialize the connection to the SoundCloud API and then render the app
-window.soundCloudAPI = new SoundcloudAPI(function(){
-    render(<App/>, document.getElementById('app'));
+window.storageManager = new StorageManager(function(){
+    // Initialize the connection to the SoundCloud API and then render the app
+    window.soundCloudAPI = new SoundcloudAPI(function(){
+        render(<App/>, document.getElementById('app'));
+    });
 });
