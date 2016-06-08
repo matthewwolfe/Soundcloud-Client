@@ -4,12 +4,20 @@ class MusicPlayerProgressBar extends React.Component {
 
 	constructor(props){
 		super(props);
+
+		this.state = {position: 0, duration: 0};
+
+		let that = this;
+
+		window.messenger.subscribe('music-position-update', function(data){
+            that.setState({position: data.position, duration: data.duration});
+        });
 	}
 
 	render(){
 		return (
 			<div id="progress-bar">
-                <div id="current-time">0:00</div>
+                <div id="current-time">{window.music.convertDuration(this.state.position)}</div>
 
                 <div id="track-timeline">
                     <div id="progress-background"></div>
@@ -17,7 +25,7 @@ class MusicPlayerProgressBar extends React.Component {
                     <div id="progress-bar-handle"></div>
                 </div>
 
-                <div id="duration-time">3:15</div>
+                <div id="duration-time">{window.music.convertDuration(this.state.duration)}</div>
             </div>
 		);
 	}

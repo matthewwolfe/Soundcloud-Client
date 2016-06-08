@@ -41,6 +41,10 @@ class Music {
             onplay: function(){
                 that.currentlyPlaying.isPlaying = true;
                 that.currentlyPlaying.onStartPlaying();
+                window.messenger.publish('music-position-update', {position: this.position, duration: this.duration});
+            },
+            whileplaying: function(){
+                window.messenger.publish('music-position-update', {position: this.position, duration: this.duration});
             },
             onfinish: function(){
                 that.currentlyPlaying.onFinished();
@@ -97,5 +101,12 @@ class Music {
         }
         this.currentSoundObject = null;
         this.currentlyPlaying = null;
+    }
+
+    convertDuration(millis){
+        var hours = Math.floor(millis / 36e5),
+            mins = Math.floor((millis % 36e5) / 6e4),
+            secs = Math.floor((millis % 6e4) / 1000); 
+        return (hours > 0 ? hours + ":" : '') + (mins < 10 && hours > 0 ? '0' : '') + mins + ":" + (secs < 10 ? '0' : '') + secs;
     }
 }
