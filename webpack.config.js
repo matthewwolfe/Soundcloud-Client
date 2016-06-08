@@ -18,7 +18,10 @@ var config = {
     			loader: 'babel'
     		}
     	]
-    }
+    },
+    plugins: [
+        new webpack.IgnorePlugin(new RegExp("^(fs|ipc)$"))
+    ]
 };
 
 module.exports = config;

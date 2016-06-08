@@ -1,5 +1,3 @@
-
-
 class SoundcloudAPI extends Core {
 
     constructor(callback){
@@ -9,25 +7,39 @@ class SoundcloudAPI extends Core {
         this.clientSecret = '7ddbd6fcdc2d313abfb65758c751486e';
         this.baseUrl = 'https://api.soundcloud.com';
 
-        this.userAuthCode = this.getAuthCode();
-
         let that = this;
 
-        this.getToken(function(response){
-            that.userToken = response;
-            
-            that.getMe(function(response){
+        // get the auth code or prompt the user to authorize the application
+        this.getAuthCode(function(response){
 
-                window.user = response;
+            that.userAuthCode = response;
 
-                callback();
+            // get the token
+            that.getToken(function(response){
+                that.userToken = response;
+                
+                // start rendering the view by getting the user
+                that.getMe(function(response){
+                    window.user = response;
+
+                    callback();
+                });
             });
         });
     }
 
-    getAuthCode(){
+    getAuthCode(callback){
         let url = window.location.href;
-        return url.substring(url.indexOf('=') + 1);
+        let authCode = url.substring(url.indexOf('=') + 1);
+
+        // the user has already authorized the application
+        if(url.indexOf('=') !== -1){
+            callback(authCode);
+
+        // if we don't yet have the authentication code, then the user needs to connect and authorize the application
+        } else {
+            window.location.href = 'https://api.soundcloud.com/connect?client_id=173bf9df509c48cf53b70c83eaf5cbbd&redirect_uri=my-app%3A%2F%2Fcallback.html&response_type=code';
+        }
     }
 
     getToken(callback){
@@ -42,6 +54,7 @@ class SoundcloudAPI extends Core {
         };
 
         this.post(url, data, function(response){
+            window.storageManager.set('token', response);
             callback(response);
         });
     }
