@@ -1,9 +1,9 @@
 class StorageManager extends Core {
 
-	constructor(callback){
+    constructor(callback){
         super();
 
-		this.fs = require('fs');
+        this.fs = require('fs');
         this.data = {};
 
         this.readFromStorage(function(data){
@@ -11,7 +11,7 @@ class StorageManager extends Core {
             callback();
 
         }.bind(this));
-	}
+    }
 
     get(property){
         return this.propertyExists(property) ? this.data[property] : null;
