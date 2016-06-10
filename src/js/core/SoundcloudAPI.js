@@ -3,47 +3,50 @@ class SoundcloudAPI extends Core {
     constructor(callback){
         super();
 
+        // called when the logout button is clicked
+        window.messenger.subscribe('logout', function(data){
+            this.logout();
+        }.bind(this));
+
         this.authenticationURL = 'https://api.soundcloud.com/connect?client_id=173bf9df509c48cf53b70c83eaf5cbbd&redirect_uri=my-app%3A%2F%2Fcallback.html&response_type=code';
 
         this.clientID = '173bf9df509c48cf53b70c83eaf5cbbd';
         this.clientSecret = '7ddbd6fcdc2d313abfb65758c751486e';
         this.baseUrl = 'https://api.soundcloud.com';
 
+        // first try to get the user token from storage
         this.userToken = window.storageManager.get('token');
 
+        // if the token doesn't exist then we need to authenticate the user
         if(this.userToken === null){
-            let that = this;
 
-            // get the auth code or prompt the user to authorize the application
+            // authenticate the user
             this.getAuthCode(function(response){
+                this.userAuthCode = response;
 
-                that.userAuthCode = response;
+                // get the initial token
+                this.getToken('authorization', function(response){
+                    this.userToken = response;
+                    this.initializeApp(callback);
 
-                // get the token
-                that.getToken(function(response){
-                    that.userToken = response;
-                    
-                    // start rendering the view by getting the user
-                    that.getMe(function(response){
-                        window.user = response;
-
-                        callback();
-                    });
-                });
-            });
+                }.bind(this));
+            }.bind(this));
         } else {
-            // start rendering the view by getting the user
-            this.getMe(function(response){
-                window.user = response;
 
-                callback();
-            });
+            // if the token already exists, just refresh it
+            this.getToken('refresh', function(response){
+                this.userToken = response;
+                this.initializeApp(callback);
+
+            }.bind(this));
         }
+    }
 
-        let that = this;
+    initializeApp(callback){
+        this.getMe(function(response){
+            window.user = response;
 
-        window.messenger.subscribe('logout', function(data){
-            that.logout();
+            callback();
         });
     }
 
@@ -66,7 +69,19 @@ class SoundcloudAPI extends Core {
         }
     }
 
-    getToken(callback){
+    getToken(type, callback){
+        if(type === 'authorization'){
+            this.exchangeToken(function(response){
+                callback(response);
+            });
+        } else if(type === 'refresh'){
+            this.refreshToken(function(response){
+                callback(response);
+            });
+        }
+    }
+
+    exchangeToken(callback){
         let url = this.baseUrl + '/oauth2/token';
 
         let data = {
@@ -84,7 +99,19 @@ class SoundcloudAPI extends Core {
     }
 
     refreshToken(callback){
+        let url = this.baseUrl + '/oauth2/token';
 
+        let data = {
+            'client_id': this.clientID,
+            'client_secret': this.clientSecret,
+            'grant_type': 'refresh_token',
+            'refresh_token': this.userToken.refresh_token
+        };
+
+        this.post(url, data, function(response){
+            window.storageManager.set('token', response);
+            callback(response);
+        });
     }
 
     getMe(callback){
