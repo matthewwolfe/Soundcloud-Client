@@ -142,7 +142,17 @@ class SoundcloudAPI extends Core {
         let url = this.baseUrl + '/me/activities?limit=100&oauth_token=' + this.userToken.access_token;
 
         this.get(url, function(response){
-            callback(response);
+            
+            let activities = response.collection;
+            let tracks = [];
+
+            activities.forEach(function(activity){
+                if(activity.origin.kind === 'track'){
+                    tracks.push(activity.origin);
+                }
+            });
+
+            callback(tracks);
         });
     }
 }

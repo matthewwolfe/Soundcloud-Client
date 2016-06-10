@@ -8,23 +8,21 @@ class Track extends React.Component {
         this.state = {data: {},
                       playing: false};
 
-        let that = this;
-
         window.messenger.subscribe('music-play-track', function(data){
-            if(data.id.toString() === that.props.data.id.toString()){
-                that.playTrack(that.props);
+            if(data.id.toString() === this.props.data.id.toString()){
+                this.playTrack(that.props);
             }
-        });
+        }.bind(this));
 
         window.messenger.subscribe('music-state-change', function(data){
             if(data.playing &&
-               data.id.toString() === that.props.data.id.toString()
+               data.id.toString() === this.props.data.id.toString()
             ){
-                that.setState({playing: true});
+                this.setState({playing: true});
             } else {
-                that.setState({playing: false});
+                this.setState({playing: false});
             }
-        });
+        }.bind(this));
     }
 
     playTrack(props){

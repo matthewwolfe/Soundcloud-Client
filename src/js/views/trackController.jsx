@@ -7,15 +7,13 @@ class TrackController extends React.Component {
 
         this.state = {track: {}};
 
-        let that = this;
-
         window.messenger.subscribe('music-state-change', function(data){
-            that.setState({playing: data.playing});
+            this.setState({playing: data.playing});
 
             if(data.playing){
-                that.setState({track: window.music.currentlyPlaying.track});
+                this.setState({track: window.music.currentlyPlaying.track});
             }
-        });
+        }.bind(this));
     }
 
     render () {

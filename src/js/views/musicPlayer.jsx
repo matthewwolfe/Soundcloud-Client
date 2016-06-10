@@ -9,11 +9,9 @@ class MusicPlayer extends React.Component {
 
         this.state = {data: {}};
 
-        let that = this;
-
         window.messenger.subscribe('music-state-change', function(data){
-            that.setState({playing: data.playing});
-        });
+            this.setState({playing: data.playing});
+        }.bind(this));
     }
 
     play(){

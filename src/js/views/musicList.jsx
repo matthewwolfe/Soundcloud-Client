@@ -20,35 +20,27 @@ class MusicList extends React.Component {
         this.setActive({selected: 'stream'});
 
         // set up the listener
-        let that = this;
-
         window.messenger.subscribe('side-menu-click', function(data){
-            that.setActive(data);
-        });
+            this.setActive(data);
+        }.bind(this));
     }
 
     getStream(){
-        let that = this;
-
         window.soundCloudAPI.getStream(function(tracks){
-            that.setState({data: {tracks: tracks}});
-        });
+            this.setState({data: {tracks: tracks}});
+        }.bind(this));
     }
 
     getLikes(){
-        let that = this;
-
         window.soundCloudAPI.getLikedTracks(function(tracks){
-            that.setState({data: {tracks: tracks}});
-        });
+            this.setState({data: {tracks: tracks}});
+        }.bind(this));
     }
 
     getTracks(){
-        let that = this;
-
         window.soundCloudAPI.getTracks(function(tracks){
-            that.setState({data: {tracks: tracks}});
-        });
+            this.setState({data: {tracks: tracks}});
+        }.bind(this));
     }
 
     getPlaylists(){
