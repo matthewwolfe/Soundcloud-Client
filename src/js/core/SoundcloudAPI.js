@@ -13,6 +13,7 @@ class SoundcloudAPI extends Core {
         this.clientID = '173bf9df509c48cf53b70c83eaf5cbbd';
         this.clientSecret = '7ddbd6fcdc2d313abfb65758c751486e';
         this.baseUrl = 'https://api.soundcloud.com';
+        this.v2BaseUrl = 'https://api-v2.soundcloud.com';
 
         // first try to get the user token from storage
         this.userToken = window.storageManager.get('token');
@@ -153,6 +154,44 @@ class SoundcloudAPI extends Core {
             });
 
             callback(tracks);
+        });
+    }
+
+    getPlaylists(callback){
+        let url = this.v2BaseUrl + '/users/' + window.user.id + '/playlists/liked_and_owned?oauth_token=' + this.userToken.access_token;
+
+        this.get(url, function(response){
+            callback(response);
+        });
+    }
+
+    getOwnedPlaylists(callback){
+        this.getPlaylists(function(response){
+            let playlists = response.collection;
+            let ownedPlaylists = [];
+
+            playlists.forEach(function(playlist){
+                if(playlist.type === 'playlist'){
+                    ownedPlaylists.push(playlist);
+                }
+            });
+
+            callback(ownedPlaylists);
+        });
+    }
+
+    getLikedPlaylists(callback){
+        this.getPlaylists(function(response){
+            let playlists = response.collection;
+            let likedPlaylists = [];
+
+            playlists.forEach(function(playlist){
+                if(playlist.type === 'playlist-like'){
+                    likedPlaylists.push(playlist);
+                }
+            });
+
+            callback(likedPlaylists);
         });
     }
 }

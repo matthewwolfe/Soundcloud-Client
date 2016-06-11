@@ -9,6 +9,8 @@ class SideMenu extends React.Component {
             data: {},
             selected: 'stream'
         };
+
+        this.getPlaylistNames();
     }
 
     isActive(value){
@@ -23,14 +25,32 @@ class SideMenu extends React.Component {
         });
     }
 
-    render () {
+    getPlaylistNames(){
+        window.soundCloudAPI.getOwnedPlaylists(function(response){
+            this.setState({playlists: response});
+        }.bind(this));
+    }
+
+    render(){
+        let playlists = [];
+
+        if(this.state.playlists !== undefined){
+            for(var i = 0; i < this.state.playlists.length; i++){
+                playlists.push(<li key={i}>{this.state.playlists[i].playlist.title}</li>);
+            }
+        }
+
         return (
             <div id="side-menu">
                 <ul>
                     <li onClick={this.setActive.bind(this, 'stream')} className={this.isActive('stream')}>Stream</li>
                     <li onClick={this.setActive.bind(this, 'likes')} className={this.isActive('likes')}>Likes</li>
                     <li onClick={this.setActive.bind(this, 'tracks')} className={this.isActive('tracks')}>Tracks</li>
-                    <li onClick={this.setActive.bind(this, 'playlists')} className={this.isActive('playlists')}>Playlists</li>
+                    <br/>
+                    <li>Playlists</li>
+                    <ul className="playlists-menu">
+                        {playlists}
+                    </ul>
                 </ul>
             </div>
         );
