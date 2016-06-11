@@ -112,12 +112,22 @@ p, span {
         }
     }
 
+    #search-bar {
+        width: calc(100% - 240px);
+        height: 40px;
+        background-color: #282828;
+        float: right;
+    }
+
     #music-list {
-        height: calc(100% - 60px);
+        height: calc(100% - 100px);
+        padding-top: 10px;
         width: calc(100% - 240px);
         float: right;
         background-color: #141414;
         overflow-y: scroll;
+        border-left: 1px solid $secondary-color;
+        border-top: 1px solid $secondary-color;
 
         .section-title {
             margin-left: 15px;
