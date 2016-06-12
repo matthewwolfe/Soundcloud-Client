@@ -23,6 +23,10 @@ class MusicList extends React.Component {
         window.messenger.subscribe('side-menu-click', function(data){
             this.setActive(data);
         }.bind(this));
+
+        window.messenger.subscribe('search-results', function(data){
+            this.setState({data: data});
+        }.bind(this));
     }
 
     getStream(){

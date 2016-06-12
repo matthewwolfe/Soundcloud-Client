@@ -21,7 +21,7 @@ class Messenger extends Core {
         return {
             remove: function(){
                 delete this.queue[action][index];
-            }
+            }.bind(this)
         }
     }
 

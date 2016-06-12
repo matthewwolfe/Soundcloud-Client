@@ -199,7 +199,16 @@ class SoundcloudAPI extends Core {
         let url = this.v2BaseUrl + '/search?limit=100&q=' + query + '&client_id=' + this.clientID;
 
         this.get(url, function(response){
-            callback(response);
+            let collection = response.collection;
+            let tracks = [];
+
+            collection.forEach(function(element){
+                if(element.kind === 'track'){
+                    tracks.push(element);
+                }
+            });
+
+            callback(tracks);
         });
     }
 }

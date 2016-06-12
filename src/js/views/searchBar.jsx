@@ -12,7 +12,7 @@ class SearchBar extends React.Component {
 
     search(){
         window.soundCloudAPI.search(this.state.value, function(response){
-            console.log(response);
+            window.messenger.publish('search-results', {tracks: response});
         });
     }
 

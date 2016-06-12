@@ -28,7 +28,7 @@ class Music {
 
         this.currentSoundObject = soundManager.createSound({
             id: track.id,
-            url: track.stream_url + '?client_id=173bf9df509c48cf53b70c83eaf5cbbd',
+            url: 'https://api.soundcloud.com/tracks/' + track.id + '/stream?client_id=173bf9df509c48cf53b70c83eaf5cbbd',
             title: track.title,
             volume: 50
         });
