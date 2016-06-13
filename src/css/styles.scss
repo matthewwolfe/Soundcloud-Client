@@ -237,6 +237,7 @@ p, span {
         #pause-button,
         #random-button,
         #repeat-button,
+        #tile-view-button,
         #volume-control {
             font-size: 24px;
             line-height: 60px;
@@ -248,7 +249,8 @@ p, span {
             margin-left: 20px;
         }
 
-        #repeat-button {
+        #repeat-button,
+        #tile-view-button {
             margin-right: 20px;
         }
 

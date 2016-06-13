@@ -52,6 +52,7 @@ class MusicPlayer extends React.Component {
 
                 <span id="random-button" className="glyphicon glyphicon-random pull-right"></span>
                 <span id="repeat-button" className="glyphicon glyphicon-retweet pull-right"></span>
+                <span id="tile-view-button" className="glyphicon glyphicon-th pull-right"></span>
             </div>
         );
     }
