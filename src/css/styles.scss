@@ -5,6 +5,25 @@ $secondary-color: #464646;
     display: none;
 }
 
+::-webkit-scrollbar-track
+{
+    border: 1px solid black;
+    background-color: $secondary-color;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+::-webkit-scrollbar
+{
+    width: 8px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    background-color: $primary-color;  
+}
+
 html, body {
     height: 100%;
     margin: 0;
