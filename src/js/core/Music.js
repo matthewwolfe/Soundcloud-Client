@@ -1,7 +1,7 @@
 class Music {
 
     constructor(){
-        let that = this;
+        let self = this;
 
         soundManager.setup({
             url: '/path/to/swf-files/',
@@ -10,12 +10,15 @@ class Music {
             // preferFlash: false,
             onready: function() {
                 // Everything is loaded and ready
-                that.isPlayerReady = true;
+                self.isPlayerReady = true;
             }
         });
 
         this.currentlyPlaying = null;
         this.currentSoundObject = null;
+
+        this.isRepeating = false;
+        this.isShuffle = false;
     }
 
     play(track, onStartPlaying, onFinished){
@@ -35,19 +38,23 @@ class Music {
 
         this.setCurrentlyPlaying(track, onStartPlaying, onFinished);
 
-        let that = this;
+        let self = this;
 
         this.currentSoundObject.play({
             onplay: function(){
-                that.currentlyPlaying.isPlaying = true;
-                that.currentlyPlaying.onStartPlaying();
+                self.currentlyPlaying.isPlaying = true;
+                self.currentlyPlaying.onStartPlaying();
                 window.messenger.publish('music-position-update', {position: this.position, duration: this.duration});
             },
             whileplaying: function(){
                 window.messenger.publish('music-position-update', {position: this.position, duration: this.duration});
             },
             onfinish: function(){
-                that.currentlyPlaying.onFinished();
+                if(self.isRepeating){
+                    self.play(track, onStartPlaying, onFinished);
+                } else {
+                    self.currentlyPlaying.onFinished();
+                }
             }
         });
     }
@@ -93,6 +100,14 @@ class Music {
             onFinished: onFinished,
             isPlaying: false
         };
+    }
+
+    toggleRepeat(){
+        this.isRepeating = !this.isRepeating;
+    }
+
+    toggleShuffle(){
+        this.isShuffle = !this.isShuffle;
     }
 
     reset(){

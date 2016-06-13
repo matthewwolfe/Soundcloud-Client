@@ -1,5 +1,6 @@
 $primary-color: #B4B4B4;
 $secondary-color: #464646;
+$orange-color: #f50;
 
 .hide {
     display: none;
@@ -233,6 +234,10 @@ p, span {
             display: inline-block;
         }
 
+        .glyphicon.active {
+            color: $orange-color;
+        }
+
         #play-button,
         #pause-button,
         #random-button,
@@ -304,7 +309,7 @@ p, span {
                     width: 0;
                     margin: 0;
                     padding: 0;
-                    background-color: #f50;
+                    background-color: $orange-color;
                     height: 2px;
                 }
 

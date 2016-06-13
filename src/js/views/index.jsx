@@ -4,7 +4,7 @@ import {render} from 'react-dom';
 import User from './user.jsx';
 import SideMenu from './sideMenu.jsx';
 import SearchBar from './searchBar.jsx';
-import MusicList from './musicList.jsx';
+import MusicList from './tracks_list/musicList.jsx';
 import MusicPlayer from './musicPlayer.jsx';
 import TrackController from './trackController.jsx';
 
