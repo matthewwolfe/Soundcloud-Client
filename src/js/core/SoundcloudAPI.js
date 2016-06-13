@@ -219,4 +219,10 @@ class SoundcloudAPI extends Core {
             callback(tracks);
         });
     }
+
+    likeTrack(id){
+        let url = this.baseUrl + '/users/' + window.user.id + '/favorites/' + id + '?oauth_token=' + this.userToken.access_token;
+    
+        this.put(url, function(response){});
+    }
 }

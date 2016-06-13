@@ -4,13 +4,13 @@ class Core {
     get(url, callback){
         var xmlhttp;
 
-        if (window.XMLHttpRequest) {
+        if(window.XMLHttpRequest){
             // code for IE7+, Firefox, Chrome, Opera, Safari
             xmlhttp = new XMLHttpRequest();
         }
 
         xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+            if(xmlhttp.readyState == XMLHttpRequest.DONE ){
                if(xmlhttp.status == 200){
                     callback(JSON.parse(xmlhttp.responseText));
                }
@@ -31,7 +31,7 @@ class Core {
 
         var xmlhttp;
 
-        if (window.XMLHttpRequest) {
+        if(window.XMLHttpRequest){
             // code for IE7+, Firefox, Chrome, Opera, Safari
             xmlhttp = new XMLHttpRequest();
         }
@@ -40,7 +40,7 @@ class Core {
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
         xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+            if(xmlhttp.readyState == XMLHttpRequest.DONE ){
                if(xmlhttp.status == 200){
                     callback(JSON.parse(xmlhttp.responseText));
                }
@@ -48,5 +48,25 @@ class Core {
         };
 
         xmlhttp.send(data);
+    }
+
+    put(url, callback){
+        var xmlhttp;
+
+        if(window.XMLHttpRequest){
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        }
+
+        xmlhttp.onreadystatechange = function() {
+            if(xmlhttp.readyState == XMLHttpRequest.DONE){
+               if(xmlhttp.status == 201){
+                    callback(JSON.parse(xmlhttp.responseText));
+               }
+            }
+        };
+
+        xmlhttp.open('PUT', url, true);
+        xmlhttp.send();
     }
 }    

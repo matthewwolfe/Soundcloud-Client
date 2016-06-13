@@ -29,6 +29,12 @@ class MusicList extends React.Component {
         }.bind(this));
     }
 
+    componentWillUpdate(nextProps, nextState){
+        if(this.state.data.tracks !== nextState.data.tracks){
+            window.music.setTracks(nextState.data.tracks);
+        }
+    }
+
     getStream(){
         window.soundCloudAPI.getStream(function(tracks){
             this.setState({data: {tracks: tracks}});

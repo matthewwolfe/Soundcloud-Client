@@ -19,6 +19,9 @@ class Music {
 
         this.isRepeating = false;
         this.isShuffle = false;
+
+        this.tracks = [];
+        this.shuffledTracks = [];
     }
 
     play(track, onStartPlaying, onFinished){
@@ -108,6 +111,33 @@ class Music {
 
     toggleShuffle(){
         this.isShuffle = !this.isShuffle;
+    }
+
+    setTracks(tracks){
+        this.tracks = tracks;
+
+        if(this.isShuffle){
+            this.shuffledTracks = JSON.parse(JSON.stringify(this.tracks));
+            this.shuffleTracks(this.shuffledTracks);
+        }
+    }
+
+    shuffleTracks(array){
+        var currentIndex = this.tracks.length, temporaryValue, randomIndex;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+
+        return array;
     }
 
     reset(){
