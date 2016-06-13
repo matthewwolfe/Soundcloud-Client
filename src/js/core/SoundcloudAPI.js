@@ -195,6 +195,14 @@ class SoundcloudAPI extends Core {
         });
     }
 
+    getPlaylist(id, callback){
+        let url = this.baseUrl + '/playlists/' + id + '?client_id=' + this.clientID;
+
+        this.get(url, function(response){
+            callback(response.tracks);
+        });
+    }
+
     search(query, callback){
         let url = this.v2BaseUrl + '/search?limit=100&q=' + query + '&client_id=' + this.clientID;
 

@@ -36,7 +36,11 @@ class SideMenu extends React.Component {
 
         if(this.state.playlists !== undefined){
             for(var i = 0; i < this.state.playlists.length; i++){
-                playlists.push(<li key={i}>{this.state.playlists[i].playlist.title}</li>);
+                playlists.push(
+                    <li key={i} onClick={this.setActive.bind(this, 'playlist-' + this.state.playlists[i].playlist.id)}>
+                        {this.state.playlists[i].playlist.title}
+                    </li>
+                );
             }
         }
 

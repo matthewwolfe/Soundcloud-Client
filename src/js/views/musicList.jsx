@@ -47,8 +47,13 @@ class MusicList extends React.Component {
         }.bind(this));
     }
 
-    getPlaylists(){
-
+    getPlaylist(id){
+        window.soundCloudAPI.getPlaylist(
+            id,
+            function(tracks){
+                this.setState({data: {tracks: tracks}});
+            }.bind(this)
+        );
     }
 
     ucFirst(string) {
@@ -64,8 +69,9 @@ class MusicList extends React.Component {
             this.getLikes();
         } else if(data.selected === 'tracks'){
             this.getTracks();
-        } else if(data.selected === 'playlists'){
-            this.getPlaylists();
+        } else if(data.selected.indexOf('playlist') !== -1){
+            // passes in the id because the string is "playlist-{id}"
+            this.getPlaylist(data.selected.substring(data.selected.indexOf('-') + 1));
         }
     }
 

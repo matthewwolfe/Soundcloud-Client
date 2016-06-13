@@ -12,7 +12,7 @@ class Track extends React.Component {
             'music-play-track',
             function(data){
                 if(data.id.toString() === this.props.data.id.toString()){
-                    this.playTrack(that.props);
+                    this.playTrack(this.props);
                 }
             }.bind(this)
         );

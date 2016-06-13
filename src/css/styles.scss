@@ -1,6 +1,10 @@
 $primary-color: #B4B4B4;
 $secondary-color: #464646;
 
+.hide {
+    display: none;
+}
+
 html, body {
     height: 100%;
     margin: 0;
@@ -266,7 +270,7 @@ p, span {
                     margin: 0;
                     padding: 0;
                     background-color: #999;
-                    height: 1px;
+                    height: 2px;
                 }
 
                 #progress-bar {
@@ -274,12 +278,11 @@ p, span {
                     width: 0;
                     margin: 0;
                     padding: 0;
-                    background-color: #ADD498;
-                    height: 1px;
+                    background-color: #f50;
+                    height: 2px;
                 }
 
                 #progress-bar-handle {
-                    display: none;
                     top: 6px;
                     position: absolute;
                     width: 9px;
