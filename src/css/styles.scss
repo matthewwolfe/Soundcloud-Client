@@ -43,7 +43,7 @@ p, span {
 
 #app {
     #left-side-bar {
-        height: 100%;
+        height: calc(100% - 40px);
         width: 240px;
         float: left;
         background-color: #282828;
@@ -70,10 +70,6 @@ p, span {
 
             .followings-count {
                 clear: both;
-            }
-
-            .logout {
-                cursor: pointer;
             }
         }
 
@@ -136,10 +132,12 @@ p, span {
     }
 
     #search-bar {
-        width: calc(100% - 240px);
+        padding-left: 240px;
+        width: 100%;
         height: 40px;
         background-color: #282828;
-        float: right;
+        float: left;
+        border-bottom: 1px solid $secondary-color;
 
         input {
             border: 0;
@@ -152,6 +150,14 @@ p, span {
             width: 240px;
             color: #282828;
         }
+
+        .logout {
+            cursor: pointer;
+            float: right;
+            display: inline-block;
+            margin-top: 9px;
+            margin-right: 15px;
+        }
     }
 
     #music-list {
@@ -162,7 +168,6 @@ p, span {
         background-color: #141414;
         overflow-y: scroll;
         border-left: 1px solid $secondary-color;
-        border-top: 1px solid $secondary-color;
 
         .section-title {
             margin-left: 15px;

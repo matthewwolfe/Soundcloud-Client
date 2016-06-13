@@ -13,13 +13,14 @@ class App extends React.Component {
     render () {
         return (
             <div>
+                <SearchBar />
+
                 <div id="left-side-bar">
                     <User />
                     <SideMenu />
                     <TrackController />
                 </div>
 
-                <SearchBar />
                 <MusicList />
                 <MusicPlayer />
             </div>

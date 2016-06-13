@@ -28,6 +28,10 @@ class SearchBar extends React.Component {
         }
     }
 
+    logout(){
+        window.messenger.publish('logout', {});
+    }
+
     render(){
         return (
             <div id="search-bar">
@@ -36,6 +40,8 @@ class SearchBar extends React.Component {
                        onKeyPress={this.handleKeyPress.bind(this)} 
                        value={this.state.value}
                        onChange={this.handleChange.bind(this)} />
+
+                <p className="logout" onClick={this.logout}>Logout</p>
             </div>
         );
     }

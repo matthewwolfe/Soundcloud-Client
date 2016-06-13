@@ -12,10 +12,6 @@ class User extends React.Component {
         this.setState({data: window.user});
     }
 
-    logout(){
-        window.messenger.publish('logout', {});
-    }
-
     componentDidMount(){
         this.loadUser();
     }
@@ -27,7 +23,6 @@ class User extends React.Component {
                 <h4 className="username">{this.state.data.username}</h4>
                 <p className="followers-count">Followers: {this.state.data.followers_count}</p>
                 <p className="followings-count">Following: {this.state.data.followings_count}</p>
-                <p className="logout" onClick={this.logout}>Logout</p>
             </div>
         );
     }
