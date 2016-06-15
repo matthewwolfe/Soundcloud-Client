@@ -29,6 +29,8 @@ class App extends React.Component {
 }
 
 
+window.data = new DataManager();
+
 // initialize the publish/subscribe messenger
 window.messenger = new Messenger();
 
