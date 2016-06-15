@@ -22,7 +22,7 @@ $orange-color: #f50;
 ::-webkit-scrollbar-thumb
 {
     border-radius: 10px;
-    background-color: $primary-color;  
+    background-color: $orange-color;  
 }
 
 html, body {
@@ -322,8 +322,8 @@ p, span {
                     position: absolute;
                     width: 9px;
                     height: 9px;
-                    border: 1px solid #333;
-                    background-color: #333;
+                    border: 1px solid $orange-color;
+                    background-color: $orange-color;
                     border-radius: 50%;
                 }
             }

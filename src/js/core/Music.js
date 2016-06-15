@@ -105,6 +105,20 @@ class Music {
         };
     }
 
+    updatePosition(newPosition){
+        if(this.currentlyPlaying !== null && this.currentlyPlaying.isPlaying){
+            soundManager.setPosition(this.currentSoundObject.id, newPosition);
+
+            window.messenger.publish(
+                'music-position-update',
+                {
+                    position: this.currentSoundObject.position,
+                    duration: this.currentSoundObject.duration
+                }
+            );
+        }
+    }
+
     toggleRepeat(){
         this.isRepeating = !this.isRepeating;
     }

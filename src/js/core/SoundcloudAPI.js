@@ -148,8 +148,10 @@ class SoundcloudAPI extends Core {
             let tracks = [];
 
             activities.forEach(function(activity){
-                if(activity.origin.kind === 'track'){
-                    tracks.push(activity.origin);
+                if(activity.origin !== null){
+                    if(activity.origin.kind === 'track'){
+                        tracks.push(activity.origin);
+                    }
                 }
             });
 
