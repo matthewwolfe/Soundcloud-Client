@@ -48,7 +48,7 @@ class MusicList extends React.Component {
     }
 
     getTracks(){
-        window.soundCloudAPI.getTracks(function(tracks){
+        window.soundCloudAPI.getMyTracks(function(tracks){
             this.setState({data: {tracks: tracks}});
         }.bind(this));
     }

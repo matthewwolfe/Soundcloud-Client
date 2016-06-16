@@ -65,7 +65,7 @@ class Track extends React.Component {
     }
 
     likeTrack(){
-        window.soundCloudAPI.likeTrack(this.props.data.id);
+        window.soundCloudAPI.toggleLikedTrack(this.props.data.id);
     }
 
     convertDuration(millis){
@@ -76,10 +76,16 @@ class Track extends React.Component {
     }
 
     render () {
-        var trackClass = 'track';
+        let trackClass = 'track';
+        let likedClass = 'glyphicon glyphicon-heart';
 
         if(this.state.playing){
             trackClass += ' playing';
+        }
+
+        // checks if the user has liked the track
+        if(window.dataManager.find('likedTrackIds', this.props.data.id)){
+            likedClass += ' liked';
         }
 
         return (
@@ -94,7 +100,7 @@ class Track extends React.Component {
                     <p>{this.convertDuration(this.props.data.duration)}</p>
                 </td>
                 <td className="track-options">
-                    <span onClick={this.likeTrack.bind(this)} className="glyphicon glyphicon-heart"></span>
+                    <span onClick={this.likeTrack.bind(this)} className={likedClass}></span>
                 </td>
             </tr>
         );

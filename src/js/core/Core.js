@@ -1,26 +1,6 @@
 class Core {
     constructor(){}
 
-    get(url, callback){
-        var xmlhttp;
-
-        if(window.XMLHttpRequest){
-            // code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
-        }
-
-        xmlhttp.onreadystatechange = function() {
-            if(xmlhttp.readyState == XMLHttpRequest.DONE ){
-               if(xmlhttp.status == 200){
-                    callback(JSON.parse(xmlhttp.responseText));
-               }
-            }
-        };
-
-        xmlhttp.open('GET', url, true);
-        xmlhttp.send();
-    }
-
     post(url, data, callback){
         var query = [];
         for (var key in data) {
@@ -50,7 +30,19 @@ class Core {
         xmlhttp.send(data);
     }
 
+    get(url, callback){
+        this.request('GET', url, callback);
+    }
+
     put(url, callback){
+        this.request('PUT', url, callback);
+    }
+
+    delete(url, callback){
+        this.request('DELETE', url, callback);
+    }
+
+    request(type, url, callback){
         var xmlhttp;
 
         if(window.XMLHttpRequest){
@@ -60,13 +52,11 @@ class Core {
 
         xmlhttp.onreadystatechange = function() {
             if(xmlhttp.readyState == XMLHttpRequest.DONE){
-               if(xmlhttp.status == 201){
-                    callback(JSON.parse(xmlhttp.responseText));
-               }
+                callback(JSON.parse(xmlhttp.responseText));
             }
         };
 
-        xmlhttp.open('PUT', url, true);
+        xmlhttp.open(type, url, true);
         xmlhttp.send();
     }
 }    

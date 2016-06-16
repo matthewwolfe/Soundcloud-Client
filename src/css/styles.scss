@@ -213,6 +213,10 @@ p, span {
 
                 .track-options {
                     padding: 15px;
+
+                    .glyphicon.liked {
+                        color: $orange-color;
+                    }
                 }
             }
 

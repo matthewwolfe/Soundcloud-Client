@@ -12,9 +12,14 @@ class SoundcloudAPI extends Core {
 
         this.clientID = '173bf9df509c48cf53b70c83eaf5cbbd';
         this.clientSecret = '7ddbd6fcdc2d313abfb65758c751486e';
+        
         this.baseUrl = 'https://api.soundcloud.com';
         this.v2BaseUrl = 'https://api-v2.soundcloud.com';
 
+        this.initializeToken(callback);
+    }
+
+    initializeToken(callback){
         // first try to get the user token from storage
         this.userToken = window.storageManager.get('token');
 
@@ -43,12 +48,16 @@ class SoundcloudAPI extends Core {
         }
     }
 
+    // Private
     initializeApp(callback){
         this.getMe(function(response){
             window.user = response;
 
-            callback();
-        });
+            this.getLikedTrackIds('', [], function(likedTrackIds){
+                window.dataManager.set('likedTrackIds', likedTrackIds);
+                callback();
+            });
+        }.bind(this));
     }
 
     logout(){
@@ -56,6 +65,7 @@ class SoundcloudAPI extends Core {
         window.location.href = this.authenticationURL;
     }
 
+    // Private
     getAuthCode(callback){
         let url = window.location.href;
         let authCode = url.substring(url.indexOf('=') + 1);
@@ -70,6 +80,7 @@ class SoundcloudAPI extends Core {
         }
     }
 
+    // Private
     getToken(type, callback){
         if(type === 'authorization'){
             this.exchangeToken(function(response){
@@ -82,6 +93,7 @@ class SoundcloudAPI extends Core {
         }
     }
 
+    // Private
     exchangeToken(callback){
         let url = this.baseUrl + '/oauth2/token';
 
@@ -99,6 +111,7 @@ class SoundcloudAPI extends Core {
         });
     }
 
+    // Private
     refreshToken(callback){
         let url = this.baseUrl + '/oauth2/token';
 
@@ -115,6 +128,7 @@ class SoundcloudAPI extends Core {
         });
     }
 
+    // Private
     getMe(callback){
         let url = this.baseUrl + '/me?oauth_token=' + this.userToken.access_token;
 
@@ -124,22 +138,70 @@ class SoundcloudAPI extends Core {
     }
 
     getLikedTracks(callback){
+        let likedTracks = window.dataManager.get('likedTracks');
+
+        if(likedTracks){
+            callback(likedTracks);
+        }
+
         let url = this.baseUrl + '/users/' + window.user.id + '/favorites?limit=100&offset=0&client_id=' + this.clientID;
 
-        this.get(url, function(response){
-            callback(response);
+        this.get(url, function(likedTracks){
+            window.dataManager.set('likedTracks', likedTracks);
+            callback(likedTracks);
         });
     }
 
-    getTracks(callback){
-        let url = this.baseUrl + '/users/' + window.user.id + '/tracks?limit=100&offset=0&client_id=' + this.clientID;
+    getLikedTrackIds(url, array, callback){
+        let ids = window.dataManager.get('likedTrackIds');
+
+        if(ids){
+            callback(ids);
+        }
+
+        if(url.length === 0){
+            url = this.baseUrl + '/me/favorites/ids?oauth_token=' + this.userToken.access_token +
+                '&limit=5000&linked_partitioning=1&page_number=0&page_size=200';
+        }
 
         this.get(url, function(response){
-            callback(response);
+
+            if(response.collection.length > 0){
+                for(var i = 0; i < response.collection.length; i++){
+                    array.push(response.collection[i]);
+                }
+            }
+
+            if(response.hasOwnProperty('next_href')){
+                this.getLikedTrackIds(response.next_href, array, callback);
+            } else {
+                callback(array);
+            }
+        }.bind(this));
+    }
+
+    getMyTracks(callback){
+        let myTracks = window.dataManager.get('myTracks');
+
+        if(myTracks){
+            callback(myTracks);
+        }
+
+        let url = this.baseUrl + '/users/' + window.user.id + '/tracks?limit=100&offset=0&client_id=' + this.clientID;
+
+        this.get(url, function(myTracks){
+            window.dataManager.set('myTracks', myTracks);
+            callback(myTracks);
         })
     }
 
     getStream(callback){
+        let stream = window.dataManager.get('stream');
+
+        if(stream){
+            callback(stream);
+        }
+
         let url = this.baseUrl + '/me/activities?limit=100&oauth_token=' + this.userToken.access_token;
 
         this.get(url, function(response){
@@ -155,10 +217,13 @@ class SoundcloudAPI extends Core {
                 }
             });
 
+            window.dataManager.set('stream', tracks);
+
             callback(tracks);
         });
     }
 
+    // Private
     getPlaylists(callback){
         let url = this.v2BaseUrl + '/users/' + window.user.id + '/playlists/liked_and_owned?oauth_token=' + this.userToken.access_token;
 
@@ -168,6 +233,12 @@ class SoundcloudAPI extends Core {
     }
 
     getOwnedPlaylists(callback){
+        let ownedPlaylists = window.dataManager.get('ownedPlaylists');
+
+        if(ownedPlaylists){
+            callback(ownedPlaylists);
+        }
+
         this.getPlaylists(function(response){
             let playlists = response.collection;
             let ownedPlaylists = [];
@@ -183,6 +254,12 @@ class SoundcloudAPI extends Core {
     }
 
     getLikedPlaylists(callback){
+        let likedPlaylists = window.dataManager.get('likedPlaylists');
+
+        if(likedPlaylists){
+            callback(likedPlaylists);
+        }
+
         this.getPlaylists(function(response){
             let playlists = response.collection;
             let likedPlaylists = [];
@@ -222,9 +299,17 @@ class SoundcloudAPI extends Core {
         });
     }
 
-    likeTrack(id){
+    toggleLikedTrack(id){
         let url = this.baseUrl + '/users/' + window.user.id + '/favorites/' + id + '?oauth_token=' + this.userToken.access_token;
-    
-        this.put(url, function(response){});
+
+        if(window.dataManager.find('likedTrackIds', id)){
+            this.delete(url, function(response){});
+            window.dataManager.remove('likedTrackIds', id);
+
+        } else {
+            this.put(url, function(response){});
+            window.dataManager.push('likedTrackIds', id);
+        }
+
     }
 }
