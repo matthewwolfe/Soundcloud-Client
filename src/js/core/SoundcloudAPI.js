@@ -8,7 +8,9 @@ class SoundcloudAPI extends Core {
             this.logout();
         }.bind(this));
 
-        this.authenticationURL = 'https://api.soundcloud.com/connect?client_id=173bf9df509c48cf53b70c83eaf5cbbd&redirect_uri=my-app%3A%2F%2Fcallback.html&response_type=code';
+        this.authenticationURL = 'https://api.soundcloud.com/connect?'
+                               + 'client_id=173bf9df509c48cf53b70c83eaf5cbbd&'
+                               + 'redirect_uri=my-app%3A%2F%2Fcallback.html&response_type=code';
 
         this.clientID = '173bf9df509c48cf53b70c83eaf5cbbd';
         this.clientSecret = '7ddbd6fcdc2d313abfb65758c751486e';
@@ -74,7 +76,8 @@ class SoundcloudAPI extends Core {
         if(url.indexOf('=') !== -1){
             callback(authCode);
 
-        // if we don't yet have the authentication code, then the user needs to connect and authorize the application
+        // if we don't yet have the authentication code, 
+        // then the user needs to connect and authorize the application
         } else {
             window.location.href = this.authenticationURL;
         }
@@ -142,6 +145,7 @@ class SoundcloudAPI extends Core {
 
         if(likedTracks){
             callback(likedTracks);
+            return;
         }
 
         let url = this.baseUrl + '/users/' + window.user.id + '/favorites?limit=100&offset=0&client_id=' + this.clientID;
@@ -157,6 +161,7 @@ class SoundcloudAPI extends Core {
 
         if(ids){
             callback(ids);
+            return;
         }
 
         if(url.length === 0){
@@ -185,6 +190,7 @@ class SoundcloudAPI extends Core {
 
         if(myTracks){
             callback(myTracks);
+            return;
         }
 
         let url = this.baseUrl + '/users/' + window.user.id + '/tracks?limit=100&offset=0&client_id=' + this.clientID;
@@ -200,6 +206,7 @@ class SoundcloudAPI extends Core {
 
         if(stream){
             callback(stream);
+            return;
         }
 
         let url = this.baseUrl + '/me/activities?limit=100&oauth_token=' + this.userToken.access_token;
@@ -237,6 +244,7 @@ class SoundcloudAPI extends Core {
 
         if(ownedPlaylists){
             callback(ownedPlaylists);
+            return;
         }
 
         this.getPlaylists(function(response){
@@ -258,6 +266,7 @@ class SoundcloudAPI extends Core {
 
         if(likedPlaylists){
             callback(likedPlaylists);
+            return;
         }
 
         this.getPlaylists(function(response){
