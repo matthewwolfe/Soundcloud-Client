@@ -13,8 +13,6 @@ class Track extends React.Component {
 
         if(window.dataManager.find('likedTrackIds', this.props.data.id)){
             this.state.liked = true;
-        } else {
-            this.state.liked = false;
         }
 
         if(window.music.currentlyPlaying !== null){
@@ -35,9 +33,7 @@ class Track extends React.Component {
         this.musicStateSubscription = window.messenger.subscribe(
             'music-state-change',
             function(data){
-                if(data.playing &&
-                   data.id.toString() === this.props.data.id.toString()
-                ){
+                if(data.playing && data.id.toString() === this.props.data.id.toString()){
                     this.setState({playing: true});
                 } else {
                     this.setState({playing: false});
