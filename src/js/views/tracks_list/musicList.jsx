@@ -13,6 +13,8 @@ class MusicList extends React.Component {
             },
             selected: 'stream'
         };
+
+        this.trackId = 0;
     }
 
     componentDidMount(){
@@ -85,7 +87,8 @@ class MusicList extends React.Component {
         var tracks = [];
 
         for(var i = 0; i < this.state.data.tracks.length; i++){
-            tracks.push(<Track data={this.state.data.tracks[i]} key={i} />);
+            tracks.push(<Track section={this.state.selected} data={this.state.data.tracks[i]} key={this.trackId} />);
+            this.trackId++;
         }
 
         return (

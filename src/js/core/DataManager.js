@@ -47,12 +47,8 @@ class DataManager {
             return false;
         }
 
-        let data = this.get(key);
-
-        for(var i = 0; i < data.length; i++){
-            if(data[i] == value){
-                return true;
-            }
+        if(this.get(key).indexOf(value) !== -1){
+            return true;
         }
 
         return false;

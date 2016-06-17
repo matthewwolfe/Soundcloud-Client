@@ -5,8 +5,23 @@ class Track extends React.Component {
     constructor(props){
         super(props);
 
-        this.state = {data: {},
-                      playing: false};
+        this.state = {
+            data: {},
+            playing: false,
+            section: this.props.section
+        };
+
+        if(window.dataManager.find('likedTrackIds', this.props.data.id)){
+            this.state.liked = true;
+        } else {
+            this.state.liked = false;
+        }
+
+        if(window.music.currentlyPlaying !== null){
+            if(window.music.currentlyPlaying.track.id === this.props.data.id){
+                this.state.playing = true;
+            }
+        }
 
         this.musicPlayTrackSubscription = window.messenger.subscribe(
             'music-play-track',
@@ -64,8 +79,9 @@ class Track extends React.Component {
         );
     }
 
-    likeTrack(){
+    toggleLikedTrack(){
         window.soundCloudAPI.toggleLikedTrack(this.props.data.id);
+        this.setState({liked: !this.state.liked});
     }
 
     convertDuration(millis){
@@ -76,6 +92,10 @@ class Track extends React.Component {
     }
 
     render () {
+        if(!this.state.liked && this.state.section === 'likes'){
+            return null;
+        }
+
         let trackClass = 'track';
         let likedClass = 'glyphicon glyphicon-heart';
 
@@ -83,8 +103,7 @@ class Track extends React.Component {
             trackClass += ' playing';
         }
 
-        // checks if the user has liked the track
-        if(window.dataManager.find('likedTrackIds', this.props.data.id)){
+        if(this.state.liked){
             likedClass += ' liked';
         }
 
@@ -100,7 +119,7 @@ class Track extends React.Component {
                     <p>{this.convertDuration(this.props.data.duration)}</p>
                 </td>
                 <td className="track-options">
-                    <span onClick={this.likeTrack.bind(this)} className={likedClass}></span>
+                    <span onClick={this.toggleLikedTrack.bind(this)} className={likedClass}></span>
                 </td>
             </tr>
         );
