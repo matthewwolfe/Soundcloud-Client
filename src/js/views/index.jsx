@@ -5,6 +5,7 @@ import User from './user.jsx';
 import SideMenu from './sideMenu.jsx';
 import SearchBar from './searchBar.jsx';
 import ListMusicList from './tracks_list/listMusicList.jsx';
+import TiledMusicList from './tracks_tiled/tiledMusicList.jsx';
 import MusicPlayer from './musicPlayer.jsx';
 import TrackController from './trackController.jsx';
 
@@ -22,6 +23,8 @@ class App extends React.Component {
                 </div>
 
                 <ListMusicList />
+                <TiledMusicList />
+
                 <MusicPlayer />
             </div>
         );

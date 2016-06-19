@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Track from './track.jsx';
-
 class MusicList extends React.Component {
 
     constructor(props){
@@ -11,24 +9,35 @@ class MusicList extends React.Component {
             data: {
                 tracks: []
             },
-            selected: 'stream'
+            selected: 'stream',
+            isTiledView: false
         };
 
         this.trackId = 0;
+
+        this.toggleViewSubscription = window.messenger.subscribe('music-list-toggle-view', function(data){
+            this.setState({isTiledView: data.isTiledView});
+        }.bind(this));
+
+        // set up the listener
+        this.sideMenuClickSubscription = window.messenger.subscribe('side-menu-click', function(data){
+            this.setActive(data);
+        }.bind(this));
+
+        this.searchResultsSubscription = window.messenger.subscribe('search-results', function(data){
+            this.setState({data: data});
+        }.bind(this));
     }
 
     componentDidMount(){
         // initialize the selected view
         this.setActive({selected: 'stream'});
+    }
 
-        // set up the listener
-        window.messenger.subscribe('side-menu-click', function(data){
-            this.setActive(data);
-        }.bind(this));
-
-        window.messenger.subscribe('search-results', function(data){
-            this.setState({data: data});
-        }.bind(this));
+    componentWillUnmount(){
+        this.toggleViewSubscription.remove();
+        this.sideMenuClickSubscription.remove();
+        this.searchResultsSubscription.remove();
     }
 
     componentWillUpdate(nextProps, nextState){
@@ -84,22 +93,8 @@ class MusicList extends React.Component {
     }
 
     render () {
-        var tracks = [];
-
-        for(var i = 0; i < this.state.data.tracks.length; i++){
-            tracks.push(<Track section={this.state.selected} data={this.state.data.tracks[i]} key={this.trackId} />);
-            this.trackId++;
-        }
-
         return (
             <div id="music-list">
-                <h2 className="section-title">{this.ucFirst(this.state.selected)}</h2>
-
-                <table>
-                    <tbody>
-                        {tracks}
-                    </tbody>
-                </table>
             </div>
         );
     }

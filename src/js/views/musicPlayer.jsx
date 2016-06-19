@@ -10,7 +10,8 @@ class MusicPlayer extends React.Component {
         this.state = {
             data: {},
             isRepeating: false,
-            isShuffle: false
+            isShuffle: false,
+            isTiledView: false
         };
 
         window.messenger.subscribe('music-state-change', function(data){
@@ -40,13 +41,21 @@ class MusicPlayer extends React.Component {
         this.setState({isShuffle: window.music.isShuffle});
     }
 
+    toggleTiledView(e){
+        let tiledView = !this.state.isTiledView;
+
+        this.setState({isTiledView: tiledView});
+        window.messenger.publish('music-list-toggle-view', {isTiledView: tiledView});
+    }
+
     render () {
         var playClass = 'glyphicon glyphicon-play';
         var pauseClass = 'glyphicon glyphicon-pause';
         var repeatClass = 'glyphicon glyphicon-retweet pull-right';
         var shuffleClass = 'glyphicon glyphicon-random pull-right';
+        var tiledClass = 'glyphicon glyphicon-th pull-right';
 
-        var trackName = "";
+        var trackName = '';
 
         if(this.state.playing){
             playClass += ' hide';
@@ -62,15 +71,29 @@ class MusicPlayer extends React.Component {
             shuffleClass += ' active';
         }
 
+        if(this.state.isTiledView){
+            tiledClass += ' active';
+        }
+
         if(window.music.currentlyPlaying !== null){
             trackName = window.music.currentlyPlaying.title;
         }
 
         return (
             <div id="music-player">
-                <span id="play-button" onClick={this.play.bind(this)} className={playClass}></span>
-                <span id="pause-button" onClick={this.pause.bind(this)} className={pauseClass}></span>
-                <span id="volume-control" className="glyphicon glyphicon-volume-up"></span>
+                <span id="play-button"
+                      onClick={this.play.bind(this)}
+                      className={playClass}>
+                </span>
+
+                <span id="pause-button"
+                      onClick={this.pause.bind(this)}
+                      className={pauseClass}>
+                </span>
+
+                <span id="volume-control"
+                      className="glyphicon glyphicon-volume-up">
+                </span>
 
                 <MusicPlayerProgressBar />
 
@@ -84,7 +107,10 @@ class MusicPlayer extends React.Component {
                       onClick={this.toggleRepeat.bind(this)}>
                 </span>
 
-                <span id="tile-view-button" className="glyphicon glyphicon-th pull-right"></span>
+                <span id="tile-view-button"
+                      className={tiledClass}
+                      onClick={this.toggleTiledView.bind(this)}>
+                </span>
             </div>
         );
     }
