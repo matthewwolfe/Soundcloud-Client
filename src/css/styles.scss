@@ -170,6 +170,7 @@ p, span {
         overflow-y: scroll;
         border-left: 1px solid $secondary-color;
 
+        /* List Music List */
         .section-title {
             margin-left: 15px;
         }
@@ -223,6 +224,33 @@ p, span {
             .track:hover,
             .track.playing {
                 background-color: #282828;
+            }
+        }
+
+        /* Tiled Music List */
+        .track-container {
+            display: inline-block;
+            width: 200px;
+            height: 250px;
+            margin-left: 15px;
+            margin-right: 15px;
+            margin-bottom: 15px;
+
+            .track-image img {
+                width: 200px;
+                height: 200px;
+            }
+
+            .track-image img:hover {
+                cursor: pointer;
+            }
+
+            .track-title {
+                margin-top: 5px;
+                min-height: 40px;
+                max-height: 40px;
+                text-overflow: ellipsis;
+                overflow: hidden;  
             }
         }
     }
