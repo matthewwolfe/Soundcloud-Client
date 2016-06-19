@@ -4,7 +4,7 @@ import {render} from 'react-dom';
 import User from './user.jsx';
 import SideMenu from './sideMenu.jsx';
 import SearchBar from './searchBar.jsx';
-import MusicList from './tracks_list/musicList.jsx';
+import ListMusicList from './tracks_list/listMusicList.jsx';
 import MusicPlayer from './musicPlayer.jsx';
 import TrackController from './trackController.jsx';
 
@@ -21,7 +21,7 @@ class App extends React.Component {
                     <TrackController />
                 </div>
 
-                <MusicList />
+                <ListMusicList />
                 <MusicPlayer />
             </div>
         );
