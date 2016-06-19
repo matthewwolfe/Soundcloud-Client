@@ -10,9 +10,7 @@ class TiledTrack extends Track {
 
     // Override
     render(){
-        return (
-            
-        );        
+        return null;      
     }
 }
 
