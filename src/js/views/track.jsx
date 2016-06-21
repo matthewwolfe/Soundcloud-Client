@@ -21,15 +21,6 @@ class Track extends React.Component {
             }
         }
 
-        this.musicPlayTrackSubscription = window.messenger.subscribe(
-            'music-play-track',
-            function(data){
-                if(data.id.toString() === this.props.data.id.toString()){
-                    this.playTrack(this.props);
-                }
-            }.bind(this)
-        );
-
         this.musicStateSubscription = window.messenger.subscribe(
             'music-state-change',
             function(data){
@@ -44,34 +35,12 @@ class Track extends React.Component {
 
     componentWillUnmount(){
         this.musicStateSubscription.remove();
-        this.musicPlayTrackSubscription.remove();
     }
 
     playTrack(props){
 
         window.music.play(
-            props.data,
-
-            // on start
-            function(){
-                window.messenger.publish('music-state-change', {playing: true, id: props.data.id});
-            },
-
-            // on finished
-            function(){
-                var trackElement = document.getElementById(props.data.id),
-                    nextTrackElement = trackElement.nextSibling;
-
-                if(nextTrackElement === null){
-                    nextTrackElement = trackElement.parentElement.firstChild;
-                }
-
-                if(nextTrackElement.id === trackElement.id){
-                    window.messenger.publish('music-state-change', {playing: false, id: props.data.id});
-                } else {
-                    window.messenger.publish('music-play-track', {id: nextTrackElement.id});
-                }
-            }
+            props.data
         );
     }
 

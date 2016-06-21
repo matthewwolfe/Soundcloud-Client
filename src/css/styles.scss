@@ -124,10 +124,12 @@ p, span {
 
             #track-title,
             #track-creator {
-                width: 170px;
+                width: 220px;
                 height: 20px;
                 font-size: 12px;
                 white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
     }

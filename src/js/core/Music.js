@@ -46,20 +46,49 @@ class Music {
         this.currentSoundObject.play({
             onplay: function(){
                 self.currentlyPlaying.isPlaying = true;
-                self.currentlyPlaying.onStartPlaying();
+
+                if(onStartPlaying != undefined){
+                    self.currentlyPlaying.onStartPlaying();
+                }
+
+                window.messenger.publish('music-state-change', {playing: true, id: self.currentlyPlaying.track.id});
                 window.messenger.publish('music-position-update', {position: this.position, duration: this.duration});
             },
+
             whileplaying: function(){
                 window.messenger.publish('music-position-update', {position: this.position, duration: this.duration});
             },
+            
             onfinish: function(){
                 if(self.isRepeating){
                     self.play(track, onStartPlaying, onFinished);
                 } else {
-                    self.currentlyPlaying.onFinished();
+                    if(onFinished !== undefined){
+                        self.currentlyPlaying.onFinished();
+                    }
+
+                    self.playNext(onStartPlaying, onFinished);
                 }
             }
         });
+    }
+
+    playNext(onStartPlaying, onFinished){
+        let nextTrack = this.findNextTrack(this.currentlyPlaying.track.id);
+
+        this.play(nextTrack, onStartPlaying, onFinished);
+    }
+
+    findNextTrack(id){
+        for(var i = 0; i < this.tracks.length; i++){
+            if(this.tracks[i].id === id){
+                if(i === this.tracks.length - 1){
+                    return this.tracks[0];
+                } else {
+                    return this.tracks[i+1];
+                }
+            }
+        }
     }
 
     pause(){
