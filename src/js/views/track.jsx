@@ -56,6 +56,19 @@ class Track extends React.Component {
         return (hours > 0 ? hours + ":" : '') + (mins < 10 && hours > 0 ? '0' : '') + mins + ":" + (secs < 10 ? '0' : '') + secs;
     }
 
+    contextMenu(e){
+        window.messenger.publish('context-menu-toggle',
+            {
+                type: 'track',
+                data: this.props.data,
+                coordinates: {
+                    x: e.pageX + 5,
+                    y: e.pageY
+                }
+            }
+        );
+    }
+
     render () {
         return null;
     }

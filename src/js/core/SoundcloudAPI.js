@@ -8,6 +8,8 @@ class SoundcloudAPI extends Core {
             this.logout();
         }.bind(this));
 
+        // the connection link with the required redirect request
+        // as specified by the soundcloud api
         this.authenticationURL = 'https://api.soundcloud.com/connect?'
                                + 'client_id=173bf9df509c48cf53b70c83eaf5cbbd&'
                                + 'redirect_uri=my-app%3A%2F%2Fcallback.html&response_type=code';

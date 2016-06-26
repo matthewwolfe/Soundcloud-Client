@@ -363,4 +363,13 @@ p, span {
             }
         }
     }
+
+    #context-menu {
+        width: 160px;
+        min-height: 240px;
+        max-height: 360px;
+        position: absolute;
+        z-index: 1000;
+        background-color: #fff;
+    }
 }

@@ -26,7 +26,11 @@ class ListTrack extends Track {
         }
 
         return (
-            <tr className={trackClass} id={this.props.data.id} onDoubleClick={this.playTrack.bind(this, this.props)}>
+            <tr className={trackClass} 
+                id={this.props.data.id}
+                onDoubleClick={this.playTrack.bind(this, this.props)}
+                onContextMenu={this.contextMenu.bind(this)}>
+
                 <td className="track-title">
                     <p>{this.props.data.title}</p>
                 </td>
