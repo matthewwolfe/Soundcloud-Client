@@ -1,6 +1,6 @@
 import React from 'react';
 
-import MenuItem from './menuItem.jsx';
+import TrackMenu from './trackMenu.jsx';
 
 class ContextMenu extends React.Component {
 
@@ -13,9 +13,12 @@ class ContextMenu extends React.Component {
             isHidden: true
         };
 
-        window.messenger.subscribe('context-menu-toggle', function(data){
-            this.toggleContextMenu(data.type, data.data, data.coordinates);
-        }.bind(this));
+        window.messenger.subscribe('context-menu-toggle',
+            function(data){
+                this.initializeMenu(data.type, data.data, data.coordinates);
+
+            }.bind(this)
+        );
     }
 
     componentDidMount(){
@@ -40,24 +43,37 @@ class ContextMenu extends React.Component {
         this.mouseDownOnMenu = false;
     }
 
-    toggleContextMenu(type, data, coordinates){
+    initializeMenu(type, data, coordinates){
         this.setState({
-            isHidden: !this.state.isHidden,
+            isHidden: false,
             type: type,
             data: data,
             coordinates: coordinates
         });
     }
 
+    getMenuOfType(){
+        let menu;
+
+        if(this.state.type === 'track'){
+            menu = <TrackMenu track={this.state.data} />;
+        }
+
+        return menu;
+    }
+
     render (){
         let styles = {};
-        let menuItems = [];
 
         if(!this.state.isHidden){
             styles = {top: this.state.coordinates.y, left: this.state.coordinates.x};
+
+
         } else {
             styles = {display: 'none'};
         }
+
+        let menu = this.getMenuOfType();
 
         return (
             <div id="context-menu"
@@ -65,9 +81,7 @@ class ContextMenu extends React.Component {
                  onMouseDown={this.onMouseDown.bind(this)}
                  onMouseUp={this.onMouseUp.bind(this)}>
 
-                <ul>
-                    {menuItems}
-                </ul>
+                 {menu}
             </div>
         );
     }

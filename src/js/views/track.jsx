@@ -62,7 +62,7 @@ class Track extends React.Component {
                 type: 'track',
                 data: this.props.data,
                 coordinates: {
-                    x: e.pageX + 5,
+                    x: e.pageX,
                     y: e.pageY
                 }
             }
