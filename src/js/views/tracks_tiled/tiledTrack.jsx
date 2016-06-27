@@ -20,7 +20,9 @@ class TiledTrack extends Track {
     // Override
     render(){
         return (
-            <div className="track-container" id={this.props.data.id}>
+            <div className="track-container"
+                 id={this.props.data.id}
+                 onContextMenu={this.contextMenu.bind(this)}>
 
                 <div className="track-image">
                     <img src={this.getArtworkUrl()} />

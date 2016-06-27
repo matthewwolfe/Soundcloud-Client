@@ -19,6 +19,13 @@ class ContextMenu extends React.Component {
 
             }.bind(this)
         );
+
+        window.messenger.subscribe('context-menu-close',
+            function(data){
+                this.mouseDownOnMenu = false;
+                this.contextMenuClick();
+            }.bind(this)
+        );
     }
 
     componentDidMount(){
