@@ -59,8 +59,15 @@ class SoundcloudAPI extends Core {
 
             this.getLikedTrackIds('', [], function(likedTrackIds){
                 window.dataManager.set('likedTrackIds', likedTrackIds);
-                callback();
-            });
+
+                this.getTrackRepostIds('', [], function(trackRepostIds){
+                    window.dataManager.set('trackRepostIds', trackRepostIds);
+
+                    callback();
+                });
+
+            }.bind(this));
+
         }.bind(this));
     }
 
@@ -181,6 +188,35 @@ class SoundcloudAPI extends Core {
 
             if(response.hasOwnProperty('next_href')){
                 this.getLikedTrackIds(response.next_href, array, callback);
+            } else {
+                callback(array);
+            }
+        }.bind(this));
+    }
+
+    getTrackRepostIds(url, array, callback){
+        let ids = window.dataManager.get('trackRepostIds');
+
+        if(ids){
+            callback(ids);
+            return;
+        }
+
+        if(url.length === 0){
+            url = this.baseUrl + '/e1/me/track_reposts/ids?oauth_token=' + this.userToken.access_token +
+                '&limit=5000&linked_partitioning=1&page_number=0&page_size=200';
+        }
+
+        this.get(url, function(response){
+
+            if(response.collection.length > 0){
+                for(var i = 0; i < response.collection.length; i++){
+                    array.push(response.collection[i]);
+                }
+            }
+
+            if(response.hasOwnProperty('next_href')){
+                this.getTrackRepostIds(response.next_href, array, callback);
             } else {
                 callback(array);
             }
@@ -322,5 +358,18 @@ class SoundcloudAPI extends Core {
             window.dataManager.push('likedTrackIds', id);
         }
 
+    }
+
+    toggleRepostTrack(id){
+        let url = this.baseUrl + '/e1/me/track_reposts/' + id + '?oauth_token=' + this.userToken.access_token;
+
+        if(window.dataManager.find('trackRepostIds', id)){
+            this.delete(url, function(response){});
+            window.dataManager.remove('trackRepostIds', id);
+        
+        } else {
+            this.put(url, function(response){});
+            window.dataManager.push('trackRepostIds', id);
+        }
     }
 }

@@ -371,5 +371,26 @@ p, span {
         position: absolute;
         z-index: 1000;
         background-color: #fff;
+
+        ul {
+            list-style-type: none;
+            padding-left: 0px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+
+            li {
+                text-decoration: none;
+                color:  #141414;
+                padding-top: 4px;
+                padding-bottom: 4px;
+                padding-left: 16px;
+                cursor: pointer;
+            }
+
+            li:hover {
+                background-color: $orange-color;
+                color: #fff;
+            }
+        }
     }
 }
