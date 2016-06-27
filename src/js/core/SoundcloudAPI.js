@@ -360,7 +360,7 @@ class SoundcloudAPI extends Core {
 
     }
 
-    toggleRepostTrack(id){
+    toggleRepostTrack(id, callback){
         let url = this.baseUrl + '/e1/me/track_reposts/' + id + '?oauth_token=' + this.userToken.access_token;
 
         if(window.dataManager.find('trackRepostIds', id)){
