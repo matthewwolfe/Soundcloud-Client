@@ -14,7 +14,10 @@ class Track extends React.Component {
         if(window.dataManager.find('likedTrackIds', this.props.data.id)){
             this.state.liked = true;
         }
+    }
 
+
+    componentWillMount(){
         if(window.music.currentlyPlaying !== null){
             if(window.music.currentlyPlaying.track.id === this.props.data.id){
                 this.state.playing = true;
@@ -31,10 +34,20 @@ class Track extends React.Component {
                 }
             }.bind(this)
         );
+
+        this.trackLikeSubscription = window.messenger.subscribe(
+            'track-like',
+            function(data){
+                if(data.id === this.props.data.id){
+                    this.setState({liked: data.liked});
+                }
+            }.bind(this)
+        );
     }
 
     componentWillUnmount(){
         this.musicStateSubscription.remove();
+        this.trackLikeSubscription.remove();
     }
 
     playTrack(props){
@@ -46,7 +59,10 @@ class Track extends React.Component {
 
     toggleLikedTrack(){
         window.soundCloudAPI.toggleLikedTrack(this.props.data.id);
-        this.setState({liked: !this.state.liked});
+        window.messenger.publish('track-like', {
+            id: this.props.data.id,
+            liked: !this.state.liked
+        });
     }
 
     convertDuration(millis){

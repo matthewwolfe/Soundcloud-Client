@@ -73,6 +73,10 @@ class MusicList extends React.Component {
         );
     }
 
+    getTop50(){
+        console.log('get top 50');
+    }
+
     ucFirst(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
@@ -80,7 +84,9 @@ class MusicList extends React.Component {
     setActive(data){
         this.setState({selected: data.selected});
 
-        if(data.selected === 'stream'){
+        if(data.selected === 'top 50'){
+            this.getTop50();
+        } else if(data.selected === 'stream'){
             this.getStream();
         } else if(data.selected === 'likes'){
             this.getLikes();

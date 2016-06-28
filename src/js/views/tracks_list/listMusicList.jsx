@@ -3,6 +3,8 @@ import React from 'react';
 import MusicList from '../musicList.jsx';
 import ListTrack from './listTrack.jsx';
 
+import TopSection from '../top_50_section/topSection.jsx';
+
 class ListMusicList extends MusicList {
 
     constructor(props){
@@ -15,6 +17,12 @@ class ListMusicList extends MusicList {
             return null;
         }
 
+        let topSection;
+
+        if(this.state.selected === 'top 50'){
+            topSection = <TopSection />
+        }
+
         var tracks = [];
 
         for(var i = 0; i < this.state.data.tracks.length; i++){
@@ -23,8 +31,11 @@ class ListMusicList extends MusicList {
         }
 
         return (
+
             <div id="music-list">
                 <h2 className="section-title">{this.ucFirst(this.state.selected)}</h2>
+
+                {topSection}
 
                 <table>
                     <tbody>

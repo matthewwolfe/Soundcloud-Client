@@ -255,6 +255,31 @@ p, span {
                 overflow: hidden;  
             }
         }
+
+        #top-50-section {
+            margin-left: 15px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+
+            select {
+                padding: 5px;
+                color: $orange-color;
+                background-color: #282828;
+                border-radius: 3px;
+                border: 1px solid $orange-color;
+                margin-right: 15px;
+                cursor: pointer;
+
+                option {
+                    background-color: #282828;
+                }
+            }
+
+            select:hover {
+                color: #fff;
+                background-color: $orange-color;
+            }
+        }
     }
 
     #music-player {
