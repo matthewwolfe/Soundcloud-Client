@@ -4,17 +4,43 @@ class TopSection extends React.Component {
 
     constructor(props){
         super(props);
+
+        this.state = {
+            kind: 'top',
+            genre: 'all-music'
+        };
+    }
+
+    kindChange(e){
+        this.setState({kind: e.target.value}, function(){
+            this.pushChanges();
+        }.bind(this));
+    }
+
+    genreChange(e){
+         this.setState({genre: e.target.value}, function(){
+            this.pushChanges();
+         }.bind(this));
+    }
+
+    pushChanges(){
+        window.messenger.publish('top-section-change',
+            {
+                kind: this.state.kind,
+                genre: this.state.genre
+            }
+        );
     }
 
     render(){
         return (
             <div id="top-50-section">
-                <select>
-                    <option value="top50">Top 50</option>
-                    <option value="new">New and Hot</option>
+                <select onChange={this.kindChange.bind(this)}>
+                    <option value="top">Top 50</option>
+                    <option value="trending">Trending</option>
                 </select>
 
-                <select>
+                <select onChange={this.genreChange.bind(this)}>
                     <option value="all-music">All music genres</option>
                     <option value="alternativerock">Alternative Rock</option>
                     <option value="ambient">Ambient</option>

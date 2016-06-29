@@ -372,4 +372,24 @@ class SoundcloudAPI extends Core {
             window.dataManager.push('trackRepostIds', id);
         }
     }
+
+    getTop50(kind, genre, callback){
+        genre = 'soundcloud:genres:' + genre;
+
+        let url = this.v2BaseUrl + '/charts?' +
+                    'kind=' + kind +
+                    '&genre=' + genre +
+                    '&client_id=' + this.clientID +
+                    '&limit=200&offset=0&linked_partitioning=1';
+
+        this.get(url, function(response){
+            let tracks = [];
+
+            response.collection.forEach(function(element){
+                tracks.push(element.track);
+            });
+
+            callback(tracks);
+        });
+    }
 }

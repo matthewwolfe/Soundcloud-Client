@@ -14,6 +14,11 @@ class MusicList extends React.Component {
         };
 
         this.trackId = 0;
+    }
+
+    componentDidMount(){
+        // initialize the selected view
+        this.setActive({selected: 'stream'});
 
         this.toggleViewSubscription = window.messenger.subscribe('music-list-toggle-view', function(data){
             this.setState({isTiledView: data.isTiledView});
@@ -27,17 +32,17 @@ class MusicList extends React.Component {
         this.searchResultsSubscription = window.messenger.subscribe('search-results', function(data){
             this.setState({data: data});
         }.bind(this));
-    }
 
-    componentDidMount(){
-        // initialize the selected view
-        this.setActive({selected: 'stream'});
+        this.topSectionSubscription = window.messenger.subscribe('top-section-change', function(data){
+            this.getTop50(data.kind, data.genre);
+        }.bind(this));
     }
 
     componentWillUnmount(){
         this.toggleViewSubscription.remove();
         this.sideMenuClickSubscription.remove();
         this.searchResultsSubscription.remove();
+        this.topSectionSubscription.remove();
     }
 
     componentWillUpdate(nextProps, nextState){
@@ -73,8 +78,17 @@ class MusicList extends React.Component {
         );
     }
 
-    getTop50(){
-        console.log('get top 50');
+    getTop50(kind, genre){
+        if(kind === undefined){
+            kind = 'top';
+        }
+        if(genre === undefined){
+            genre = 'all-music';
+        }
+
+        window.soundCloudAPI.getTop50(kind, genre, function(tracks){
+            this.setState({data: {tracks: tracks}});
+        }.bind(this));
     }
 
     ucFirst(string) {
