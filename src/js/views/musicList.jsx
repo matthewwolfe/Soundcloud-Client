@@ -46,8 +46,6 @@ class MusicList extends React.Component {
     }
 
     componentWillUpdate(nextProps, nextState){
-        console.log(nextState.data.tracks);
-
         if(this.state.data.tracks !== nextState.data.tracks){
             window.music.setTracks(nextState.data.tracks);
         }

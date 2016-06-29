@@ -161,12 +161,72 @@ p, span {
             color: #282828;
         }
 
-        .logout {
-            cursor: pointer;
+        .notifications-menu-container {
             float: right;
-            display: inline-block;
+            position: relative;
+
+            #notifications-button {
+                float: right;
+                margin-top: 9px;
+                font-size: 18px;
+                margin-right: 20px;
+            }
+
+            #notifications-menu {
+                float: left;
+                position: absolute;
+                top: 40px;
+                right: 15px; 
+                width: 240px;
+                min-height: 240px;
+                background-color: #fff; 
+
+                .notification-item {
+                    color: $secondary-color;
+                    padding-top: 3px;
+                    padding-bottom: 3px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    border-bottom: 1px solid $primary-color;
+                }         
+            }
+        }
+
+        #settings-button {
+            float: right;
             margin-top: 9px;
-            margin-right: 15px;
+            font-size: 18px;
+            margin-right: 20px;
+        }
+
+        #settings-menu {
+            float: right;
+            width: 140px;
+            height: 240px;
+            position: absolute;
+            right: 10px;
+            top: 40px;
+            background-color: #fff;
+
+            ul {
+                list-style-type: none;
+                padding: 0px;
+                margin: 0px;
+            
+                li {
+                    padding-top: 3px;
+                    padding-bottom: 3px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    color: $secondary-color;
+                }
+
+                li:hover {
+                    cursor: pointer;
+                    color: #fff;
+                    background-color: $orange-color;
+                }
+            }
         }
     }
 

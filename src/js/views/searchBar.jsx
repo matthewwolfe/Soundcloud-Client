@@ -1,5 +1,8 @@
 import React from 'react';
 
+import NotificationsMenu from './notifications/notifications_menu/notificationsMenu.jsx';
+import SettingsMenu from './settings_menu/settingsMenu.jsx';
+
 class SearchBar extends React.Component {
 
     constructor(props){
@@ -28,10 +31,6 @@ class SearchBar extends React.Component {
         }
     }
 
-    logout(){
-        window.messenger.publish('logout', {});
-    }
-
     render(){
         return (
             <div id="search-bar">
@@ -41,7 +40,8 @@ class SearchBar extends React.Component {
                        value={this.state.value}
                        onChange={this.handleChange.bind(this)} />
 
-                <p className="logout" onClick={this.logout}>Logout</p>
+                <SettingsMenu />
+                <NotificationsMenu />
             </div>
         );
     }

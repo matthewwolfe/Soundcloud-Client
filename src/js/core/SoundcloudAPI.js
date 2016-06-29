@@ -392,4 +392,13 @@ class SoundcloudAPI extends Core {
             callback(tracks);
         });
     }
+
+    getActivities(callback){
+        let url = this.v2BaseUrl + '/activities?limit=5&offset=0' +
+                    '&linked_partitioning=1&oauth_token=' + this.userToken.access_token;
+
+        this.get(url, function(response){
+            callback(response.collection);
+        });
+    }
 }
