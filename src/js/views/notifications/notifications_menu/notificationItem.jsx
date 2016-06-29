@@ -7,12 +7,12 @@ class NotificationItem extends React.Component {
     }
 
     getDescription(){
-        let description = this.props.data.user.username;
+        let description;
 
         if(this.props.data.type === 'track-like'){
-            description += ' liked ' + this.props.data.track.title;
+            description = 'Liked ' + this.props.data.track.title;
         } else if(this.props.data.type === 'affiliation'){
-            description += ' is following you';
+            description = 'Is following you';
         }
 
         return description;
@@ -23,7 +23,22 @@ class NotificationItem extends React.Component {
 
         return (
             <div className="notification-item">
-                {description}
+
+                <div className="notification-image">
+                    <img src={this.props.data.user.avatar_url} />
+                </div>
+
+                <div className="text-container">
+
+                    <div className="notification-username">
+                        {this.props.data.user.username}
+                    </div>
+
+                    <div className="notification-description">
+                        {description}
+                    </div>
+
+                </div>
             </div>
         );
     }
