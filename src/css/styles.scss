@@ -35,7 +35,7 @@ body, html, div, h1, h2, h3, h4, p {
     margin: 0;
     padding: 0;
     color: $primary-color;
-    font-family: verdana, arial;
+    font-family: 'Roboto', sans-serif;
 }
 
 p, span {
@@ -83,9 +83,11 @@ p, span {
 
                 li {
                     padding-left: 20px;
-                    padding-top: 2px;
-                    padding-bottom: 2px;
+                    padding-top: 6px;
+                    padding-bottom: 6px;
                     text-decoration: none;
+                    font-size: 14px;
+                    font-weight: bold;
                 }
 
                 li:hover {
@@ -95,7 +97,12 @@ p, span {
                 li.active {
                     padding-left: 17px;
                     color: #fff;
-                    border-left: 3px solid $primary-color;
+                    border-left: 3px solid $orange-color;
+                    background-color: $secondary-color;
+                }
+
+                li span.glyphicon {
+                    margin-right: 15px;
                 }
 
                 ul.playlists-menu {
@@ -237,6 +244,25 @@ p, span {
             margin-left: 15px;
             margin-right: 15px;
             margin-bottom: 15px;
+
+            .track-image {
+                position: relative;
+            }
+
+            .track-image .track-genre-tag {
+                padding-top: 2px;
+                padding-bottom: 3px;
+                padding-left: 6px;
+                padding-right: 6px;
+                font-weight: 300;
+                float: right;
+                position: absolute;
+                top: 10px;
+                right: 0px;
+                background-color: #000;
+                color: #fff;
+                opacity: .9;
+            }
 
             .track-image img {
                 width: 200px;

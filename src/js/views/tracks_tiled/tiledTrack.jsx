@@ -25,6 +25,10 @@ class TiledTrack extends Track {
                  onContextMenu={this.contextMenu.bind(this)}>
 
                 <div className="track-image">
+                    <div className="track-genre-tag">
+                        {this.props.data.genre}
+                    </div>
+
                     <img src={this.getArtworkUrl()} />
                 </div>
 

@@ -20,7 +20,12 @@ var config = {
     	]
     },
     plugins: [
-        new webpack.IgnorePlugin(new RegExp("^(fs|ipc)$"))
+        new webpack.IgnorePlugin(new RegExp("^(fs|ipc)$")),
+        new webpack.DefinePlugin({
+          "process.env": { 
+             NODE_ENV: JSON.stringify("production") 
+           }
+        })
     ]
 };
 
