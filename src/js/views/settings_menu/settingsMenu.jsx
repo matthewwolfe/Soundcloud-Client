@@ -14,7 +14,13 @@ class SettingsMenu extends React.Component {
         this.setState({hidden: !this.state.hidden});
     }
 
+    clearCache(){
+        window.dataManager.clear();
+        this.toggleHidden();
+    }
+
     logout(){
+        this.toggleHidden();
         window.messenger.publish('logout', {});
     }
 
@@ -26,10 +32,11 @@ class SettingsMenu extends React.Component {
                       onClick={this.toggleHidden.bind(this)}>
                 </span>
 
-                <div id="settings-menu" className={this.state.hidden ? 'hide' : ''}>
+                <div id="settings-menu" 
+                     className={this.state.hidden ? 'hide' : ''}>
                     <ul>
-                        <li onClick={this.clearCache}>Clear stored data</li>
-                        <li onClick={this.logout}>Logout</li>
+                        <li onClick={this.clearCache.bind(this)}>Clear stored data</li>
+                        <li onClick={this.logout.bind(this)}>Logout</li>
                     </ul>
                 </div>
             </span>
