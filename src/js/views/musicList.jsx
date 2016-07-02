@@ -51,6 +51,14 @@ class MusicList extends React.Component {
         }
     }
 
+    handleScroll(){
+        let div = document.getElementById('music-list');
+
+        if ((window.innerHeight + div.scrollTop) >= div.scrollHeight) {
+            // you're at the bottom of the page
+        }
+    }
+
     getStream(){
         window.soundCloudAPI.getStream(function(tracks){
             this.setState({data: {tracks: tracks}});
