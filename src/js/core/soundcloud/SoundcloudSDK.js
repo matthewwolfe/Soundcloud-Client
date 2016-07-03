@@ -5,6 +5,7 @@ class SoundcloudSDK {
         this.baseUrlV2 = 'https://api-v2.soundcloud.com';
 
         this.request = new Request();
+
         this.oauthToken = new OAuthToken(function(){
             this.initializeApp(callback);
         }.bind(this));
@@ -33,7 +34,9 @@ class SoundcloudSDK {
 
     // Private
     getMe(callback){
-        let url = '/me?oauth_token=' + this.oauthToken.get('access_token');
+        let url = this.build_url('me', {}, {
+            oauth_token: this.oauthToken.get('access_token')
+        });
 
         this.request.get(this.baseUrlV2 + url, function(response){
             callback(response);
@@ -47,6 +50,10 @@ class SoundcloudSDK {
             callback(likedTracks);
             return;
         }
+
+        let url = this.build_url('liked_tracks', {user_id: window.user.id}, {
+            oauth_token: this.oauthToken.get('access_token'),
+        });
 
         let url = `/users/${window.user.id}/favorites?limit=100&offset=0&client_id=${config.client_id}`;
 
@@ -65,7 +72,13 @@ class SoundcloudSDK {
         }
 
         if(url.length === 0){
-            url = `${this.baseUrl}/me/favorites/ids?oauth_token=${this.oauthToken.get('access_token')}&limit=5000&linked_partitioning=1&page_number=0&page_size=200`;
+            url = this.baseUrl + this.build_url('liked_track_ids', {}, {
+                oauth_token: this.oauthToken.get('access_token'),
+                limit: 500,
+                linked_partitioning: 1,
+                page_number: 0,
+                page_size: 200
+            });
         }
 
         this.request.get(url, function(response){
@@ -317,5 +330,39 @@ class SoundcloudSDK {
             callback(response);
             this.isPaginationRequestActive = false;
         }.bind(this));
+    }
+
+    build_url(type, base_function_params, params){
+        if(!this.test_params(type, params)){
+            console.error('Error building url: Mismatched parameters')
+        }
+
+        let url;
+
+        if(Object.keys(base_function_params).length > 0){
+            url = config.soundcloud_urls[type].base.apply(null, Array.prototype.slice.call(base_function_params)) + '?';
+        } else {
+            url = config.soundcloud_urls[type].base + '?';
+        }
+
+        for(let key in params){
+            url += `${key}=${params[key]}&`;
+        }
+
+        return url;
+    }
+
+    test_params(type, params){
+        if(Object.keys(params).length !== config.soundcloud_urls[type].params.length){
+            return false;
+        }
+
+        for(let key in params){
+            if(config.soundcloud_urls[type].params.indexOf(key) === -1){
+                return false;
+            }
+        }
+
+        return true;
     }
 }
