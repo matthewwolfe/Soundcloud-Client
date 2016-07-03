@@ -55,7 +55,14 @@ class MusicList extends React.Component {
         let div = document.getElementById('music-list');
 
         if ((window.innerHeight + div.scrollTop) >= div.scrollHeight) {
-            // you're at the bottom of the page
+            if(this.state.selected === 'stream' || this.state.selected === 'likes'){
+
+                window.soundCloudAPI.getPagination(this.state.selected, function(tracks){
+                    this.setState({data: {
+                        tracks: this.state.data.tracks.concat(tracks)
+                    }});
+                }.bind(this));
+            }
         }
     }
 

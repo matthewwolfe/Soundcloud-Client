@@ -88,6 +88,19 @@ class DataManager {
         return true;
     }
 
+    concat(key, array){
+        if(!this.exists(key)){
+            return false;
+        }
+
+        if(typeof this.get(key) !== 'object'){
+            return false;
+        }
+
+        this.data[key] = this.data[key].concat(array);
+        return true;
+    }
+
     /*
      * Returns true if the key exists in the data, false otherwise.
      */

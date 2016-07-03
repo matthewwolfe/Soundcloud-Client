@@ -1,8 +1,6 @@
-class StorageManager extends Core {
+class StorageManager {
 
     constructor(callback){
-        super();
-
         this.fs = require('fs');
         this.path = require('electron').remote.app.getPath('appData');
         this.directory = 'Soundcloud-Client';

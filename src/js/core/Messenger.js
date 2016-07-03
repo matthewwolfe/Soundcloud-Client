@@ -1,14 +1,12 @@
 
-class Messenger extends Core {
+class Messenger {
 
     constructor(){
-        super();
-
         this.queue = {};
         this.exists = this.queue.hasOwnProperty;
     }
 
-    subscribe(action, listener){
+    subscribe(action, listener): Object {
         // Create the action's object if not yet created
         if(!this.exists.call(this.queue, action)){
             this.queue[action] = [];
@@ -19,13 +17,13 @@ class Messenger extends Core {
 
         // provide a way to remove an action
         return {
-            remove: function(){
+            remove: function(): void {
                 delete this.queue[action][index];
             }.bind(this)
         }
     }
 
-    publish(action, data){
+    publish(action, data): void {
         // don't do anything if there are no listeners
         if(!this.exists.call(this.queue, action)){
             return;

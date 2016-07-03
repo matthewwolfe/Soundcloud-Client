@@ -45,7 +45,7 @@ window.music = new Music();
 
 window.storageManager = new StorageManager(function(){
     // Initialize the connection to the SoundCloud API and then render the app
-    window.soundCloudAPI = new SoundcloudAPI(function(){
+    window.soundCloudAPI = new SoundcloudSDK(function(){
         render(<App/>, document.getElementById('app'));
     });
 });
