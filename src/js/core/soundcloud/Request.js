@@ -73,6 +73,8 @@ class Request {
     }
 
     /*
+     * Encodes the data object to a string so that it can be sent as get parameters 
+     *
      * @param data: Object
      *
      * @return: String

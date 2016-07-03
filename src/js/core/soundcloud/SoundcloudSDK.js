@@ -4,22 +4,8 @@ class SoundcloudSDK {
         this.baseUrl = 'https://api.soundcloud.com';
         this.baseUrlV2 = 'https://api-v2.soundcloud.com';
 
-        // called when the logout button is clicked
-        window.messenger.subscribe('logout', function(data){
-            this.logout();
-        }.bind(this));
-
         this.request = new Request();
-        this.config = new Config();
-
-        // the connection link with the required redirect request
-        // as specified by the soundcloud api
-        this.authenticationURL = 'https://api.soundcloud.com/connect?'
-                               + 'client_id=173bf9df509c48cf53b70c83eaf5cbbd&'
-                               + 'redirect_uri=my-app%3A%2F%2Fcallback.html&response_type=code';
-
-        this.clientID = '173bf9df509c48cf53b70c83eaf5cbbd';
-        this.clientSecret = '7ddbd6fcdc2d313abfb65758c751486e';
+        this.oauthToken = new OAuthToken();
 
         this.isPaginationRequestActive = false;
 
@@ -31,29 +17,18 @@ class SoundcloudSDK {
         // this.userToken = window.storageManager.get('token');
         this.userToken = null;
 
+        let token_type = 'authorization';
+
         // if the token doesn't exist then we need to authenticate the user
-        if(this.userToken === null){
-
-            // authenticate the user
-            this.getAuthCode(function(response){
-                this.userAuthCode = response;
-
-                // get the initial token
-                this.getToken('authorization', function(response){
-                    this.userToken = response;
-                    this.initializeApp(callback);
-
-                }.bind(this));
-            }.bind(this));
-        } else {
-
-            // if the token already exists, just refresh it
-            this.getToken('refresh', function(response){
-                this.userToken = response;
-                this.initializeApp(callback);
-
-            }.bind(this));
+        // if the token already exists, just refresh it
+        if(this.userToken !== null){
+            token_type = 'refresh';
         }
+
+        this.oauthToken.getToken(token_type, function(response){
+            this.userToken = response;
+            this.initializeApp(callback);
+        }.bind(this));
     }
 
     // Private
@@ -75,75 +50,6 @@ class SoundcloudSDK {
         }.bind(this));
     }
 
-    logout(){
-        window.storageManager.set('token', null);
-        window.location.href = this.authenticationURL;
-    }
-
-    // Private
-    getAuthCode(callback){
-        let url = window.location.href;
-        let authCode = url.substring(url.indexOf('=') + 1);
-
-        // the user has already authorized the application
-        if(url.indexOf('=') !== -1){
-            callback(authCode);
-
-        // if we don't yet have the authentication code, 
-        // then the user needs to connect and authorize the application
-        } else {
-            window.location.href = this.authenticationURL;
-        }
-    }
-
-    // Private
-    getToken(type, callback){
-        if(type === 'authorization'){
-            this.exchangeToken(function(response){
-                callback(response);
-            });
-        } else if(type === 'refresh'){
-            this.refreshToken(function(response){
-                callback(response);
-            });
-        }
-    }
-
-    // Private
-    exchangeToken(callback){
-        let url = '/oauth2/token';
-
-        let data = {
-            'client_id': this.clientID,
-            'client_secret': this.clientSecret,
-            'grant_type': 'authorization_code',
-            'redirect_uri': 'my-app://callback.html',
-            'code': this.userAuthCode
-        };
-
-        this.request.post(this.baseUrl + url, data, function(response){
-            window.storageManager.set('token', response);
-            callback(response);
-        });
-    }
-
-    // Private
-    refreshToken(callback){
-        let url = '/oauth2/token';
-
-        let data = {
-            'client_id': this.clientID,
-            'client_secret': this.clientSecret,
-            'grant_type': 'refresh_token',
-            'refresh_token': this.userToken.refresh_token
-        };
-
-        this.request.post(this.baseUrl + url, data, function(response){
-            window.storageManager.set('token', response);
-            callback(response);
-        });
-    }
-
     // Private
     getMe(callback){
         let url = '/me?oauth_token=' + this.userToken.access_token;
@@ -161,7 +67,7 @@ class SoundcloudSDK {
             return;
         }
 
-        let url = `/users/${window.user.id}/favorites?limit=100&offset=0&client_id=${this.clientID}`;
+        let url = `/users/${window.user.id}/favorites?limit=100&offset=0&client_id=${config.get('client_id')}`;
 
         this.request.get(this.baseUrl + url, function(likedTracks){
             window.dataManager.set('likedTracks', likedTracks);
@@ -233,7 +139,7 @@ class SoundcloudSDK {
             return;
         }
 
-        let url = '/users/' + window.user.id + '/tracks?limit=100&offset=0&client_id=' + this.clientID;
+        let url = '/users/' + window.user.id + '/tracks?limit=100&offset=0&client_id=' + config.get('client_id');
 
         this.request.get(this.baseUrl + url, function(myTracks){
             window.dataManager.set('myTracks', myTracks);
@@ -324,7 +230,7 @@ class SoundcloudSDK {
     }
 
     getPlaylist(id, callback){
-        let url = '/playlists/' + id + '?client_id=' + this.clientID;
+        let url = '/playlists/' + id + '?client_id=' + config.get('client_id');
 
         this.request.get(this.baseUrlV2 + url, function(response){
             callback(response.tracks);
@@ -332,7 +238,7 @@ class SoundcloudSDK {
     }
 
     search(query, callback){
-        let url = '/search?limit=100&q=' + query + '&client_id=' + this.clientID;
+        let url = '/search?limit=100&q=' + query + '&client_id=' + config.get('client_id');
 
         this.request.get(this.baseUrlV2 + url, function(response){
             let collection = response.collection;
@@ -381,7 +287,7 @@ class SoundcloudSDK {
         let url = '/charts?' +
                     'kind=' + kind +
                     '&genre=' + genre +
-                    '&client_id=' + this.clientID +
+                    '&client_id=' + config.get('client_id') +
                     '&limit=200&offset=0&linked_partitioning=1';
 
         this.request.get(this.baseUrlV2 + url, function(response){
@@ -416,7 +322,7 @@ class SoundcloudSDK {
 
         if(type === 'likes'){
             offset = window.dataManager.get('likedTracks').length;
-            url = '/users/' + window.user.id + '/favorites?limit=100&offset=' + offset + '&client_id=' + this.clientID;
+            url = '/users/' + window.user.id + '/favorites?limit=100&offset=' + offset + '&client_id=' + config.get('client_id');
         } else if(type === 'stream'){
             offset = window.dataManager.get('stream').length;
             url = '/me/activities?limit=100&oauth_token=' + this.userToken.access_token;
