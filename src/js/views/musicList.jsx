@@ -36,6 +36,10 @@ class MusicList extends React.Component {
         this.topSectionSubscription = window.messenger.subscribe('top-section-change', function(data){
             this.getTop50(data.kind, data.genre);
         }.bind(this));
+
+        this.updateTrackListSubscription = window.messenger.subscribe('music-list-update-music-track-list', function(data){
+            window.music.setTracks(this.state.data.tracks);
+        }.bind(this));
     }
 
     componentWillUnmount(){
@@ -43,12 +47,7 @@ class MusicList extends React.Component {
         this.sideMenuClickSubscription.remove();
         this.searchResultsSubscription.remove();
         this.topSectionSubscription.remove();
-    }
-
-    componentWillUpdate(nextProps, nextState){
-        if(this.state.data.tracks !== nextState.data.tracks){
-            window.music.setTracks(nextState.data.tracks);
-        }
+        this.updateTrackListSubscription.remove();
     }
 
     handleScroll(){

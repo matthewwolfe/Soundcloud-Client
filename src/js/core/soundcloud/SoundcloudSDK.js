@@ -43,6 +43,58 @@ class SoundcloudSDK {
         });
     }
 
+    getMyTracks(callback){
+        let myTracks = window.dataManager.get('myTracks');
+
+        if(myTracks){
+            callback(myTracks);
+            return;
+        }
+
+        let url = this.build_url('my_tracks', {}, {
+            limit: 100,
+            offset: 0,
+            oauth_token: this.oauthToken.get('access_token')
+        });
+
+        this.request.get(this.baseUrl + url, function(myTracks){
+            window.dataManager.set('myTracks', myTracks);
+            callback(myTracks);
+        })
+    }
+
+    getStream(callback){
+        let stream = window.dataManager.get('stream');
+
+        if(stream){
+            callback(stream);
+            return;
+        }
+
+        let url = this.build_url('stream', {}, {
+            limit: 100,
+            oauth_token: this.oauthToken.get('access_token')
+        });
+
+        this.request.get(this.baseUrl + url, function(response){
+            
+            let activities = response.collection;
+            let tracks = [];
+
+            activities.forEach(function(activity){
+                if(activity.origin !== null){
+                    if(activity.origin.kind === 'track'){
+                        tracks.push(activity.origin);
+                    }
+                }
+            });
+
+            window.dataManager.set('stream', tracks);
+
+            callback(tracks);
+        });
+    }
+
     getLikedTracks(callback){
         let likedTracks = window.dataManager.get('likedTracks');
 
@@ -52,14 +104,20 @@ class SoundcloudSDK {
         }
 
         let url = this.build_url('liked_tracks', {user_id: window.user.id}, {
+            limit: 100,
+            offset: 0,
             oauth_token: this.oauthToken.get('access_token'),
         });
 
-        let url = `/users/${window.user.id}/favorites?limit=100&offset=0&client_id=${config.client_id}`;
+        this.request.get(this.baseUrlV2 + url, function(response){
+            let tracks = [];
 
-        this.request.get(this.baseUrl + url, function(likedTracks){
-            window.dataManager.set('likedTracks', likedTracks);
-            callback(likedTracks);
+            response.collection.forEach(function(element){
+                tracks.push(element.track);
+            });
+
+            window.dataManager.set('likedTracks', tracks);
+            callback(tracks);
         });
     }
 
@@ -106,7 +164,13 @@ class SoundcloudSDK {
         }
 
         if(url.length === 0){
-            url = `${this.baseUrl}/e1/me/track_reposts/ids?oauth_token=${this.oauthToken.get('access_token')}&limit=5000&linked_partitioning=1&page_number=0&page_size=200`;
+            url = this.baseUrl + this.build_url('track_repost_ids', {}, {
+                oauth_token: this.oauthToken.get('access_token'),
+                limit: 5000,
+                linked_partitioning: 1,
+                page_number: 0,
+                page_size: 200
+            });
         }
 
         this.request.get(url, function(response){
@@ -125,54 +189,11 @@ class SoundcloudSDK {
         }.bind(this));
     }
 
-    getMyTracks(callback){
-        let myTracks = window.dataManager.get('myTracks');
-
-        if(myTracks){
-            callback(myTracks);
-            return;
-        }
-
-        let url = '/users/' + window.user.id + '/tracks?limit=100&offset=0&client_id=' + config.client_id;
-
-        this.request.get(this.baseUrl + url, function(myTracks){
-            window.dataManager.set('myTracks', myTracks);
-            callback(myTracks);
-        })
-    }
-
-    getStream(callback){
-        let stream = window.dataManager.get('stream');
-
-        if(stream){
-            callback(stream);
-            return;
-        }
-
-        let url = `/me/activities?limit=100&oauth_token=${this.oauthToken.get('access_token')}`;
-
-        this.request.get(this.baseUrl + url, function(response){
-            
-            let activities = response.collection;
-            let tracks = [];
-
-            activities.forEach(function(activity){
-                if(activity.origin !== null){
-                    if(activity.origin.kind === 'track'){
-                        tracks.push(activity.origin);
-                    }
-                }
-            });
-
-            window.dataManager.set('stream', tracks);
-
-            callback(tracks);
-        });
-    }
-
     // Private
     getPlaylists(callback){
-        let url = `/users/${window.user.id}/playlists/liked_and_owned?oauth_token=${this.oauthToken.get('access_token')}`;
+        let url = this.build_url('playlists', {user_id: window.user.id}, {
+            oauth_token: this.oauthToken.get('access_token')
+        });
 
         this.request.get(this.baseUrlV2 + url, function(response){
             callback(response);
@@ -224,7 +245,9 @@ class SoundcloudSDK {
     }
 
     getPlaylist(id, callback){
-        let url = '/playlists/' + id + '?client_id=' + config.client_id;
+        let url = this.build_url('playlist', {id: id}, {
+            client_id: config.client_id
+        });
 
         this.request.get(this.baseUrlV2 + url, function(response){
             callback(response.tracks);
@@ -232,7 +255,10 @@ class SoundcloudSDK {
     }
 
     search(query, callback){
-        let url = '/search?limit=100&q=' + query + '&client_id=' + config.client_id;
+        let url = this.build_url('search', {}, {
+            q: query,
+            client_id: config.client_id
+        });
 
         this.request.get(this.baseUrlV2 + url, function(response){
             let collection = response.collection;
@@ -278,11 +304,14 @@ class SoundcloudSDK {
     getTop50(kind, genre, callback){
         genre = 'soundcloud:genres:' + genre;
 
-        let url = '/charts?' +
-                    'kind=' + kind +
-                    '&genre=' + genre +
-                    '&client_id=' + config.client_id +
-                    '&limit=200&offset=0&linked_partitioning=1';
+        let url = this.build_url('top_50', {}, {
+            kind: kind,
+            genre: genre,
+            client_id: config.client_id,
+            limit: 200,
+            offset: 0,
+            linked_partitioning: 1
+        });
 
         this.request.get(this.baseUrlV2 + url, function(response){
             let tracks = [];
@@ -295,9 +324,13 @@ class SoundcloudSDK {
         });
     }
 
-    getActivities(callback){
-        let url = '/activities?limit=5&offset=0' +
-                    '&linked_partitioning=1&oauth_token=' + this.oauthToken.get('access_token');
+    getNotifications(callback){
+        let url = this.build_url('notifications', {}, {
+            limit: 5,
+            offset: 0,
+            linked_partitioning: 1,
+            oauth_token: this.oauthToken.get('access_token')
+        });
 
         this.request.get(this.baseUrlV2 + url, function(response){
             callback(response.collection);
@@ -322,7 +355,7 @@ class SoundcloudSDK {
             url = '/me/activities?limit=100&oauth_token=' + this.oauthToken.get('access_token');
         }
 
-        this.request.get(this.baseUrlV2 + url, function(response){
+        this.request.get(this.baseUrl + url, function(response){
             if(type === 'likes'){
                 window.dataManager.concat('likedTracks', response);
             }
@@ -332,6 +365,8 @@ class SoundcloudSDK {
         }.bind(this));
     }
 
+    /******** URL BUILDING ********/
+
     build_url(type, base_function_params, params){
         if(!this.test_params(type, params)){
             console.error('Error building url: Mismatched parameters')
@@ -340,7 +375,7 @@ class SoundcloudSDK {
         let url;
 
         if(Object.keys(base_function_params).length > 0){
-            url = config.soundcloud_urls[type].base.apply(null, Array.prototype.slice.call(base_function_params)) + '?';
+            url = this.generate_base_url(type, base_function_params) + '?';
         } else {
             url = config.soundcloud_urls[type].base + '?';
         }
@@ -350,6 +385,11 @@ class SoundcloudSDK {
         }
 
         return url;
+    }
+
+    generate_base_url(type, params){
+        params = Object.keys(params).map(function (key) {return params[key]});
+        return config.soundcloud_urls[type].base.apply(null, params);
     }
 
     test_params(type, params){

@@ -1,9 +1,5 @@
-const electron = require('electron');
-const fs       = require('fs');
-const _        = require('lodash');
-
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
+const {app, BrowserWindow, globalShortcut} = require('electron');
+const fs = require('fs');
 
 let mainWindow;
 
@@ -33,6 +29,18 @@ function createWindow(){
 
     mainWindow.on('closed', function(){
         mainWindow = null;
+    });
+
+    globalShortcut.register('MediaPlayPause', function(){
+        mainWindow.webContents.send('click-play-pause');
+    });
+
+    globalShortcut.register('MediaNextTrack', function(){
+        mainWindow.webContents.send('click-next-track');
+    });
+
+    globalShortcut.register('MediaPreviousTrack', function(){
+        mainWindow.webContents.send('click-previous-track');
     });
 }
 

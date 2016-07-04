@@ -51,10 +51,11 @@ class Track extends React.Component {
     }
 
     playTrack(props){
-
         window.music.play(
             props.data
         );
+
+        window.messenger.publish('music-list-update-music-track-list', {});
     }
 
     toggleLikedTrack(){

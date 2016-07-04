@@ -22,7 +22,7 @@ class NotificationsMenu extends React.Component {
     }
 
     getNotifications(){
-        window.soundCloudAPI.getActivities(function(notifications){
+        window.soundCloudAPI.getNotifications(function(notifications){
             this.setState({notifications: notifications});
         }.bind(this));
     }

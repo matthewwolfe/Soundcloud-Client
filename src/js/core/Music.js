@@ -22,6 +22,12 @@ class Music {
 
         this.tracks = [];
         this.shuffledTracks = [];
+
+        window.messenger.subscribe('click-next-track', function(data){
+            if(this.currentlyPlaying !== null && this.currentlyPlaying.isPlaying){
+                this.playNext();
+            }
+        }.bind(this));
     }
 
     play(track, onStartPlaying, onFinished){
@@ -75,7 +81,6 @@ class Music {
 
     playNext(onStartPlaying, onFinished){
         let nextTrack = this.findNextTrack(this.currentlyPlaying.track.id);
-
         this.play(nextTrack, onStartPlaying, onFinished);
     }
 
@@ -181,6 +186,10 @@ class Music {
         }
 
         return array;
+    }
+
+    setVolume(volume){
+        soundManager.setVolume(volume);
     }
 
     reset(){

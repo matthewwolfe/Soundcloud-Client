@@ -8,3 +8,13 @@ Array.prototype.remove = function() {
     }
     return this;
 };
+
+const renderer = require('electron').ipcRenderer;
+
+renderer.on('click-play-pause', function(){
+    window.messenger.publish('click-play-pause', {});
+});
+
+renderer.on('click-next-track', function(){
+	window.messenger.publish('click-next-track', {});
+});

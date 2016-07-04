@@ -35,7 +35,7 @@ config.soundcloud_urls = {
 
     playlist: {
         base: function(id){
-            return `/playlists/${id}`
+            return `/playlists/${id}`;
         },
         params: [
             'client_id'
@@ -44,25 +44,23 @@ config.soundcloud_urls = {
 
     // Tracks
     my_tracks: {
-        base: function(user_id){
-            return `/users${user_id}/tracks`;
-        },
+        base: '/me/tracks',
         params: [
             'limit',
             'offset',
-            'client_id'
+            'oauth_token'
         ]
     },
 
     // Likes
     liked_tracks: {
         base: function(user_id){
-            return `/users/${user_id}/favorites`;
+            return `/users/${user_id}/likes`;
         },
         params: [
             'limit',
             'offset',
-            'client_id'    
+            'oauth_token'    
         ]
     },
 

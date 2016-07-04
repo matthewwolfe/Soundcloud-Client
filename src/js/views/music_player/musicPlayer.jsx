@@ -1,5 +1,6 @@
 import React from 'react';
 
+import VolumeControl from './volumeControl.jsx';
 import MusicPlayerProgressBar from './musicPlayerProgressBar.jsx';
 
 class MusicPlayer extends React.Component {
@@ -14,9 +15,22 @@ class MusicPlayer extends React.Component {
             isTiledView: false
         };
 
-        window.messenger.subscribe('music-state-change', function(data){
+        this.playPauseSubscription = window.messenger.subscribe('click-play-pause', function(data){
+            if(this.state.playing){
+                this.pause();
+            } else {
+                this.play();
+            }
+        }.bind(this));
+
+        this.musicStateChangeSubscription = window.messenger.subscribe('music-state-change', function(data){
             this.setState({playing: data.playing});
         }.bind(this));
+    }
+
+    componentWillUnmount(){
+        this.playPauseSubscription.remove();
+        this.musicStateChangeSubscription.remove();
     }
 
     play(){
@@ -94,6 +108,7 @@ class MusicPlayer extends React.Component {
                 <span id="volume-control"
                       className="glyphicon glyphicon-volume-up">
                 </span>
+                <VolumeControl />
 
                 <MusicPlayerProgressBar />
 

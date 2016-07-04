@@ -424,6 +424,7 @@ p, span {
         border-top: 1px solid $secondary-color;
         padding-left: 20px;
         padding-right: 20px;
+        text-align: center;
 
         span {
             display: inline-block;
@@ -445,6 +446,12 @@ p, span {
             cursor: pointer;
         }
 
+        #play-button,
+        #pause-button,
+        #volume-control {
+            float: left;
+        }
+
         #volume-control {
             margin-left: 20px;
         }
@@ -454,12 +461,53 @@ p, span {
             margin-right: 20px;
         }
 
+        #volume-controller {
+            width: 100px;
+            display: inline-block;
+            position:relative;
+            margin-top: 20px;
+            float: left;
+            margin-left: 15px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            cursor: pointer;
+
+            #volume-background {
+                position: absolute;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                background-color: #999;
+                height: 2px;
+            }
+
+            #volume-bar {
+                position: absolute;
+                width: 0;
+                margin: 0;
+                padding: 0;
+                background-color: $orange-color;
+                height: 2px;
+            }
+
+            #volume-bar-handle {
+                top: 6px;
+                position: absolute;
+                width: 9px;
+                height: 9px;
+                border: 1px solid $orange-color;
+                background-color: $orange-color;
+                border-radius: 50%;
+            }
+        }
+
         #progress-bar {
             display: inline-block;
             vertical-align: top;
             margin-top: 7px;
             margin-left: 40px;
-            width: 600px;
+            width: 530px;
+            text-align: left;
 
             #current-time {
                 display: inline-block;
