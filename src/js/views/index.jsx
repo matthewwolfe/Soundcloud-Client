@@ -13,7 +13,31 @@ import ContextMenu from './context_menu/contextMenu.jsx';
 
 class App extends React.Component {
 
+    constructor(props){
+        super(props);
+
+        this.state = {
+            isTiledView: false
+        };
+    }
+
+    componentWillMount(){
+        this.toggleViewSubscription = window.messenger.subscribe('music-list-toggle-view', function(data){
+            this.setState({isTiledView: data.isTiledView});
+        }.bind(this));
+    }
+
+    componentWillUnmount(){
+        this.toggleViewSubscription.remove();
+    }
+
     render () {
+        let musicListView = <ListMusicList />;
+
+        if(this.state.isTiledView){
+            musicListView = <TiledMusicList />;
+        }
+
         return (
             <div>
                 <SearchBar />
@@ -24,8 +48,7 @@ class App extends React.Component {
                     <TrackController />
                 </div>
 
-                <ListMusicList />
-                <TiledMusicList />
+                {musicListView}
 
                 <MusicPlayer />
 

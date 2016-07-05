@@ -96,28 +96,26 @@ class SoundcloudSDK {
     }
 
     getLikedTracks(callback){
-        let likedTracks = window.dataManager.get('likedTracks');
+        let liked_tracks = window.dataManager.get('liked_tracks');
 
-        if(likedTracks){
-            callback(likedTracks);
+        if(liked_tracks){
+            callback(liked_tracks);
             return;
         }
 
         let url = this.build_url('liked_tracks', {user_id: window.user.id}, {
             limit: 100,
             offset: 0,
+            linked_partitioning: 1,
             oauth_token: this.oauthToken.get('access_token'),
         });
 
         this.request.get(this.baseUrlV2 + url, function(response){
-            let tracks = [];
-
-            response.collection.forEach(function(element){
-                tracks.push(element.track);
-            });
-
-            window.dataManager.set('likedTracks', tracks);
-            callback(tracks);
+            if(config.soundcloud_urls['liked_tracks'].callback !== undefined){
+                config.soundcloud_urls['liked_tracks'].callback(response, callback);
+            } else {
+                callback(response);
+            }
         });
     }
 
@@ -344,25 +342,26 @@ class SoundcloudSDK {
 
         this.isPaginationRequestActive = true;
 
-        // generate the offset for the query
-        let offset, url;
+        let key = key = config.soundcloud_storage[type],
+            url = this.append_client_id(config.soundcloud_urls[key].next_href);
 
-        if(type === 'likes'){
-            offset = window.dataManager.get('likedTracks').length;
-            url = '/users/' + window.user.id + '/favorites?limit=100&offset=' + offset + '&client_id=' + config.client_id;
-        } else if(type === 'stream'){
-            offset = window.dataManager.get('stream').length;
-            url = '/me/activities?limit=100&oauth_token=' + this.oauthToken.get('access_token');
+        if(url.indexOf('null') !== -1){
+            return;
         }
 
-        this.request.get(this.baseUrl + url, function(response){
-            if(type === 'likes'){
-                window.dataManager.concat('likedTracks', response);
+        this.request.get(url, function(response){
+            if(config.soundcloud_urls[key].callback !== undefined){
+                config.soundcloud_urls[key].callback(response, callback);
+            } else {
+                callback(response);
             }
 
-            callback(response);
             this.isPaginationRequestActive = false;
         }.bind(this));
+    }
+
+    append_client_id(url){
+        return url + '&client_id=' + config.client_id;
     }
 
     /******** URL BUILDING ********/

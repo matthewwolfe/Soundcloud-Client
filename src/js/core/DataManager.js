@@ -90,7 +90,7 @@ class DataManager {
 
     concat(key, array){
         if(!this.exists(key)){
-            return false;
+            this.set(key, []);
         }
 
         if(typeof this.get(key) !== 'object'){

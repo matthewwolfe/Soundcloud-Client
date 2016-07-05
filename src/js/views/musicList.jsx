@@ -9,8 +9,7 @@ class MusicList extends React.Component {
             data: {
                 tracks: []
             },
-            selected: 'stream',
-            isTiledView: false
+            selected: 'stream'
         };
 
         this.trackId = 0;
@@ -19,10 +18,6 @@ class MusicList extends React.Component {
     componentDidMount(){
         // initialize the selected view
         this.setActive({selected: 'stream'});
-
-        this.toggleViewSubscription = window.messenger.subscribe('music-list-toggle-view', function(data){
-            this.setState({isTiledView: data.isTiledView});
-        }.bind(this));
 
         // set up the listener
         this.sideMenuClickSubscription = window.messenger.subscribe('side-menu-click', function(data){
@@ -43,7 +38,6 @@ class MusicList extends React.Component {
     }
 
     componentWillUnmount(){
-        this.toggleViewSubscription.remove();
         this.sideMenuClickSubscription.remove();
         this.searchResultsSubscription.remove();
         this.topSectionSubscription.remove();
@@ -59,7 +53,10 @@ class MusicList extends React.Component {
                 window.soundCloudAPI.getPagination(this.state.selected, function(tracks){
                     this.setState({data: {
                         tracks: this.state.data.tracks.concat(tracks)
-                    }});
+                    }},
+                    function(){
+                        window.messenger.publish('music-list-update-music-track-list', {});
+                    });
                 }.bind(this));
             }
         }

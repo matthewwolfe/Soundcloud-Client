@@ -13,10 +13,6 @@ class ListMusicList extends MusicList {
 
     // Override
     render(){
-        if(this.state.isTiledView){
-            return null;
-        }
-
         let topSection;
 
         if(this.state.selected === 'top 50'){

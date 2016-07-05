@@ -12,7 +12,8 @@ config.soundcloud_urls = {
         base: '/me',
         params: [
             'oauth_token'
-        ]
+        ],
+        next_href: null
     },
 
     stream: {
@@ -20,7 +21,8 @@ config.soundcloud_urls = {
         params: [
             'limit',
             'oauth_token'
-        ]
+        ],
+        next_href: null
     },
 
     // Playlists
@@ -30,7 +32,8 @@ config.soundcloud_urls = {
         },
         params: [
             'oauth_token'
-        ]
+        ],
+        next_href: null
     },
 
     playlist: {
@@ -39,7 +42,8 @@ config.soundcloud_urls = {
         },
         params: [
             'client_id'
-        ]
+        ],
+        next_href: null
     },
 
     // Tracks
@@ -49,7 +53,8 @@ config.soundcloud_urls = {
             'limit',
             'offset',
             'oauth_token'
-        ]
+        ],
+        next_href: null
     },
 
     // Likes
@@ -60,8 +65,24 @@ config.soundcloud_urls = {
         params: [
             'limit',
             'offset',
+            'linked_partitioning',
             'oauth_token'    
-        ]
+        ],
+        next_href: null,
+        callback: function(response, callback){
+            let tracks = [];
+
+            response.collection.forEach(function(element){
+                if(element.track !== undefined){
+                    tracks.push(element.track);
+                }
+            });
+
+            config.soundcloud_urls['liked_tracks'].next_href = response.next_href;
+            window.dataManager.concat('liked_tracks', tracks);
+
+            callback(tracks);
+        }
     },
 
     liked_track_ids: {
@@ -72,7 +93,8 @@ config.soundcloud_urls = {
             'linked_partitioning',
             'page_number',
             'page_size'
-        ]
+        ],
+        next_href: null
     },
 
     track_repost_ids: {
@@ -83,7 +105,8 @@ config.soundcloud_urls = {
             'linked_partitioning',
             'page_number',
             'page_size'
-        ]
+        ],
+        next_href: null
     },
 
     top_50: {
@@ -95,7 +118,8 @@ config.soundcloud_urls = {
             'limit',
             'offset',
             'linked_partitioning'
-        ]
+        ],
+        next_href: null
     },
 
     // Search
@@ -104,7 +128,8 @@ config.soundcloud_urls = {
         params: [
             'q',
             'client_id'
-        ]
+        ],
+        next_href: null
     },
 
     // Notifications
@@ -115,9 +140,15 @@ config.soundcloud_urls = {
             'offset',
             'linked_partitioning',
             'oauth_token'
-        ]
+        ],
+        next_href: null
     }
 
     // Toggling
 
-}
+};
+
+config.soundcloud_storage = {
+    likes: 'liked_tracks',
+    stream: 'stream'
+};
