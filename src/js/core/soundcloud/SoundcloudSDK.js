@@ -77,21 +77,7 @@ class SoundcloudSDK {
         });
 
         this.request.get(this.baseUrl + url, function(response){
-            
-            let activities = response.collection;
-            let tracks = [];
-
-            activities.forEach(function(activity){
-                if(activity.origin !== null){
-                    if(activity.origin.kind === 'track'){
-                        tracks.push(activity.origin);
-                    }
-                }
-            });
-
-            window.dataManager.set('stream', tracks);
-
-            callback(tracks);
+            config.soundcloud_urls['stream'].callback(response, callback);
         });
     }
 
@@ -111,11 +97,7 @@ class SoundcloudSDK {
         });
 
         this.request.get(this.baseUrlV2 + url, function(response){
-            if(config.soundcloud_urls['liked_tracks'].callback !== undefined){
-                config.soundcloud_urls['liked_tracks'].callback(response, callback);
-            } else {
-                callback(response);
-            }
+            config.soundcloud_urls['liked_tracks'].callback(response, callback);
         });
     }
 
@@ -343,7 +325,7 @@ class SoundcloudSDK {
         this.isPaginationRequestActive = true;
 
         let key = key = config.soundcloud_storage[type],
-            url = this.append_client_id(config.soundcloud_urls[key].next_href);
+            url = this.append_auth_info(config.soundcloud_urls[key].next_href);
 
         if(url.indexOf('null') !== -1){
             return;
@@ -360,8 +342,8 @@ class SoundcloudSDK {
         }.bind(this));
     }
 
-    append_client_id(url){
-        return url + '&client_id=' + config.client_id;
+    append_auth_info(url){
+        return `${url}&client_id=${config.client_id}&oauth_token=${this.oauthToken.get('access_token')}`;
     }
 
     /******** URL BUILDING ********/

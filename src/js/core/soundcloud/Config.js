@@ -22,7 +22,24 @@ config.soundcloud_urls = {
             'limit',
             'oauth_token'
         ],
-        next_href: null
+        next_href: null,
+        callback: function(response, callback){
+            let activities = response.collection;
+            let tracks = [];
+
+            activities.forEach(function(activity){
+                if(activity.origin !== null){
+                    if(activity.origin.kind === 'track'){
+                        tracks.push(activity.origin);
+                    }
+                }
+            });
+
+            config.soundcloud_urls['stream'].next_href = response.next_href;
+            window.dataManager.concat('stream', tracks);
+
+            callback(tracks);
+        }
     },
 
     // Playlists
