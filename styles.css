@@ -1,0 +1,12 @@
+.navbar h4 {
+    color: #fff;
+}
+
+body {
+    padding-top: 70px;
+}
+
+#main-container #header {
+    text-align: center;
+    font-size: 3em;
+}
