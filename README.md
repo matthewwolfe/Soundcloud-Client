@@ -1,5 +1,5 @@
 # Soundcloud Client
-A personal project to learn React.js and Electron.js
+An open source soundcloud desktop app built using React and Electron
 
 [Website](http://matthewwolfe.github.io/Soundcloud-Client/)
 
