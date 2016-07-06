@@ -1,12 +1,34 @@
-.navbar h4 {
-    color: #fff;
+.navbar h4,
+.navbar a {
+    color: #f50;
+    margin-top: 14px;
+    display: inline-block;
+}
+
+.navbar {
+    background-color: #282828;
 }
 
 body {
     padding-top: 70px;
 }
 
-#main-container #header {
+#main-container #header,
+#main-container #sub-header {
     text-align: center;
+    color: #282828;
+}
+
+#main-container #header {
     font-size: 3em;
+}
+
+#preview-image {
+    margin-top: 15px;
+}
+
+#preview-image img {
+    display: block;
+    width: 80%;
+    margin: auto;
 }
