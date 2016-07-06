@@ -35,6 +35,7 @@ class MusicList extends React.Component {
         this.updateTrackListSubscription = window.messenger.subscribe('music-list-update-music-track-list', function(data){
             let trackElements = document.querySelectorAll('#music-list .track');
 
+            // we do this so that the queue always begins at the track that is currently playing
             for(let i = 0; i < trackElements.length; i++){
                 if(trackElements[i].className === 'track playing'){
                     window.music.setQueue(this.state.data.tracks.slice(i));
