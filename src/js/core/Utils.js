@@ -9,7 +9,8 @@ Array.prototype.remove = function() {
     return this;
 };
 
-const renderer = require('electron').ipcRenderer;
+const electron = require('electron');
+const renderer = electron.ipcRenderer;
 
 renderer.on('click-play-pause', function(){
     window.messenger.publish('click-play-pause', {});

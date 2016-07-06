@@ -53,6 +53,10 @@ class TrackMenu extends React.Component {
         this.closeMenu();
     }
 
+    openInBrowser(){
+        electron.shell.openExternal(this.props.track.permalink_url);
+    }
+
     closeMenu(){
         window.messenger.publish('context-menu-close', {});
     }
@@ -82,6 +86,10 @@ class TrackMenu extends React.Component {
 
                 <li className="list-item">
                     Add to playlist
+                </li>
+
+                <li className="list-item" onClick={this.openInBrowser.bind(this)}>
+                    View on Soundcloud
                 </li>
             </ul>
         );

@@ -230,7 +230,24 @@ class SoundcloudSDK {
         });
 
         this.request.get(this.baseUrlV2 + url, function(response){
-            callback(response.tracks);
+            let trackIds = [];
+
+            response.tracks.forEach(function(track){
+                trackIds.push(track.id);
+            });
+
+            this.getTracksByIds(trackIds, callback);
+        }.bind(this));
+    }
+
+    getTracksByIds(trackIds, callback){
+        let url = this.build_url('tracks_by_ids', {}, {
+            ids: trackIds.join(),
+            client_id: config.client_id
+        });
+
+        this.request.get(this.baseUrlV2 + url, function(response){
+            callback(response);
         });
     }
 

@@ -63,6 +63,15 @@ config.soundcloud_urls = {
         next_href: null
     },
 
+    tracks_by_ids: {
+        base: '/tracks',
+        params: [
+            'ids',
+            'client_id'
+        ],
+        next_href: null
+    },
+
     // Tracks
     my_tracks: {
         base: '/me/tracks',
