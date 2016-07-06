@@ -12,7 +12,8 @@ class MusicPlayer extends React.Component {
             data: {},
             isRepeating: false,
             isShuffle: false,
-            isTiledView: false
+            isTiledView: false,
+            isQueueShowing: false
         };
 
         this.playPauseSubscription = window.messenger.subscribe('click-play-pause', function(data){
@@ -55,11 +56,18 @@ class MusicPlayer extends React.Component {
         this.setState({isShuffle: window.music.isShuffle});
     }
 
-    toggleTiledView(e){
+    toggleTiledView(){
         let tiledView = !this.state.isTiledView;
 
         this.setState({isTiledView: tiledView});
         window.messenger.publish('music-list-toggle-view', {isTiledView: tiledView});
+    }
+
+    toggleQueue(){
+        let isQueueShowing = !this.state.isQueueShowing;
+
+        this.setState({isQueueShowing: isQueueShowing});
+        window.messenger.publish('toggle-queue-showing', {isQueueShowing: isQueueShowing});
     }
 
     render () {
@@ -68,6 +76,7 @@ class MusicPlayer extends React.Component {
         var repeatClass = 'glyphicon glyphicon-retweet pull-right';
         var shuffleClass = 'glyphicon glyphicon-random pull-right';
         var tiledClass = 'glyphicon glyphicon-th pull-right';
+        var queueClass = 'glyphicon glyphicon-list pull-right';
 
         var trackName = '';
 
@@ -87,6 +96,10 @@ class MusicPlayer extends React.Component {
 
         if(this.state.isTiledView){
             tiledClass += ' active';
+        }
+
+        if(this.state.isQueueShowing){
+            queueClass += ' active';
         }
 
         if(window.music.currentlyPlaying !== null){
@@ -111,6 +124,11 @@ class MusicPlayer extends React.Component {
                 <VolumeControl />
 
                 <MusicPlayerProgressBar />
+
+                <span id="queue-button"
+                      className={queueClass}
+                      onClick={this.toggleQueue.bind(this)}>
+                </span>
 
                 <span id="random-button"
                       className={shuffleClass}

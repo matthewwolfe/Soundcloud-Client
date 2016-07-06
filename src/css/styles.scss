@@ -444,6 +444,7 @@ p, span {
         #random-button,
         #repeat-button,
         #tile-view-button,
+        #queue-button,
         #volume-control {
             font-size: 24px;
             line-height: 60px;
@@ -462,7 +463,8 @@ p, span {
         }
 
         #repeat-button,
-        #tile-view-button {
+        #tile-view-button,
+        #random-button {
             margin-right: 20px;
         }
 
@@ -571,6 +573,53 @@ p, span {
                     border-radius: 50%;
                 }
             }
+        }
+    }
+
+    #queue-list {
+        width: 25%;
+        min-width: 280px;
+        height: calc(100% - 100px);
+        position: fixed;
+        top: 40px;
+        right: 0px;
+        background-color: #282828;
+        border-left: 1px solid $secondary-color;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        -webkit-box-shadow: 0px 0px 30px -4px rgba(0,0,0,0.65);
+        -moz-box-shadow: 0px 0px 30px -4px rgba(0,0,0,0.65);
+        box-shadow: 0px 0px 30px -4px rgba(0,0,0,0.65);
+
+        .queue-item {
+            width: 100%;
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-top: 8px;
+            padding-bottom: 8px;
+
+            .order {
+                margin-top: 7px;
+                display: inline-block;
+                width: 10%;
+                float: left;
+            }
+
+            .title,
+            .username {
+                display: inline-block;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                width: 90%;
+                float: right;
+            }
+        }
+
+        .queue-item:after {
+            content: "";
+            clear: both;
+            display: table;
         }
     }
 

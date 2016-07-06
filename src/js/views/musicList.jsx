@@ -33,7 +33,14 @@ class MusicList extends React.Component {
         }.bind(this));
 
         this.updateTrackListSubscription = window.messenger.subscribe('music-list-update-music-track-list', function(data){
-            window.music.setTracks(this.state.data.tracks);
+            let trackElements = document.querySelectorAll('#music-list .track');
+
+            for(let i = 0; i < trackElements.length; i++){
+                if(trackElements[i].className === 'track playing'){
+                    window.music.setQueue(this.state.data.tracks.slice(i));
+                    break;
+                }
+            }
         }.bind(this));
     }
 

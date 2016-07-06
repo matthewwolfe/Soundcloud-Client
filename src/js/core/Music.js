@@ -20,8 +20,7 @@ class Music {
         this.isRepeating = false;
         this.isShuffle = false;
 
-        this.tracks = [];
-        this.shuffledTracks = [];
+        this.queue = [];
 
         window.messenger.subscribe('click-next-track', function(data){
             if(this.currentlyPlaying !== null && this.currentlyPlaying.isPlaying){
@@ -80,19 +79,10 @@ class Music {
     }
 
     playNext(onStartPlaying, onFinished){
-        let nextTrack = this.findNextTrack(this.currentlyPlaying.track.id);
-        this.play(nextTrack, onStartPlaying, onFinished);
-    }
+        if(this.queue.length > 0){
+            this.shiftQueue();
 
-    findNextTrack(id){
-        for(var i = 0; i < this.tracks.length; i++){
-            if(this.tracks[i].id === id){
-                if(i === this.tracks.length - 1){
-                    return this.tracks[0];
-                } else {
-                    return this.tracks[i+1];
-                }
-            }
+            this.play(this.queue[0], onStartPlaying, onFinished);
         }
     }
 
@@ -161,17 +151,27 @@ class Music {
         this.isShuffle = !this.isShuffle;
     }
 
-    setTracks(tracks){
-        this.tracks = tracks;
-
+    setQueue(tracks){
         if(this.isShuffle){
-            this.shuffledTracks = JSON.parse(JSON.stringify(this.tracks));
-            this.shuffleTracks(this.shuffledTracks);
+            tracks = JSON.parse(JSON.stringify(tracks));
+            this.shuffleTracks(tracks);
         }
+
+        this.queue = tracks;
+        window.messenger.publish('queue-order-updated', {tracks: this.queue});
+    }
+
+    getQueue(){
+        return this.queue;
+    }
+
+    shiftQueue(){
+        this.queue.shift();
+        window.messenger.publish('queue-order-updated', {tracks: this.queue});
     }
 
     shuffleTracks(array){
-        var currentIndex = this.tracks.length, temporaryValue, randomIndex;
+        var currentIndex = array.length, temporaryValue, randomIndex;
 
         // While there remain elements to shuffle...
         while (0 !== currentIndex) {

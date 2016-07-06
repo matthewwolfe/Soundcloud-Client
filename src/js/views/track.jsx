@@ -16,7 +16,6 @@ class Track extends React.Component {
         }
     }
 
-
     componentWillMount(){
         if(window.music.currentlyPlaying !== null){
             if(window.music.currentlyPlaying.track.id === this.props.data.id){
@@ -45,6 +44,12 @@ class Track extends React.Component {
         );
     }
 
+    componentDidUpdate(){
+        if(this.state.playing){
+            window.messenger.publish('music-list-update-music-track-list', {});
+        }
+    }
+
     componentWillUnmount(){
         this.musicStateSubscription.remove();
         this.trackLikeSubscription.remove();
@@ -54,8 +59,6 @@ class Track extends React.Component {
         window.music.play(
             props.data
         );
-
-        window.messenger.publish('music-list-update-music-track-list', {});
     }
 
     toggleLikedTrack(){

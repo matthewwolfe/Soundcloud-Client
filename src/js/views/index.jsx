@@ -9,6 +9,8 @@ import TiledMusicList from './tracks_tiled/tiledMusicList.jsx';
 import MusicPlayer from './music_player/musicPlayer.jsx';
 import TrackController from './trackController.jsx';
 
+import QueueList from './queue/queueList.jsx';
+
 import ContextMenu from './context_menu/contextMenu.jsx';
 
 class App extends React.Component {
@@ -51,6 +53,8 @@ class App extends React.Component {
                 {musicListView}
 
                 <MusicPlayer />
+
+                <QueueList />
 
                 <ContextMenu />
             </div>
