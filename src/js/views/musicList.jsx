@@ -17,7 +17,11 @@ class MusicList extends React.Component {
 
     componentDidMount(){
         // initialize the selected view
-        this.setActive({selected: 'stream'});
+
+        // retrieves what side menu item is selected from the side menu component
+        window.messenger.publish('side-menu-get-selected', {callback: function(data){
+            this.setActive(data);
+        }.bind(this)});
 
         // set up the listener
         this.sideMenuClickSubscription = window.messenger.subscribe('side-menu-click', function(data){

@@ -13,6 +13,16 @@ class SideMenu extends React.Component {
         this.getPlaylistNames();
     }
 
+    componentWillMount(){
+        this.getSelectedSubscription = window.messenger.subscribe('side-menu-get-selected', function(data){
+            data.callback({selected: this.state.selected});
+        }.bind(this));
+    }
+
+    componentWillUnmount(){
+        this.getSelectedSubscription.remove();
+    }
+
     isActive(value){
         return ((value === this.state.selected) ? 'active' : '');
     }
