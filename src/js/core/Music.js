@@ -79,7 +79,7 @@ class Music {
     }
 
     playNext(onStartPlaying, onFinished){
-        if(this.queue.length > 0){
+        if(this.queue.length > 1){
             this.shiftQueue();
 
             this.play(this.queue[0], onStartPlaying, onFinished);
@@ -149,12 +149,24 @@ class Music {
 
     toggleShuffle(){
         this.isShuffle = !this.isShuffle;
+        // send it to the set method for shuffling
+
+        if(this.isShuffle){
+            this.setQueue(this.queue);
+        } else {
+            // publishing this action will cause setQueue to be called with the
+            // non-shuffled music list, as retrieved from the musicList component
+            window.messenger.publish('music-list-update-music-track-list', {});
+        }
     }
 
     setQueue(tracks){
         if(this.isShuffle){
-            tracks = JSON.parse(JSON.stringify(tracks));
-            this.shuffleTracks(tracks);
+            // removing the first element before shuffling and then adding it back
+            // to the front ensures that the currently playing track remains #1
+            let firstTrack = tracks.shift();
+            this.shuffleQueue(tracks);
+            tracks.unshift(firstTrack);
         }
 
         this.queue = tracks;
@@ -170,8 +182,21 @@ class Music {
         window.messenger.publish('queue-order-updated', {tracks: this.queue});
     }
 
-    shuffleTracks(array){
-        var currentIndex = array.length, temporaryValue, randomIndex;
+    removeFromQueue(id, index){
+        if(this.getQueue()[index].id === id){
+            this.getQueue().splice(index, 1);
+            window.messenger.publish('queue-order-updated', {tracks: this.queue});
+
+            // if the currently playing song is removed from the queue,
+            // the current song should be skipped
+            if(this.currentlyPlaying !== null && this.currentlyPlaying.track.id === id){
+                this.playNext();
+            }
+        }
+    }
+
+    shuffleQueue(){
+        var currentIndex = this.queue.length, temporaryValue, randomIndex;
 
         // While there remain elements to shuffle...
         while (0 !== currentIndex) {
@@ -180,12 +205,10 @@ class Music {
             currentIndex -= 1;
 
             // And swap it with the current element.
-            temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
+            temporaryValue = this.queue[currentIndex];
+            this.queue[currentIndex] = this.queue[randomIndex];
+            this.queue[randomIndex] = temporaryValue;
         }
-
-        return array;
     }
 
     setVolume(volume){

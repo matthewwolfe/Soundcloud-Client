@@ -611,8 +611,17 @@ p, span {
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 overflow: hidden;
-                width: 90%;
+                width: 80%;
                 float: right;
+            }
+
+            .remove-icon {
+                display: inline-block;
+                float: right;
+                width: 10%;
+                text-align: right;
+                margin-top: 9px;
+                cursor: pointer;
             }
         }
 
