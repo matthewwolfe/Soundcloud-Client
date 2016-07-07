@@ -111,6 +111,13 @@ class MusicList extends React.Component {
     }
 
     ucFirst(string) {
+        if(string.indexOf('playlist') !== -1){
+            let playlistElement = document.querySelectorAll('#side-menu .playlist.active');
+            if(playlistElement.length === 1){
+                string = playlistElement[0].innerHTML;
+            }
+        }
+
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 

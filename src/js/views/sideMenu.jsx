@@ -40,6 +40,7 @@ class SideMenu extends React.Component {
                     <li key={i} 
                         onClick={this.setActive.bind(this, 'playlist-' + this.state.playlists[i].playlist.id)}
                         className={'playlist ' + this.isActive('playlist-' + this.state.playlists[i].playlist.id)}>
+
                         {this.state.playlists[i].playlist.title}
                     </li>
                 );
