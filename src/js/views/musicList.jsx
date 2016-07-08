@@ -41,7 +41,7 @@ class MusicList extends React.Component {
 
             // we do this so that the queue always begins at the track that is currently playing
             for(let i = 0; i < trackElements.length; i++){
-                if(trackElements[i].className === 'track playing'){
+                if(trackElements[i].className.indexOf('playing') !== -1){
                     window.music.setQueue(this.state.data.tracks.slice(i));
                     break;
                 }
@@ -118,7 +118,7 @@ class MusicList extends React.Component {
         if(string.indexOf('playlist') !== -1){
             let playlistElement = document.querySelectorAll('#side-menu .playlist.active');
             if(playlistElement.length === 1){
-                string = playlistElement[0].innerHTML;
+                string = playlistElement[0].textContent;
             }
         }
 

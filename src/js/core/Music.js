@@ -184,13 +184,13 @@ class Music {
 
     removeFromQueue(id, index){
         if(this.getQueue()[index].id === id){
-            this.getQueue().splice(index, 1);
-            window.messenger.publish('queue-order-updated', {tracks: this.queue});
-
             // if the currently playing song is removed from the queue,
             // the current song should be skipped
             if(this.currentlyPlaying !== null && this.currentlyPlaying.track.id === id){
                 this.playNext();
+            } else {
+                this.getQueue().splice(index, 1);
+                window.messenger.publish('queue-order-updated', {tracks: this.queue});
             }
         }
     }

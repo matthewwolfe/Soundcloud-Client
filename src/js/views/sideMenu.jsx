@@ -50,7 +50,8 @@ class SideMenu extends React.Component {
                     <li key={i} 
                         onClick={this.setActive.bind(this, 'playlist-' + this.state.playlists[i].playlist.id)}
                         className={'playlist ' + this.isActive('playlist-' + this.state.playlists[i].playlist.id)}>
-
+                        
+                        <span className="glyphicon glyphicon-tags"></span>
                         {this.state.playlists[i].playlist.title}
                     </li>
                 );
@@ -81,11 +82,6 @@ class SideMenu extends React.Component {
                     </li>
                     
                     <br/>
-                    
-                    <li>
-                        <span className="glyphicon glyphicon-tags"></span>
-                        Playlists
-                    </li>
                     
                     {playlists}
                 </ul>

@@ -23,20 +23,24 @@ class TiledTrack extends Track {
 
     // Override
     render(){
+        let trackClass = 'track tiled';
         let likedClass = 'glyphicon glyphicon-heart';
+        let downloadClass = 'glyphicon glyphicon-download-alt';
+
+        if(this.state.playing){
+            trackClass += ' playing';
+        }
 
         if(this.state.liked){
             likedClass += ' liked';
         }
-
-        let downloadClass = 'glyphicon glyphicon-download-alt';
 
         if(!this.props.data.streamable){
             downloadClass += ' hide';
         }
 
         return (
-            <div className="track-container"
+            <div className={trackClass}
                  id={this.props.data.id}
                  onContextMenu={this.contextMenu.bind(this)}>
 

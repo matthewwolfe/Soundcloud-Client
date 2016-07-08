@@ -178,6 +178,7 @@ p, span {
             }
 
             #notifications-menu {
+                z-index: 100;
                 float: left;
                 position: absolute;
                 top: 40px;
@@ -299,7 +300,7 @@ p, span {
             width: 100%;
             border-collapse: collapse;
 
-            .track {
+            .track.list {
                 width: 100%;
                 -webkit-touch-callout: none; /* iOS Safari */
                 -webkit-user-select: none;   /* Chrome/Safari/Opera */
@@ -334,6 +335,13 @@ p, span {
 
                 .track-options {
                     padding: 15px;
+                    min-width: 80px;
+                    max-width: 80px;
+
+                    span.glyphicon {
+                        margin-left: 10px;
+                        color: $primary-color;
+                    }
 
                     .glyphicon.liked {
                         color: $orange-color;
@@ -348,7 +356,7 @@ p, span {
         }
 
         /* Tiled Music List */
-        .track-container {
+        .track.tiled {
             display: inline-block;
             width: 200px;
             height: 275px;
