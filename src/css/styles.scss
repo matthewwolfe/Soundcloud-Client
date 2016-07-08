@@ -351,7 +351,7 @@ p, span {
         .track-container {
             display: inline-block;
             width: 200px;
-            height: 250px;
+            height: 275px;
             margin-left: 15px;
             margin-right: 15px;
             margin-bottom: 15px;
@@ -390,6 +390,20 @@ p, span {
                 max-height: 40px;
                 text-overflow: ellipsis;
                 overflow: hidden;  
+            }
+
+            .track-options {
+                height: 20px;
+                margin-top: 5px;
+
+                span.glyphicon {
+                    margin-right: 15px;
+                    cursor: pointer;
+                }
+
+                .glyphicon.liked {
+                    color: $orange-color;
+                }
             }
         }
 
@@ -629,6 +643,66 @@ p, span {
             content: "";
             clear: both;
             display: table;
+        }
+    }
+
+    #download-popup {
+        width: 30%;
+        height: 24%;
+        z-index: 5000;
+        border-top: 3px solid $orange-color;
+        background-color: #282828;
+        position: fixed;
+        top: 35%;
+        left: 50%;
+        margin-left: -15%;
+        -webkit-box-shadow: 0px 0px 30px -4px rgba(0,0,0,0.65);
+        -moz-box-shadow: 0px 0px 30px -4px rgba(0,0,0,0.65);
+        box-shadow: 0px 0px 30px -4px rgba(0,0,0,0.65);
+
+        span.glyphicon-remove {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .track-info {
+            margin-top: 15px;
+            padding: 15px;
+
+            .track-title {
+                font-size: 20px;
+            }
+        }
+
+        .progress-bar-container {
+            width: calc(100% - 30px);
+            padding: 15px;
+            position: relative;
+
+            .progress-background {
+                position: absolute;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                background-color: #999;
+                height: 2px;
+            }
+
+            .progress-bar {
+                position: absolute;
+                width: 0;
+                margin: 0;
+                padding: 0;
+                background-color: $orange-color;
+                height: 2px;
+            }
+        }
+
+        .download-complete {
+            margin-top: 15px;
+            padding: 15px;
         }
     }
 

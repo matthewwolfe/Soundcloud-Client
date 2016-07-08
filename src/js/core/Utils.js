@@ -9,13 +9,17 @@ Array.prototype.remove = function() {
     return this;
 };
 
-const electron = require('electron');
-const renderer = electron.ipcRenderer;
+const node = {
+    fs: require('fs'),
+    electron: require('electron'),
+    renderer: require('electron').ipcRenderer,
+    request: require('request')
+};
 
-renderer.on('click-play-pause', function(){
+node.renderer.on('click-play-pause', function(){
     window.messenger.publish('click-play-pause', {});
 });
 
-renderer.on('click-next-track', function(){
+node.renderer.on('click-next-track', function(){
 	window.messenger.publish('click-next-track', {});
 });
