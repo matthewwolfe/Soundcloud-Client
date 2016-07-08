@@ -8,17 +8,23 @@ class DownloadPopup extends React.Component {
         this.state = {
             track: {
                 title: '',
-                username: ''
+                user: {
+                    username: ''
+                }
             },
             fileSize: 0,
             bytesDownloaded: 0,
             isDownloadComplete: false,
             hidden: true
         };
+
+        this.timer = null;
     }
 
     componentWillMount(){
         this.trackInfoSubscription = window.messenger.subscribe('download-track-info', function(data){
+            this.clearTimer();
+
             this.setState({
                 track: data.track,
                 hidden: false,
@@ -36,6 +42,7 @@ class DownloadPopup extends React.Component {
 
         this.downloadCompleteSubscription = window.messenger.subscribe('download-complete', function(data){
             this.setState({isDownloadComplete: true});
+            this.setTimerToHidePopup();
         }.bind(this));
     }
 
@@ -46,14 +53,28 @@ class DownloadPopup extends React.Component {
         this.downloadCompleteSubscription.remove();
     }
 
+    setTimerToHidePopup(){
+        this.timer = setInterval(this.hidePopup.bind(this), 5000);
+    }
+
+    clearTimer(){
+        if(this.timer !== null){
+            clearInterval(this.timer);
+        }
+    }
+
     hidePopup(){
         this.setState({
             hidden: true,
             track: {
                 title: '',
-                username: ''
+                user: {
+                    username: ''
+                }
             }
         });
+
+        this.clearTimer();
     }
 
     render(){
@@ -71,7 +92,7 @@ class DownloadPopup extends React.Component {
                     </div>
 
                     <div className="track-username">
-                        {this.state.track.username}
+                        {this.state.track.user.username}
                     </div>
                 </div>
 
