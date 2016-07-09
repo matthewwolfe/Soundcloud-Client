@@ -17,4 +17,7 @@ npm run webpack
 
 // start the application
 npm run start
+
+// package the application
+npm run package
 ```
