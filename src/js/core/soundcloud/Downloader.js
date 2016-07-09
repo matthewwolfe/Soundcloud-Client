@@ -7,11 +7,9 @@ class Downloader {
     }
 
     initializeStorage(){
-        let directoryPath = this.path + this.directory;
-
         // initialize the directory
-        if(!this.directoryOrFileExists(directoryPath)){
-            node.fs.mkdirSync(directoryPath);
+        if(!this.directoryOrFileExists(this.path)){
+            node.fs.mkdirSync(this.path);
         }
     }
 
@@ -20,7 +18,6 @@ class Downloader {
             node.fs.accessSync(path, node.fs.F_OK);
             return true;
         } catch(err){
-            console.log(err);
             return false;
         }
     }
