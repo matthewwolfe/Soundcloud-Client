@@ -6,7 +6,8 @@ class SettingsPage extends React.Component {
         super(props);
 
         this.state = {
-            hidden: true
+            hidden: true,
+            download_path: config.music_download_path
         };
     }
 
@@ -30,10 +31,7 @@ class SettingsPage extends React.Component {
                 <div className="group-container">
                     <div className="group">
                         <h4>Download directory</h4>
-                        <select>
-                            <option>Desktop</option>
-                            <option>Downloads</option>
-                        </select>
+                        <input type="text" value={this.state.download_path} />
                     </div>
                 </div>
             </div>

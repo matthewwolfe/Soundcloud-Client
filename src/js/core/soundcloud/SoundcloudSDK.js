@@ -254,10 +254,15 @@ class SoundcloudSDK {
     search(query, callback){
         let url = this.build_url('search', {}, {
             q: query,
-            client_id: config.client_id
+            facet: 'genre',
+            limit: 200,
+            client_id: config.client_id,
+            linked_partitioning: 1
         });
 
         this.request.get(this.baseUrlV2 + url, function(response){
+            console.log(response);
+
             let collection = response.collection;
             let tracks = [];
 

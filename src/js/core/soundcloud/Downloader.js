@@ -1,11 +1,33 @@
 class Downloader {
 
     constructor(){
+        this.path = config.music_download_path;
+
+        this.initializeStorage();
+    }
+
+    initializeStorage(){
+        let directoryPath = this.path + this.directory;
+
+        // initialize the directory
+        if(!this.directoryOrFileExists(directoryPath)){
+            node.fs.mkdirSync(directoryPath);
+        }
+    }
+
+    directoryOrFileExists(path){
+        try {
+            node.fs.accessSync(path, node.fs.F_OK);
+            return true;
+        } catch(err){
+            console.log(err);
+            return false;
+        }
     }
 
     downloadTrack(id, title, dest){
         let url = `https://api.soundcloud.com/tracks/${id}/stream?client_id=${config.client_id}`;
-        dest = `${__dirname}/music/${title}.mp3`;
+        dest = `${this.path}/${title}.mp3`;
 
         let file = node.fs.createWriteStream(dest);
         let request = node.request.get(url);

@@ -1,10 +1,14 @@
 const config = {
+    // soundcloud
     base_url: 'https://api.soundcloud.com',
     base_urlv2: 'https://api-v2.soundcloud.com',
     redirect_uri: 'my-app://callback.html',
     client_id: '173bf9df509c48cf53b70c83eaf5cbbd',
     client_secret: '7ddbd6fcdc2d313abfb65758c751486e',
-    connection_url: 'https://api.soundcloud.com/connect?client_id=173bf9df509c48cf53b70c83eaf5cbbd&redirect_uri=my-app%3A%2F%2Fcallback.html&response_type=code'
+    connection_url: 'https://api.soundcloud.com/connect?client_id=173bf9df509c48cf53b70c83eaf5cbbd&redirect_uri=my-app%3A%2F%2Fcallback.html&response_type=code',
+
+    // other stuff
+    music_download_path: `${node.electron.remote.app.getPath('appData')}/Soundcloud-Client/music`
 };
 
 config.soundcloud_urls = {
@@ -150,10 +154,13 @@ config.soundcloud_urls = {
 
     // Search
     search: {
-        base: '/search',
+        base: '/search/tracks',
         params: [
             'q',
-            'client_id'
+            'facet',
+            'limit',
+            'client_id',
+            'linked_partitioning'
         ],
         next_href: null
     },

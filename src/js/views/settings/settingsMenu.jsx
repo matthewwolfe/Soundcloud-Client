@@ -19,6 +19,11 @@ class SettingsMenu extends React.Component {
         window.messenger.publish('settings-page-open', {});
     }
 
+    openDownloadedMusicDirectory(){
+        this.toggleHidden();
+        node.electron.shell.openItem(config.music_download_path);
+    }
+
     clearCache(){
         this.toggleHidden();
         window.dataManager.clear();
@@ -41,6 +46,7 @@ class SettingsMenu extends React.Component {
                      className={this.state.hidden ? 'hide' : ''}>
                     <ul>
                         <li onClick={this.openSettingsPage.bind(this)}>Settings</li>
+                        <li onClick={this.openDownloadedMusicDirectory.bind(this)}>View downloads</li>
                         <li onClick={this.clearCache.bind(this)}>Clear stored data</li>
                         <li onClick={this.logout.bind(this)}>Logout</li>
                     </ul>

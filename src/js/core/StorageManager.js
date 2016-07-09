@@ -1,8 +1,8 @@
 class StorageManager {
 
     constructor(callback){
-        this.fs = require('fs');
-        this.path = require('electron').remote.app.getPath('appData');
+        this.fs = node.fs;
+        this.path = node.electron.remote.app.getPath('appData');
 
         this.directory = 'Soundcloud-Client';
         this.file = 'data';
