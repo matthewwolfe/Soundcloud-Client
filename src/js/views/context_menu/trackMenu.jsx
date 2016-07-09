@@ -54,7 +54,7 @@ class TrackMenu extends React.Component {
     }
 
     openInBrowser(){
-        electron.shell.openExternal(this.props.track.permalink_url);
+        node.electron.shell.openExternal(this.props.track.permalink_url);
     }
 
     closeMenu(){

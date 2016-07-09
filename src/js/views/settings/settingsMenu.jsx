@@ -9,14 +9,19 @@ class SettingsMenu extends React.Component {
             hidden: true
         };
     }
-
+    
     toggleHidden(){
         this.setState({hidden: !this.state.hidden});
     }
 
-    clearCache(){
-        window.dataManager.clear();
+    openSettingsPage(){
         this.toggleHidden();
+        window.messenger.publish('settings-page-open', {});
+    }
+
+    clearCache(){
+        this.toggleHidden();
+        window.dataManager.clear();
     }
 
     logout(){
@@ -32,9 +37,10 @@ class SettingsMenu extends React.Component {
                       onClick={this.toggleHidden.bind(this)}>
                 </span>
 
-                <div id="settings-menu" 
+                <div id="settings-menu"
                      className={this.state.hidden ? 'hide' : ''}>
                     <ul>
+                        <li onClick={this.openSettingsPage.bind(this)}>Settings</li>
                         <li onClick={this.clearCache.bind(this)}>Clear stored data</li>
                         <li onClick={this.logout.bind(this)}>Logout</li>
                     </ul>

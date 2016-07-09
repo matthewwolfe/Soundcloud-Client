@@ -11,6 +11,7 @@ import TrackController from './trackController.jsx';
 
 import QueueList from './queue/queueList.jsx';
 
+import SettingsPage from './settings/settingsPage.jsx';
 import DownloadPopup from './track_downloads/downloadPopup.jsx';
 import ContextMenu from './context_menu/contextMenu.jsx';
 
@@ -57,6 +58,7 @@ class App extends React.Component {
 
                 <QueueList />
 
+                <SettingsPage />
                 <DownloadPopup />
                 <ContextMenu />
             </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import NotificationsMenu from './notifications/notifications_menu/notificationsMenu.jsx';
-import SettingsMenu from './settings_menu/settingsMenu.jsx';
+import SettingsMenu from './settings/settingsMenu.jsx';
 
 class SearchBar extends React.Component {
 
