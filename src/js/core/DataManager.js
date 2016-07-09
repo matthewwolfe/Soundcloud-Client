@@ -38,6 +38,23 @@ class DataManager {
         return true;
     }
 
+    removeById(key, id){
+        if(!this.exists(key)){
+            return false;
+        }
+
+        if(typeof this.get(key) !== 'object'){
+            return false;
+        }
+
+        for(let i = 0; i < this.get(key).length; i++){
+            if(this.get(key)[i].id === id){
+                this.get(key).splice(i, 1);
+                return true;
+            }
+        }
+    }
+
     find(key, value){
         if(!this.exists(key)){
             return false;

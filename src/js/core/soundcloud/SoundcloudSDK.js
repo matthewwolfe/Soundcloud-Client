@@ -274,16 +274,20 @@ class SoundcloudSDK {
         });
     }
 
-    toggleLikedTrack(id){
-        let url = '/users/' + window.user.id + '/favorites/' + id + '?oauth_token=' + this.oauthToken.get('access_token');
+    toggleLikedTrack(track){
+        let url = '/users/' + window.user.id + '/favorites/' + track.id + '?oauth_token=' + this.oauthToken.get('access_token');
 
-        if(window.dataManager.find('likedTrackIds', id)){
+        if(window.dataManager.find('likedTrackIds', track.id)){
             this.request.delete(this.baseUrl + url, function(response){});
-            window.dataManager.remove('likedTrackIds', id);
-
+            // delete from trackIds and liked tracks
+            window.dataManager.remove('likedTrackIds', track.id);
+            let result = window.dataManager.removeById('liked_tracks', track.id);
+            console.log(result);
         } else {
             this.request.put(this.baseUrl + url, function(response){});
-            window.dataManager.push('likedTrackIds', id);
+            // add trackIds and liked tracks
+            window.dataManager.unshift('likedTrackIds', track.id);
+            window.dataManager.unshift('liked_tracks', track);
         }
 
     }
@@ -297,7 +301,7 @@ class SoundcloudSDK {
         
         } else {
             this.request.put(this.baseUrlV2 + url, function(response){});
-            window.dataManager.push('trackRepostIds', id);
+            window.dataManager.unshift('trackRepostIds', id);
         }
     }
 

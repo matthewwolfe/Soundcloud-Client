@@ -62,7 +62,7 @@ class Track extends React.Component {
     }
 
     toggleLikedTrack(){
-        window.soundCloudAPI.toggleLikedTrack(this.props.data.id);
+        window.soundCloudAPI.toggleLikedTrack(this.props.data);
         window.messenger.publish('track-like', {
             id: this.props.data.id,
             liked: !this.state.liked

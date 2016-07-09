@@ -31,7 +31,7 @@ class SettingsPage extends React.Component {
                 <div className="group-container">
                     <div className="group">
                         <h4>Download directory</h4>
-                        <input type="text" value={this.state.download_path} />
+                        <p>{this.state.download_path}</p>
                     </div>
                 </div>
             </div>
