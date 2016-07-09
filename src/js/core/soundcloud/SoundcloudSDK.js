@@ -261,8 +261,6 @@ class SoundcloudSDK {
         });
 
         this.request.get(this.baseUrlV2 + url, function(response){
-            console.log(response);
-
             let collection = response.collection;
             let tracks = [];
 
