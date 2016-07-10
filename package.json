@@ -7,7 +7,7 @@
     "webpack": "webpack -d --watch",
     "build": "webpack -p",
     "gulp": "gulp",
-    "sass": "sass --watch src/css:dist/css",
+    "sass": "sass --watch src/css/styles.scss:dist/css/styles.css",
     "package": "electron-packager . --all --overwrite"
   },
   "devDependencies": {

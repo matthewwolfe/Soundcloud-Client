@@ -9,7 +9,8 @@ class MusicList extends React.Component {
             data: {
                 tracks: []
             },
-            selected: 'stream'
+            selected: '',
+            isLoading: false
         };
 
         this.trackId = 0;
@@ -101,6 +102,12 @@ class MusicList extends React.Component {
         );
     }
 
+    componentDidUpdate(prevProps, prevState){
+        if(this.state.data.tracks !== prevState.data.tracks){
+            this.setState({isLoading: false});
+        }
+    }
+
     getTop50(kind, genre){
         if(kind === undefined){
             kind = 'top';
@@ -126,19 +133,22 @@ class MusicList extends React.Component {
     }
 
     setActive(data){
-        this.setState({selected: data.selected});
+        if(this.state.selected !== data.selected){
+            
+            this.setState({selected: data.selected, isLoading: true});
 
-        if(data.selected === 'top 50'){
-            this.getTop50();
-        } else if(data.selected === 'stream'){
-            this.getStream();
-        } else if(data.selected === 'likes'){
-            this.getLikes();
-        } else if(data.selected === 'tracks'){
-            this.getTracks();
-        } else if(data.selected.indexOf('playlist') !== -1){
-            // passes in the id because the string is "playlist-{id}"
-            this.getPlaylist(data.selected.substring(data.selected.indexOf('-') + 1));
+            if(data.selected === 'top 50'){
+                this.getTop50();
+            } else if(data.selected === 'stream'){
+                this.getStream();
+            } else if(data.selected === 'likes'){
+                this.getLikes();
+            } else if(data.selected === 'tracks'){
+                this.getTracks();
+            } else if(data.selected.indexOf('playlist') !== -1){
+                // passes in the id because the string is "playlist-{id}"
+                this.getPlaylist(data.selected.substring(data.selected.indexOf('-') + 1));
+            }
         }
     }
 

@@ -5,6 +5,8 @@ import ListTrack from './listTrack.jsx';
 
 import TopSection from '../top_50_section/topSection.jsx';
 
+import Loader from '../loader.jsx';
+
 class ListMusicList extends MusicList {
 
     constructor(props){
@@ -13,6 +15,12 @@ class ListMusicList extends MusicList {
 
     // Override
     render(){
+        if(this.state.isLoading){
+            return (
+                <Loader />
+            );
+        }
+
         let topSection;
 
         if(this.state.selected === 'top 50'){
