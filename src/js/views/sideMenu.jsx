@@ -17,6 +17,10 @@ class SideMenu extends React.Component {
         this.getSelectedSubscription = window.messenger.subscribe('side-menu-get-selected', function(data){
             data.callback({selected: this.state.selected});
         }.bind(this));
+
+        this.setSelectedSubscription = window.messenger.subscribe('side-menu-set-selected', function(data){
+            this.setState({selected: data.selected});
+        }.bind(this));
     }
 
     componentWillUnmount(){

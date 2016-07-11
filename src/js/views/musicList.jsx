@@ -30,7 +30,8 @@ class MusicList extends React.Component {
         }.bind(this));
 
         this.searchResultsSubscription = window.messenger.subscribe('search-results', function(data){
-            this.setState({data: data});
+            this.setState({data: data, selected: 'search'});
+            window.messenger.publish('side-menu-set-selected', {selected: 'search'});
         }.bind(this));
 
         this.topSectionSubscription = window.messenger.subscribe('top-section-change', function(data){

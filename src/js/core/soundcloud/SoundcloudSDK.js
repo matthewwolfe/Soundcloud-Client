@@ -274,6 +274,22 @@ class SoundcloudSDK {
         });
     }
 
+    autocomplete(query, callback){
+        let url = this.build_url('autocomplete', {}, {
+            q: query,
+            queries_limit: 0,
+            results_limit: 20,
+            client_id: config.client_id,
+            limit: 20,
+            offset: 0,
+            linked_partitioning: 1
+        });
+
+        this.request.get(this.baseUrlV2 + url, function(response){
+            callback(response.results);
+        });
+    }
+
     toggleLikedTrack(track){
         let url = '/users/' + window.user.id + '/favorites/' + track.id + '?oauth_token=' + this.oauthToken.get('access_token');
 
@@ -281,8 +297,7 @@ class SoundcloudSDK {
             this.request.delete(this.baseUrl + url, function(response){});
             // delete from trackIds and liked tracks
             window.dataManager.remove('likedTrackIds', track.id);
-            let result = window.dataManager.removeById('liked_tracks', track.id);
-            console.log(result);
+            window.dataManager.removeById('liked_tracks', track.id);
         } else {
             this.request.put(this.baseUrl + url, function(response){});
             // add trackIds and liked tracks

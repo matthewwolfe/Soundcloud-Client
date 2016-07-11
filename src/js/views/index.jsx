@@ -3,7 +3,7 @@ import {render} from 'react-dom';
 
 import User from './user.jsx';
 import SideMenu from './sideMenu.jsx';
-import SearchBar from './searchBar.jsx';
+import SearchBar from './search/searchBar.jsx';
 import ListMusicList from './tracks_list/listMusicList.jsx';
 import TiledMusicList from './tracks_tiled/tiledMusicList.jsx';
 import MusicPlayer from './music_player/musicPlayer.jsx';

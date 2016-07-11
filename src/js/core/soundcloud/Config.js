@@ -165,6 +165,20 @@ config.soundcloud_urls = {
         next_href: null
     },
 
+    autocomplete: {
+        base: '/search/autocomplete',
+        params: [
+            'q',
+            'queries_limit',
+            'results_limit',
+            'client_id',
+            'limit',
+            'offset',
+            'linked_partitioning'
+        ],
+        next_href: null
+    },
+
     // Notifications
     notifications: {
         base: '/activities',
