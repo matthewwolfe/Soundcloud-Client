@@ -50,6 +50,10 @@ class TrackController extends React.Component {
         }.bind(this), 40);
     }
 
+    usernameOnClick(){
+        window.messenger.publish('user-page-open', {id: this.state.track.user.id});
+    }
+
     render () {
         if(this.state.playing){ 
             return (
@@ -64,7 +68,11 @@ class TrackController extends React.Component {
                             {this.state.track.title}
                         </div>
 
-                        <div id="track-creator">{this.state.track.user.username}</div>
+                        <div id="track-creator"
+                             onClick={this.usernameOnClick.bind(this)}>
+
+                             {this.state.track.user.username}
+                        </div>
                     </div>
                 </div>
             );

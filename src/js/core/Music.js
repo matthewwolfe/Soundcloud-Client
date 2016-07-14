@@ -160,6 +160,27 @@ class Music {
         }
     }
 
+    setVolume(volume){
+        soundManager.setVolume(volume);
+    }
+
+    reset(){
+        if(this.currentSoundObject !== null){
+            this.currentSoundObject.clearOnPosition();
+        }
+        this.currentSoundObject = null;
+        this.currentlyPlaying = null;
+    }
+
+    convertDuration(millis){
+        var hours = Math.floor(millis / 36e5),
+            mins = Math.floor((millis % 36e5) / 6e4),
+            secs = Math.floor((millis % 6e4) / 1000); 
+        return (hours > 0 ? hours + ":" : '') + (mins < 10 && hours > 0 ? '0' : '') + mins + ":" + (secs < 10 ? '0' : '') + secs;
+    }
+
+    /* Queue Methods */
+
     setQueue(tracks){
         if(this.isShuffle){
             // removing the first element before shuffling and then adding it back
@@ -209,24 +230,5 @@ class Music {
             this.queue[currentIndex] = this.queue[randomIndex];
             this.queue[randomIndex] = temporaryValue;
         }
-    }
-
-    setVolume(volume){
-        soundManager.setVolume(volume);
-    }
-
-    reset(){
-        if(this.currentSoundObject !== null){
-            this.currentSoundObject.clearOnPosition();
-        }
-        this.currentSoundObject = null;
-        this.currentlyPlaying = null;
-    }
-
-    convertDuration(millis){
-        var hours = Math.floor(millis / 36e5),
-            mins = Math.floor((millis % 36e5) / 6e4),
-            secs = Math.floor((millis % 6e4) / 1000); 
-        return (hours > 0 ? hours + ":" : '') + (mins < 10 && hours > 0 ? '0' : '') + mins + ":" + (secs < 10 ? '0' : '') + secs;
     }
 }

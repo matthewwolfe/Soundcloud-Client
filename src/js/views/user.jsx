@@ -16,11 +16,15 @@ class User extends React.Component {
         this.loadUser();
     }
 
+    usernameOnClick(){
+        window.messenger.publish('user-page-open', {id: this.state.data.id});
+    }
+
     render (){
         return (
             <div id="user">
                 <img className="profile-picture" src={this.state.data.avatar_url} />
-                <h4 className="username">{this.state.data.username}</h4>
+                <h4 onClick={this.usernameOnClick.bind(this)} className="username">{this.state.data.username}</h4>
                 <p className="followers-count">Followers: {this.state.data.followers_count}</p>
                 <p className="followings-count">Following: {this.state.data.followings_count}</p>
             </div>

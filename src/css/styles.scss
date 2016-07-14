@@ -83,6 +83,11 @@ p, span {
                 margin-left: 10px;
                 display: inline-block;
                 vertical-align: top;
+                cursor: pointer;
+            }
+
+            .username:hover {
+                text-decoration: underline;
             }
 
             .followers_count {
@@ -162,6 +167,11 @@ p, span {
                 height: 20px;
                 font-size: 12px;
                 white-space: nowrap;
+            }
+
+            #track-creator:hover {
+                cursor: pointer;
+                text-decoration: underline;
             }
         }
     }
@@ -762,6 +772,10 @@ p, span {
                 margin-top: 15px;
             }
 
+            .description {
+                word-wrap: break-word;
+            }
+
             .username {
                 font-size: 24px;
             }
@@ -769,6 +783,8 @@ p, span {
             .info-container {
                 margin-left: 30px;
                 vertical-align: top;
+                max-width: 500px;
+                max-width: 500px;
             }
         }
     }
