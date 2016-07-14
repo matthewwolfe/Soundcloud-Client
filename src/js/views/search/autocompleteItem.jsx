@@ -9,6 +9,8 @@ class AutocompleteItem extends React.Component {
     handleClick(){
         if(this.props.data.kind === 'track'){
             window.messenger.publish('search-query', {query: this.props.data.output});
+        } else if(this.props.data.kind === 'user'){
+            window.messenger.publish('user-page-open', {user: this.props.data.entity});
         }
     }
 

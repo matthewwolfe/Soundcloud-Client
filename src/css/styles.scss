@@ -192,6 +192,7 @@ p, span {
             position: absolute;
             top: 30px;
             left: 240px;
+            z-index: 500;
 
             .autocomplete-item {
                 padding-left: 15px;
@@ -698,7 +699,8 @@ p, span {
         }
     }
 
-    #settings-page {
+    #settings-page,
+    #user-page {
         height: calc(100% - 100px);
         padding: 15px;
         width: calc(100% - 240px);

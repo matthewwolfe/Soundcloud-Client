@@ -1,4 +1,4 @@
-Array.prototype.remove = function() {
+Array.prototype.remove = function(){
     var what, a = arguments, L = a.length, ax;
     while (L && this.length) {
         what = a[--L];
@@ -8,6 +8,10 @@ Array.prototype.remove = function() {
     }
     return this;
 };
+
+function isEmpty(object){
+    return Object.keys(object).length === 0 && object.constructor === Object;
+}
 
 const node = {
     fs: require('fs'),

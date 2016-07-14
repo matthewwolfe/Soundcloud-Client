@@ -21,6 +21,15 @@ class SearchBar extends React.Component {
         this.receiveSearchQuerySubscription = window.messenger.subscribe('search-query', function(data){
             this.search(data.query);
         }.bind(this));
+
+        this.hideAutocompleteSubscription = window.messenger.subscribe('hide-autocomplete', function(data){
+            this.hideAutocomplete();
+        }.bind(this));
+    }
+
+    componentWillUnmount(){
+        this.receiveSearchQuerySubscription.remove();
+        this.hideAutocompleteSubscription.remove();
     }
 
     search(query){  
