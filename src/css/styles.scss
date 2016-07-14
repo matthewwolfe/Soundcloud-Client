@@ -63,6 +63,21 @@ p, span {
 }
 
 #app {
+    #splash-screen {
+        width: 100%;
+        height: 100%;
+        background-color: #141414;
+        z-index: 10000;
+
+        img {
+            position: absolute;
+            width: 300px;
+            display: block;
+            top: calc(50% - 85px);
+            left: calc(50% - 150px);
+        }
+    }
+
     #left-side-bar {
         height: calc(100% - 40px);
         width: 240px;
