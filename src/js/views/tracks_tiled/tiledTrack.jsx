@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Track from '../track.jsx';
+import Track from '../generic/track.jsx';
 
 class TiledTrack extends Track {
 
@@ -14,7 +14,6 @@ class TiledTrack extends Track {
         } else {
             return '';
         }
-
     }
 
     openInBrowser(){

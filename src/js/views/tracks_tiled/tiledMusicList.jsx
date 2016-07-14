@@ -1,6 +1,6 @@
 import React from 'react';
 
-import MusicList from '../musicList.jsx';
+import MusicList from '../generic/musicList.jsx';
 import TiledTrack from './tiledTrack.jsx';
 
 import TopSection from '../top_50_section/topSection.jsx';

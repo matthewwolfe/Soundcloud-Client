@@ -717,6 +717,9 @@ p, span {
         h1 {
             margin-left: 15px;
         }
+    }
+
+    #settings-page {
 
         .group-container {
             width: 100%;
@@ -734,6 +737,31 @@ p, span {
                     display: inline-block;
                     width: 80%;
                 }
+            }
+        }
+    }
+
+    #user-page {
+
+        #profile {
+
+            .profile-picture,
+            .info-container {
+                display: inline-block;
+            }
+            .username,
+            .profile-location {
+                display: block;
+                margin-left: 0px;
+            }
+
+            .username {
+                font-size: 24px;
+            }
+
+            .info-container {
+                margin-left: 30px;
+                vertical-align: top;
             }
         }
     }

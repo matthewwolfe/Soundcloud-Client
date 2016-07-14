@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Track from '../track.jsx';
+import Track from '../generic/track.jsx';
 
 class ListTrack extends Track {
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import MusicList from '../musicList.jsx';
+import MusicList from '../generic/musicList.jsx';
 import ListTrack from './listTrack.jsx';
 
 import TopSection from '../top_50_section/topSection.jsx';

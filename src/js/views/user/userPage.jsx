@@ -29,7 +29,7 @@ class UserPage extends React.Component {
 
     render(){
         return (
-            <div id="settings-page" className={this.state.hidden ? 'hide' : ''}>
+            <div id="user-page" className={this.state.hidden ? 'hide' : ''}>
                 <span onClick={this.hide.bind(this)} className="glyphicon glyphicon-remove"></span>
 
                 <Profile data={this.state.user} />
