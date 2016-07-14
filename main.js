@@ -2,6 +2,7 @@ const {app, BrowserWindow, globalShortcut} = require('electron');
 const fs = require('fs');
 
 let mainWindow;
+let appWillQuit = false;
 
 function createWindow(){
 
@@ -27,8 +28,13 @@ function createWindow(){
 
     mainWindow.webContents.openDevTools();
 
-    mainWindow.on('closed', function(){
-        mainWindow = null;
+    mainWindow.on('close', function(e){
+        if(process.platform === 'darwin' && !appWillQuit){
+            e.preventDefault();
+            mainWindow.hide();
+        } else {
+            mainWindow = null;
+        }
     });
 
     globalShortcut.register('MediaPlayPause', function(){
@@ -57,5 +63,9 @@ app.on('window-all-closed', function(){
 app.on('activate', function(){
     if(mainWindow === null){
         createWindow();
+    } else {
+        mainWindow.show();
     }
 });
+
+app.on('before-quit', () => appWillQuit = true);
