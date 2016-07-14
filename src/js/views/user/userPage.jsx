@@ -16,7 +16,13 @@ class UserPage extends React.Component {
     componentWillMount(){
         this.toggleSubscription = window.messenger.subscribe('user-page-open', function(data){
             window.messenger.publish('hide-autocomplete', {});
-            this.setState({hidden: false, user: data.user});
+            this.getUser(data.user.id);
+        }.bind(this));
+    }
+
+    getUser(id){
+        window.soundCloudAPI.getUserById(id, function(user){
+            this.setState({hidden: false, user: user});
         }.bind(this));
     }
 

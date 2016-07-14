@@ -750,9 +750,16 @@ p, span {
                 display: inline-block;
             }
             .username,
-            .profile-location {
+            .profile-location,
+            .followers-count,
+            .followings-count {
                 display: block;
                 margin-left: 0px;
+            }
+
+            .followers-count,
+            .description {
+                margin-top: 15px;
             }
 
             .username {

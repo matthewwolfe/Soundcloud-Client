@@ -46,6 +46,16 @@ config.soundcloud_urls = {
         }
     },
 
+    user_by_id: {
+        base: function(user_id){
+            return `/users/${user_id}`;
+        },
+        params: [
+            'client_id'
+        ],
+        next_href: null
+    },
+
     // Playlists
     playlists: {
         base: function(user_id){

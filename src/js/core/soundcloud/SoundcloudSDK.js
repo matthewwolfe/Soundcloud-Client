@@ -81,6 +81,16 @@ class SoundcloudSDK {
         });
     }
 
+    getUserById(id, callback){
+        let url = this.build_url('user_by_id', {id: id}, {
+            client_id: config.client_id
+        });
+
+        this.request.get(this.baseUrl + url, function(response){
+            callback(response);
+        });
+    }
+
     getLikedTracks(callback){
         let liked_tracks = window.dataManager.get('liked_tracks');
 
