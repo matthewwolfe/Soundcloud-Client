@@ -155,7 +155,7 @@ p, span {
         #track-controller-container {
             position: fixed;
             bottom: 60px;
-            height: 120px;
+            height: 170px;
             width: 240px;
             border-top: 1px solid $secondary-color;
 
@@ -165,13 +165,13 @@ p, span {
                 overflow: hidden;
                 position: fixed;
                 bottom: 60px;
-                height: 120px;
+                height: 170px;
                 width: 220px;
             }
 
             #track-image {
-                width: 50px;
-                height: 50px;
+                width: 100px;
+                height: 100px;
                 margin-bottom: 10px;
                 margin-top: 10px;
             }

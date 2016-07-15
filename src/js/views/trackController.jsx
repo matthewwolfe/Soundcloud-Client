@@ -55,11 +55,15 @@ class TrackController extends React.Component {
     }
 
     render () {
+
         if(this.state.playing){ 
             return (
                 <div id="track-controller-container">
                     <div id="track-controller">
-                        <img id="track-image" src={this.state.track.artwork_url} />
+
+                        <img id="track-image"
+                             src={!this.state.track.artwork_url ? 'dist/images/default.png' : this.state.track.artwork_url}
+                        />
 
                         <div id="track-title"
                              style={{marginLeft: this.state.title_position}}
