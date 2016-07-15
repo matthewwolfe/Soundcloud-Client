@@ -32,3 +32,30 @@ body {
     width: 80%;
     margin: auto;
 }
+
+#download-container {
+    margin-top: 30px;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 70px;
+}
+
+#download-container a {
+    display: block;
+    margin-bottom: 15px;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding: 15px;
+    background-color: #f50;
+    color: #fff;
+    text-shadow: 0px -2px #B33B00;
+    font-size: 18px;
+    border-bottom: 3px solid #B33B00;
+}
+
+#download-container a:hover {
+    text-decoration: none;
+}
