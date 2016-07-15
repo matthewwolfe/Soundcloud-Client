@@ -35,7 +35,6 @@ class ListMusicList extends MusicList {
         }
 
         return (
-
             <div id="music-list" onScroll={this.handleScroll.bind(this)}>
                 <h2 className="section-title">{this.ucFirst(this.state.selected)}</h2>
 

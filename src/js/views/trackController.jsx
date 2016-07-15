@@ -71,7 +71,7 @@ class TrackController extends React.Component {
                         <div id="track-creator"
                              onClick={this.usernameOnClick.bind(this)}>
 
-                             {this.state.track.user.username}
+                             {this.state.track.user === undefined ? this.state.track.artist : this.state.track.user.username}
                         </div>
                     </div>
                 </div>

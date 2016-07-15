@@ -29,6 +29,8 @@ class Music {
         }.bind(this));
     }
 
+
+
     play(track, onStartPlaying, onFinished){
         if(!this.isPlayerReady){
             return;
@@ -37,12 +39,21 @@ class Music {
         soundManager.stopAll();
         this.reset();
 
-        this.currentSoundObject = soundManager.createSound({
-            id: track.id,
-            url: 'https://api.soundcloud.com/tracks/' + track.id + '/stream?client_id=173bf9df509c48cf53b70c83eaf5cbbd',
-            title: track.title,
-            volume: 50
-        });
+        // if the track id is undefined then it is an offline track
+        if(track.hasOwnProperty('type') && track.type === 'offline'){
+            this.currentSoundObject = soundManager.createSound({
+                url: config.music_download_path + '/' + track.title + '.mp3',
+                title: track.title,
+                volume: 50
+            });
+        } else {
+            this.currentSoundObject = soundManager.createSound({
+                id: track.id,
+                url: 'https://api.soundcloud.com/tracks/' + track.id + '/stream?client_id=173bf9df509c48cf53b70c83eaf5cbbd',
+                title: track.title,
+                volume: 50
+            });
+        }
 
         this.setCurrentlyPlaying(track, onStartPlaying, onFinished);
 

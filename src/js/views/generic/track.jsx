@@ -92,7 +92,7 @@ class Track extends React.Component {
 
     downloadTrack(){
         window.messenger.publish('download-track-info', {track: this.props.data});
-        window.downloader.downloadTrack(this.props.data.id, this.props.data.title);
+        window.downloader.downloadTrack(this.props.data);
     }
 
     render () {

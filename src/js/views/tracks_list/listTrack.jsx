@@ -17,6 +17,7 @@ class ListTrack extends Track {
         let trackClass = 'track list';
         let likedClass = 'glyphicon glyphicon-heart';
         let downloadClass = 'glyphicon glyphicon-download-alt';
+        let options = '';
 
         if(this.state.playing){
             trackClass += ' playing';
@@ -28,6 +29,14 @@ class ListTrack extends Track {
 
         if(!this.props.data.streamable){
             downloadClass += ' hide';
+        }
+
+        if(this.props.data.type !== 'offline'){
+            
+            options = <td className="track-options">
+                        <span onClick={this.toggleLikedTrack.bind(this)} className={likedClass}></span>
+                        <span onClick={this.downloadTrack.bind(this)} className={downloadClass}></span>
+                      </td>
         }
 
         return (
@@ -45,10 +54,8 @@ class ListTrack extends Track {
                 <td className="track-duration">
                     <p>{this.convertDuration(this.props.data.duration)}</p>
                 </td>
-                <td className="track-options">
-                    <span onClick={this.toggleLikedTrack.bind(this)} className={likedClass}></span>
-                    <span onClick={this.downloadTrack.bind(this)} className={downloadClass}></span>
-                </td>
+
+                {options}
             </tr>
         );
     }

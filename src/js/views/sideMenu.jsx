@@ -84,6 +84,11 @@ class SideMenu extends React.Component {
                         <span className="glyphicon glyphicon-music"></span>
                         Tracks
                     </li>
+
+                    <li onClick={this.setActive.bind(this, 'offline')} className={this.isActive('offline')}>
+                        <span className="glyphicon glyphicon-download-alt"></span>
+                        Offline
+                    </li>
                     
                     <br/>
                     

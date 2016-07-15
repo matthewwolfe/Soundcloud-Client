@@ -22,9 +22,20 @@ class Downloader {
         }
     }
 
-    downloadTrack(id, title, dest){
-        let url = `https://api.soundcloud.com/tracks/${id}/stream?client_id=${config.client_id}`;
-        dest = `${this.path}/${title}.mp3`;
+    setTags(track, dest){
+        // tags must always be strings (mainly duration, which is usually a number)
+        let tags = {
+            title: track.title.toString(),
+            artist: track.user.username.toString(),
+            length: track.duration.toString()
+        };
+
+        node.id3_writer.write(tags, dest);
+    }
+
+    downloadTrack(track, dest){
+        let url = `https://api.soundcloud.com/tracks/${track.id}/stream?client_id=${config.client_id}`;
+        dest = `${this.path}/${track.title}.mp3`;
 
         let file = node.fs.createWriteStream(dest);
         let request = node.request.get(url);
@@ -42,9 +53,10 @@ class Downloader {
         });
 
         file.on('finish', function() {
-            window.messenger.publish('download-complete', {});
             file.close();  // close() is async, call cb after close completes.
-        });
+            this.setTags(track, dest);
+            window.messenger.publish('download-complete', {});
+        }.bind(this));
 
         request.end();
     }

@@ -17,7 +17,9 @@ const node = {
     fs: require('fs'),
     electron: require('electron'),
     renderer: require('electron').ipcRenderer,
-    request: require('request')
+    request: require('request'),
+    id3_writer: require('node-id3'),
+    id3_reader: require('id3js')
 };
 
 node.renderer.on('click-play-pause', function(){

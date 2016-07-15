@@ -10,7 +10,7 @@ class MusicList extends React.Component {
                 tracks: []
             },
             selected: '',
-            isLoading: false
+            isLoading: false,
         };
 
         this.trackId = 0;
@@ -58,6 +58,12 @@ class MusicList extends React.Component {
         this.updateTrackListSubscription.remove();
     }
 
+    componentDidUpdate(prevProps, prevState){
+        if(this.state.data.tracks !== prevState.data.tracks){
+            this.setState({isLoading: false});
+        }
+    }
+
     handleScroll(){
         let div = document.getElementById('music-list');
 
@@ -94,6 +100,12 @@ class MusicList extends React.Component {
         }.bind(this));
     }
 
+    getOffline(){
+        window.offlineTracksManager.get(function(tracks){
+            this.setState({data: {tracks: tracks}});
+        }.bind(this));
+    }
+
     getPlaylist(id){
         window.soundCloudAPI.getPlaylist(
             id,
@@ -101,12 +113,6 @@ class MusicList extends React.Component {
                 this.setState({data: {tracks: tracks}});
             }.bind(this)
         );
-    }
-
-    componentDidUpdate(prevProps, prevState){
-        if(this.state.data.tracks !== prevState.data.tracks){
-            this.setState({isLoading: false});
-        }
     }
 
     getTop50(kind, genre){
@@ -135,7 +141,6 @@ class MusicList extends React.Component {
 
     setActive(data){
         if(this.state.selected !== data.selected){
-            
             this.setState({selected: data.selected, isLoading: true});
 
             if(data.selected === 'top 50'){
@@ -146,6 +151,8 @@ class MusicList extends React.Component {
                 this.getLikes();
             } else if(data.selected === 'tracks'){
                 this.getTracks();
+            } else if(data.selected === 'offline'){
+                this.getOffline();
             } else if(data.selected.indexOf('playlist') !== -1){
                 // passes in the id because the string is "playlist-{id}"
                 this.getPlaylist(data.selected.substring(data.selected.indexOf('-') + 1));
