@@ -77,16 +77,18 @@ class Track extends React.Component {
     }
 
     contextMenu(e){
-        window.messenger.publish('context-menu-toggle',
-            {
-                type: 'track',
-                data: this.props.data,
-                coordinates: {
-                    x: e.pageX,
-                    y: e.pageY
+        if(this.props.data.type !== 'offline'){
+            window.messenger.publish('context-menu-toggle',
+                {
+                    type: 'track',
+                    data: this.props.data,
+                    coordinates: {
+                        x: e.pageX,
+                        y: e.pageY
+                    }
                 }
-            }
-        );
+            );
+        }
     }
 
 

@@ -17,7 +17,9 @@ class TiledTrack extends Track {
     }
 
     openInBrowser(){
-        electron.shell.openExternal(this.props.data.permalink_url);
+        if(this.props.data.permalink_url){
+            electron.shell.openExternal(this.props.data.permalink_url);
+        }
     }
 
     // Override
