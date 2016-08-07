@@ -2,6 +2,8 @@ import React from 'react';
 
 import Autocomplete from './autocomplete.jsx';
 
+import { SC_autocomplete } from '../../core/soundcloud/soundCloudSDK';
+
 import NotificationsMenu from '../notifications/notifications_menu/notificationsMenu.jsx';
 import SettingsMenu from '../settings/settingsMenu.jsx';
 
@@ -17,31 +19,12 @@ class SearchBar extends React.Component {
         };
     }
 
-    componentWillMount(){
-        this.receiveSearchQuerySubscription = window.messenger.subscribe('search-query', function(data){
-            this.search(data.query);
-        }.bind(this));
-
-        this.hideAutocompleteSubscription = window.messenger.subscribe('hide-autocomplete', function(data){
-            this.hideAutocomplete();
-        }.bind(this));
-    }
-
-    componentWillUnmount(){
-        this.receiveSearchQuerySubscription.remove();
-        this.hideAutocompleteSubscription.remove();
-    }
-
     search(query){  
         if(query === undefined){
             query = this.state.value;
         }
 
         this.hideAutocomplete();
-
-        window.soundCloudAPI.search(query, function(response){
-            window.messenger.publish('search-results', {tracks: response});
-        });
     }
 
     showAutocomplete(){
@@ -53,8 +36,8 @@ class SearchBar extends React.Component {
     }
 
     autocomplete(){
-        window.soundCloudAPI.autocomplete(this.state.value, function(response){
-            this.setState({autocompleteResults: response});
+        SC_autocomplete(this.state.value, function(results){
+            this.setState({autocompleteResults: results});
         }.bind(this));
     }
 

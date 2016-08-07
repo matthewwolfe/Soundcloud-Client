@@ -20,7 +20,7 @@ const App = (props) => {
             <SearchBar />
 
             <div id="left-side-bar">
-                <User data={props.user} />
+                <User user={props.user} />
                 <SideMenu />
                 <TrackController />
             </div>

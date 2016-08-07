@@ -15,23 +15,6 @@ class MusicPlayer extends React.Component {
             isTiledView: false,
             isQueueShowing: false
         };
-
-        this.playPauseSubscription = window.messenger.subscribe('click-play-pause', function(data){
-            if(this.state.playing){
-                this.pause();
-            } else {
-                this.play();
-            }
-        }.bind(this));
-
-        this.musicStateChangeSubscription = window.messenger.subscribe('music-state-change', function(data){
-            this.setState({playing: data.playing});
-        }.bind(this));
-    }
-
-    componentWillUnmount(){
-        this.playPauseSubscription.remove();
-        this.musicStateChangeSubscription.remove();
     }
 
     play(){
@@ -100,10 +83,6 @@ class MusicPlayer extends React.Component {
 
         if(this.state.isQueueShowing){
             queueClass += ' active';
-        }
-
-        if(window.music.currentlyPlaying !== null){
-            trackName = window.music.currentlyPlaying.title;
         }
 
         return (

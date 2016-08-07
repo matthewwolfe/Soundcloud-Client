@@ -21,38 +21,6 @@ class DownloadPopup extends React.Component {
         this.timer = null;
     }
 
-    componentWillMount(){
-        this.trackInfoSubscription = window.messenger.subscribe('download-track-info', function(data){
-            this.clearTimer();
-
-            this.setState({
-                track: data.track,
-                hidden: false,
-                bytesDownloaded: 0,
-                isDownloadComplete: false});
-        }.bind(this));
-
-        this.fileSizeSubscription = window.messenger.subscribe('download-file-size', function(data){
-            this.setState({fileSize: data.size});
-        }.bind(this));
-
-        this.chunkLengthSubscription = window.messenger.subscribe('download-chunk-length', function(data){
-            this.setState({bytesDownloaded: this.state.bytesDownloaded + data.size});
-        }.bind(this));
-
-        this.downloadCompleteSubscription = window.messenger.subscribe('download-complete', function(data){
-            this.setState({isDownloadComplete: true});
-            this.setTimerToHidePopup();
-        }.bind(this));
-    }
-
-    componentWillUnmount(){
-        this.trackInfoSubscription.remove();
-        this.fileSizeSubscription.remove();
-        this.chunkLengthSubscription.remove();
-        this.downloadCompleteSubscription.remove();
-    }
-
     setTimerToHidePopup(){
         this.timer = setInterval(this.hidePopup.bind(this), 5000);
     }

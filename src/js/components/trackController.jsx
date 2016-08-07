@@ -12,14 +12,6 @@ class TrackController extends React.Component {
             isScrolling: false
         };
 
-        window.messenger.subscribe('music-state-change', function(data){
-            this.setState({playing: data.playing});
-
-            if(data.playing){
-                this.setState({track: window.music.currentlyPlaying.track});
-            }
-        }.bind(this));
-
         this.timer = null;
     }
 
@@ -51,7 +43,6 @@ class TrackController extends React.Component {
     }
 
     usernameOnClick(){
-        window.messenger.publish('user-page-open', {id: this.state.track.user.id});
     }
 
     render () {

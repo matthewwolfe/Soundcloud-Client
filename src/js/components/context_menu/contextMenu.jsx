@@ -12,20 +12,6 @@ class ContextMenu extends React.Component {
         this.state = {
             isHidden: true
         };
-
-        window.messenger.subscribe('context-menu-toggle',
-            function(data){
-                this.initializeMenu(data.type, data.data, data.coordinates);
-
-            }.bind(this)
-        );
-
-        window.messenger.subscribe('context-menu-close',
-            function(data){
-                this.mouseDownOnMenu = false;
-                this.contextMenuClick();
-            }.bind(this)
-        );
     }
 
     componentDidMount(){

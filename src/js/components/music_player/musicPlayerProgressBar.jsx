@@ -6,10 +6,6 @@ class MusicPlayerProgressBar extends React.Component {
         super(props);
 
         this.state = {position: 0, duration: 0, hover: false};
-
-        window.messenger.subscribe('music-position-update', function(data){
-            this.setState({position: data.position, duration: data.duration});
-        }.bind(this));
     }
 
     mouseOver(){
@@ -36,6 +32,8 @@ class MusicPlayerProgressBar extends React.Component {
     }
 
     render(){
+        return null;
+        /*
         return (
             <div id="progress-bar">
                 <div id="current-time">{window.music.convertDuration(this.state.position)}</div>
@@ -60,6 +58,7 @@ class MusicPlayerProgressBar extends React.Component {
                 <div id="duration-time">{window.music.convertDuration(this.state.duration)}</div>
             </div>
         );
+        */
     }
 }
 

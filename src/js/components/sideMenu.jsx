@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { getOwnedPlaylists as SC_getMyPlaylists } from '../core/soundcloud/soundCloudSDK';
+
 class SideMenu extends React.Component {
 
     constructor(props){
@@ -7,24 +9,11 @@ class SideMenu extends React.Component {
 
         this.state = {
             data: {},
-            selected: 'stream'
+            selected: 'stream',
+            playlists: []
         };
 
         this.getPlaylistNames();
-    }
-
-    componentWillMount(){
-        this.getSelectedSubscription = window.messenger.subscribe('side-menu-get-selected', function(data){
-            data.callback({selected: this.state.selected});
-        }.bind(this));
-
-        this.setSelectedSubscription = window.messenger.subscribe('side-menu-set-selected', function(data){
-            this.setState({selected: data.selected});
-        }.bind(this));
-    }
-
-    componentWillUnmount(){
-        this.getSelectedSubscription.remove();
     }
 
     isActive(value){
@@ -33,14 +22,10 @@ class SideMenu extends React.Component {
 
     setActive(value){
         this.setState({selected: value});
-
-        window.messenger.publish('side-menu-click', {
-            selected: value
-        });
     }
 
     getPlaylistNames(){
-        window.soundCloudAPI.getOwnedPlaylists(function(response){
+        SC_getMyPlaylists(function(response){
             this.setState({playlists: response});
         }.bind(this));
     }

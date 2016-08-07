@@ -13,21 +13,6 @@ class QueueList extends React.Component {
         };
     }
 
-    componentWillMount(){
-        this.isQueueShowingSubscription = window.messenger.subscribe('toggle-queue-showing', function(data){
-            this.setState({isQueueShowing: data.isQueueShowing});
-        }.bind(this));
-
-        this.queueOrderSubscription = window.messenger.subscribe('queue-order-updated', function(data){
-            this.setState({queue: data.tracks});
-        }.bind(this));
-    }
-
-    componentWillUnmount(){
-        this.isQueueShowingSubscription.remove();
-        this.queueOrderSubscription.remove();
-    }
-
     render(){
         let queueItems = [];
 

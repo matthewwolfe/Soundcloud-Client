@@ -29,4 +29,10 @@
 
     // ids of my playlists
     "myPlaylists": [],
+
+    // latest search results
+    "searchResults": [],
+
+    // whatever side menu item is selected
+    "sideMenuSelected": ""
 }

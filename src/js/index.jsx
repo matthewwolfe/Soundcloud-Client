@@ -17,7 +17,7 @@ import * as music from './core/music';
 import * as storageManager from './core/storageManager';
 // import * as server from '../core/server/server';
 
-let store;
+export let store;
 let history;
 
 render(
