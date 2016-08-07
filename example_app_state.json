@@ -12,8 +12,14 @@
     // all track objects in the application
     "tracks": [],
 
+    // ids of tracks I've uploaded
+    "myTracks": [],
+
     // ids of tracks I've liked
     "likedTrackIds": [],
+
+    // ids of tracks I've reposted
+    "repostedTrackIds": [],
 
     // all playlist objects in the application
     "playlists": [],

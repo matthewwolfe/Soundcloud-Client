@@ -1,16 +1,31 @@
+// Redux
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
-import tracks from './tracks';
+// Reducers
 import user from './user';
-import likedTracks from './likedTracks';
-import repostedTracks from './repostedTracks';
+import users from './users';
+import stream from './stream';
+import tracks from './tracks';
+import myTracks from './myTracks';
+import likedTrackIds from './likedTrackIds';
+import repostedTrackIds from './repostedTrackIds';
+import playlists from './playlists';
+import likedPlaylists from './likedPlaylists';
+import myPlaylists from './myPlaylists';
 
 const reducers = combineReducers({
 	user,
-    tracks,
-    likedTracks,
-    repostedTracks,
+	users,
+	stream,
+	tracks,
+	myTracks,
+	likedTrackIds,
+	repostedTrackIds,
+	playlists,
+	likedPlaylists,
+	myPlaylists,
+
     routing: routerReducer
 });
 
