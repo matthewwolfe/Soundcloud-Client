@@ -15,15 +15,8 @@ let authorizationCode = '';
 /*
  * Export functions
  */
-export function get(key){
-    return token[key];
-}
-
-/*
- * Internal Functions
- */
-function initialize(callback){
-    window.storageManager.get('token');
+export function initialize(callback){
+    token = window.storageManager.get('token');
 
     let token_type = 'authorization';
 
@@ -47,6 +40,14 @@ function initialize(callback){
         });
     }
 }
+
+export function get(key){
+    return token[key];
+}
+
+/*
+ * Internal Functions
+ */
 
 function clear(){
     window.storageManager.set('token', null);

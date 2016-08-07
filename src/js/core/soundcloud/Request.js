@@ -23,8 +23,8 @@ export function put(url, callback){
  * @param callback: Function
  *
  * @return void
- */ 
-export function delete(url, callback){
+ */
+export function delete_request(url, callback){
     request('DELETE', url, {}, callback);
 }
 
@@ -47,7 +47,7 @@ export function post(url, data, callback){
  *
  * @return void
  */ 
-request(type, url, data, callback){
+function request(type, url, data, callback){
     let xmlhttp = new XMLHttpRequest();
 
     xmlhttp.onreadystatechange = function() {
@@ -61,7 +61,7 @@ request(type, url, data, callback){
     if(type === 'POST'){
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-        data = this.configurePostData(data);
+        data = configurePostData(data);
         xmlhttp.send(data);
     } else {
         xmlhttp.send();
@@ -75,7 +75,7 @@ request(type, url, data, callback){
  *
  * @return: String
  */ 
-configurePostData(data){
+function configurePostData(data){
     let query = [];
     for (let key in data) {
         query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));

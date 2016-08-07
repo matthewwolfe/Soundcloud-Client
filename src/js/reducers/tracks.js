@@ -1,4 +1,4 @@
-import { PLAY_TRACK } from '../actions/track';
+import { PLAY_TRACK } from '../actions/tracks';
 
 const initialState = [];
 

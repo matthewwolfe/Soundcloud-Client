@@ -11,14 +11,15 @@ const baseURLv2 = 'https://api-v2.soundcloud.com';
 /*
  * Variables
  */
-let token = {};
 let isPaginationRequestActive = false;
 
 /*
  * Export functions
  */
 export function initialize(callback){
-    initializeToken(callback);
+    oauthToken.initialize(function(){
+        initializeApp(callback);
+    });
 }
 
 
@@ -26,7 +27,7 @@ export function getMyTracks(callback){
     let url = build_url('my_tracks', {}, {
         limit: 100,
         offset: 0,
-        oauth_token: token.get('access_token')
+        oauth_token: oauthToken.get('access_token')
     });
 
     request.get(baseURL + url, function(myTracks){
@@ -37,7 +38,7 @@ export function getMyTracks(callback){
 export function getStream(callback){
     let url = build_url('stream', {}, {
         limit: 100,
-        oauth_token: token.get('access_token')
+        oauth_token: oauthToken.get('access_token')
     });
 
     request.get(baseURL + url, function(stream){
@@ -60,7 +61,7 @@ export function getLikedTracks(callback){
         limit: 100,
         offset: 0,
         linked_partitioning: 1,
-        oauth_token: token.get('access_token'),
+        oauth_token: oauthToken.get('access_token'),
     });
 
     request.get(baseURLv2 + url, function(likedTracks){
@@ -70,7 +71,7 @@ export function getLikedTracks(callback){
 
 function getPlaylists(callback){
     let url = build_url('playlists', {user_id: window.user.id}, {
-        oauth_token: token.get('access_token')
+        oauth_token: oauthToken.get('access_token')
     });
 
     request.get(baseURLv2 + url, function(playlists){
@@ -175,17 +176,17 @@ export function autocomplete(query, callback){
 }
 
 export function toggleLikedTrack(track){
-    let url = '/users/' + window.user.id + '/favorites/' + track.id + '?oauth_token=' + token.get('access_token');
+    let url = '/users/' + window.user.id + '/favorites/' + track.id + '?oauth_token=' + oauthToken.get('access_token');
 
-    this.request.delete(baseURL + url, function(response){});
-    this.request.put(baseURL + url, function(response){});
+    request.delete(baseURL + url, function(response){});
+    request.put(baseURL + url, function(response){});
 }
 
 export function toggleRepostTrack(id, callback){
-    let url = '/e1/me/track_reposts/' + id + '?oauth_token=' + token.get('access_token');
+    let url = '/e1/me/track_reposts/' + id + '?oauth_token=' + oauthToken.get('access_token');
 
-    this.request.delete(baseURLv2 + url, function(response){});
-    this.request.put(baseURLv2 + url, function(response){});
+    request.delete(baseURLv2 + url, function(response){});
+    request.put(baseURLv2 + url, function(response){});
 }
 
 export function getTop50(kind, genre, callback){
@@ -212,11 +213,11 @@ export function getTop50(kind, genre, callback){
 }
 
 export function getNotifications(callback){
-    let url = this.build_url('notifications', {}, {
+    let url = build_url('notifications', {}, {
         limit: 5,
         offset: 0,
         linked_partitioning: 1,
-        oauth_token: token.get('access_token')
+        oauth_token: oauthToken.get('access_token')
     });
 
     request.get(baseURLv2 + url, function(response){
@@ -250,17 +251,12 @@ export function getPagination(type, callback){
 }
 
 function append_auth_info(url){
-    return `${url}&client_id=${config.client_id}&oauth_token=${token.get('access_token')}`;
+    return `${url}&client_id=${config.client_id}&oauth_token=${oauthToken.get('access_token')}`;
 }
 
 /*
  * Internal Functions
  */
-function initializeToken(callback){
-    token = oauthToken.initialize(function(){
-        initializeApp(callback);
-    });
-}
 
 function initializeApp(callback){
     let initialState = {
@@ -285,19 +281,19 @@ function initializeApp(callback){
 }
 
 function getMe(callback){
-    let url = this.build_url('me', {}, {
-        oauth_token: this.oauthToken.get('access_token')
+    let url = build_url('me', {}, {
+        oauth_token: oauthToken.get('access_token')
     });
 
-    this.request.get(this.baseUrlV2 + url, function(response){
+    request.get(baseURLv2 + url, function(response){
         callback(response);
     });
 }
 
 function getLikedTrackIds(url, array, callback){
     if(url.length === 0){
-        url = baseURLv2 + build_url('liked_track_ids', {}, {
-            oauth_token: token.get('access_token'),
+        url = baseURL + build_url('liked_track_ids', {}, {
+            oauth_token: oauthToken.get('access_token'),
             limit: 500,
             linked_partitioning: 1,
             page_number: 0,
@@ -324,7 +320,7 @@ function getLikedTrackIds(url, array, callback){
 function getTrackRepostIds(url, array, callback){
     if(url.length === 0){
         url = baseURL + build_url('track_repost_ids', {}, {
-            oauth_token: token.get('access_token'),
+            oauth_token: oauthToken.get('access_token'),
             limit: 5000,
             linked_partitioning: 1,
             page_number: 0,

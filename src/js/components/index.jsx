@@ -8,26 +8,24 @@ import SplashScreen from './splash_screen/splashScreen.jsx';
 import App from './app.jsx';
 
 import * as SC from '../core/soundcloud/soundCloudSDK';
+import * as music from '../core/music';
+import * as storageManager from '../core/storageManager';
+// import * as server from '../core/server/server';
 
 let store;
 
-// initialize the publish/subscribe messenger
-window.messenger = new Messenger();
-
-load_server();
+// server.load_server();
 
 // render the splash screen first
-render(<SplashScreen />, document.getElementById('app'));
+// render(<SplashScreen />, document.getElementById('app'));
 
-/* Do all the initialization now that the splash screen is rendered */
-window.dataManager = new DataManager();
+music.initialize();
 
-// Initialize the music handler
-window.music = new Music();
+window.storageManager = storageManager;
 
-window.storageManager = new StorageManager(function(){
+window.storageManager.initialize(function(){
     // Initialize the connection to the SoundCloud API and then render the app
-    window.soundCloudAPI = new SoundcloudSDK(function(initialState){
+    SC.initialize(function(initialState){
     	store = createStore(reducers, initialState);
 
         // just override the splash screen with the app

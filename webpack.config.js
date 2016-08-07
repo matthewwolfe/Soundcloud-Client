@@ -2,10 +2,10 @@ var webpack = require('webpack');
 var path = require('path');
 
 var BUILD_DIR = path.resolve(__dirname, 'dist/js/views');
-var APP_DIR = path.resolve(__dirname, 'src/js/components');
+var APP_DIR = path.resolve(__dirname, 'src/js');
 
 var config = {
-    entry: APP_DIR + '/index.jsx',
+    entry: APP_DIR + '/components/index.jsx',
     output: {
         path: BUILD_DIR,
         filename: 'bundle.js'

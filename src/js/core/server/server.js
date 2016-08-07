@@ -1,4 +1,4 @@
-function load_server(){
+export function load_server(){
     const express = require('express');
     const ip = require('ip');
 

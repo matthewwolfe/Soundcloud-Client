@@ -1,17 +1,16 @@
-const config = {
-    // soundcloud
-    base_url: 'https://api.soundcloud.com',
-    base_urlv2: 'https://api-v2.soundcloud.com',
-    redirect_uri: 'my-app://callback.html',
-    client_id: '173bf9df509c48cf53b70c83eaf5cbbd',
-    client_secret: '7ddbd6fcdc2d313abfb65758c751486e',
-    connection_url: 'https://api.soundcloud.com/connect?client_id=173bf9df509c48cf53b70c83eaf5cbbd&redirect_uri=my-app%3A%2F%2Fcallback.html&response_type=code',
+// soundcloud
+export const base_url = 'https://api.soundcloud.com';
+export const base_urlv2 = 'https://api-v2.soundcloud.com';
+export const redirect_uri = 'my-app://callback.html';
+export const client_id = '173bf9df509c48cf53b70c83eaf5cbbd';
+export const client_secret = '7ddbd6fcdc2d313abfb65758c751486e';
+export const connection_url = 'https://api.soundcloud.com/connect?client_id=173bf9df509c48cf53b70c83eaf5cbbd&redirect_uri=my-app%3A%2F%2Fcallback.html&response_type=code';
 
-    // other stuff
-    music_download_path: `${node.electron.remote.app.getPath('appData')}/Soundcloud-Client/music`
-};
+// other stuff
+export const music_download_path = `${node.electron.remote.app.getPath('appData')}/Soundcloud-Client/music`;
 
-config.soundcloud_urls = {
+// soundcloud SDK url building
+export const soundcloud_urls = {
     me: {
         base: '/me',
         params: [
@@ -126,7 +125,7 @@ config.soundcloud_urls = {
     },
 
     liked_track_ids: {
-        base: '/me/favorites/ids',
+        base: '/e1/me/track_likes/ids',
         params: [
             'oauth_token',
             'limit',
@@ -200,12 +199,9 @@ config.soundcloud_urls = {
         ],
         next_href: null
     }
-
-    // Toggling
-
 };
 
-config.soundcloud_storage = {
+export const soundcloud_storage = {
     likes: 'liked_tracks',
     stream: 'stream'
 };
