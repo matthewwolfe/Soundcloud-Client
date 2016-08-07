@@ -1,0 +1,26 @@
+{
+    // logged in user object
+    "user": {
+
+    },
+
+    // all user objects in the application, excluding the logged in user
+    "users": [],
+
+    "stream": [],
+
+    // all track objects in the application
+    "tracks": [],
+
+    // ids of tracks I've liked
+    "likedTrackIds": [],
+
+    // all playlist objects in the application
+    "playlists": [],
+
+    // ids of playlists I've liked
+    "likedPlaylists": [],
+
+    // ids of my playlists
+    "myPlaylists": [],
+}
