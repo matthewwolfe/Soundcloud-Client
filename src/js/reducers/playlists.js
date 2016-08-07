@@ -1,3 +1,5 @@
+import { ADD_PLAYLISTS } from '../actions/playlists';
+
 const initialState = [];
 
 function playlist(state, action){
@@ -9,6 +11,13 @@ function playlist(state, action){
 
 export function playlists(state = initialState, action){
     switch(action.type){
+
+        case ADD_PLAYLISTS:
+            return [
+                ...state,
+                ...action.playlists
+            ];
+
         default:
             return state;
     }

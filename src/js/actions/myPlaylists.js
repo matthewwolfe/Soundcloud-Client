@@ -12,5 +12,5 @@ export function addMyPlaylist(id){
 }
 
 export function removeMyPlaylist(id){
-    return {action: REMOVE_MY_PLAYLIST: id, id};
+    return {action: REMOVE_MY_PLAYLIST, id, id};
 }
