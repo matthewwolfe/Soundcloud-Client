@@ -2,7 +2,7 @@ import React from 'react';
 
 import Autocomplete from './autocomplete.jsx';
 
-import { SC_autocomplete } from '../../core/soundcloud/soundCloudSDK';
+import { autocomplete as SC_autocomplete } from '../../core/soundcloud/soundCloudSDK';
 
 import NotificationsMenu from '../notifications/notifications_menu/notificationsMenu.jsx';
 import SettingsMenu from '../settings/settingsMenu.jsx';

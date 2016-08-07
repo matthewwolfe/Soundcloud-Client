@@ -1,47 +1,41 @@
 import React from 'react';
 
-class NotificationItem extends React.Component {
+const NotificationItem = ({ notification }) => {
 
-    constructor(props){
-        super(props);
-    }
+    let description = getDescription(notification);
 
-    getDescription(){
-        let description;
+    return (
+        <div className="notification-item">
 
-        if(this.props.data.type === 'track-like'){
-            description = 'Liked ' + this.props.data.track.title;
-        } else if(this.props.data.type === 'affiliation'){
-            description = 'Is following you';
-        }
-
-        return description;
-    }
-
-    render(){
-        let description = this.getDescription();
-
-        return (
-            <div className="notification-item">
-
-                <div className="notification-image">
-                    <img src={this.props.data.user.avatar_url} />
-                </div>
-
-                <div className="text-container">
-
-                    <div className="notification-username">
-                        {this.props.data.user.username}
-                    </div>
-
-                    <div className="notification-description">
-                        {description}
-                    </div>
-
-                </div>
+            <div className="notification-image">
+                <img src={notification.user.avatar_url} />
             </div>
-        );
+
+            <div className="text-container">
+
+                <div className="notification-username">
+                    {notification.user.username}
+                </div>
+
+                <div className="notification-description">
+                    {description}
+                </div>
+
+            </div>
+        </div>
+    );
+};
+
+function getDescription(notification){
+    let description;
+
+    if(notification.type === 'track-like'){
+        description = 'Liked ' + notification.track.title;
+    } else if(notification.type === 'affiliation'){
+        description = 'Is following you';
     }
+
+    return description;
 }
 
 export default NotificationItem;

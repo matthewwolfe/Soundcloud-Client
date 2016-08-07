@@ -9,6 +9,6 @@ const User = ({ user }) => {
             <p className="followings-count">Following: {user.followings_count}</p>
         </div>
     );
-}
+};
 
 export default User;
