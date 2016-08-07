@@ -7,7 +7,8 @@ class SettingsPage extends React.Component {
 
         this.state = {
             hidden: true,
-            download_path: config.music_download_path
+            download_path: config.music_download_path,
+            isSyncing: false
         };
     }
 
@@ -15,6 +16,11 @@ class SettingsPage extends React.Component {
         this.toggleSubscription = window.messenger.subscribe('settings-page-open', function(data){
             this.setState({hidden: false});
         }.bind(this));
+    }
+
+    toggleSync(){
+        window.messenger.publish('toggle-sync', {isSyncing: !this.state.isSyncing});
+        this.setState({isSyncing: !this.state.isSyncing});
     }
 
     hide(){
@@ -32,6 +38,15 @@ class SettingsPage extends React.Component {
                     <div className="group">
                         <h4>Download directory</h4>
                         <p>{this.state.download_path}</p>
+                    </div>
+
+                    <div className="group">
+                        <h4>Toggle sync</h4>
+                        <button className="toggle-button"
+                                onClick={this.toggleSync.bind(this)}>
+
+                            {this.state.isSyncing ? 'Stop' : 'Start'}
+                        </button>
                     </div>
                 </div>
             </div>

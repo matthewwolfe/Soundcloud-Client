@@ -752,6 +752,8 @@ p, span {
             margin-top: 100px;
 
             .group {
+                margin-bottom: 15px;
+
                 h4 {
                     display: inline-block;
                     width: 20%;
@@ -761,6 +763,17 @@ p, span {
                 p, input {
                     display: inline-block;
                     width: 80%;
+                }
+
+                .toggle-button {
+                    padding-top: 6px;
+                    padding-bottom: 6px;
+                    padding-left: 12px;
+                    padding-right: 12px;
+                    background-color: $orange-color;
+                    color: #fff;
+                    border: 0;
+                    outline: none;
                 }
             }
         }

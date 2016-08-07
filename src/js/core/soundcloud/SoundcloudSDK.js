@@ -1,438 +1,390 @@
-class SoundcloudSDK {
+import * as request from './request';
+import * as oauthToken from './oauthToken';
+import * as config from './config';
 
-    constructor(callback){
-        this.baseUrl = 'https://api.soundcloud.com';
-        this.baseUrlV2 = 'https://api-v2.soundcloud.com';
+/*
+ * Constants
+ */
+const baseURL = 'https://api.soundcloud.com';
+const baseURLv2 = 'https://api-v2.soundcloud.com';
 
-        this.request = new Request();
+/*
+ * Variables
+ */
+let token = {};
+let isPaginationRequestActive = false;
 
-        this.oauthToken = new OAuthToken(function(){
-            this.initializeApp(callback);
-        }.bind(this));
+/*
+ * Export functions
+ */
+export function initialize(callback){
+    initializeToken(callback);
+}
 
-        this.isPaginationRequestActive = false;
-    }
 
-    // Private
-    initializeApp(callback){
-        this.getMe(function(response){
-            window.user = response;
+export function getMyTracks(callback){
+    let url = build_url('my_tracks', {}, {
+        limit: 100,
+        offset: 0,
+        oauth_token: token.get('access_token')
+    });
 
-            this.getLikedTrackIds('', [], function(likedTrackIds){
-                window.dataManager.set('likedTrackIds', likedTrackIds);
+    request.get(baseURL + url, function(myTracks){
+        callback(myTracks);
+    })
+}
 
-                this.getTrackRepostIds('', [], function(trackRepostIds){
-                    window.dataManager.set('trackRepostIds', trackRepostIds);
+export function getStream(callback){
+    let url = build_url('stream', {}, {
+        limit: 100,
+        oauth_token: token.get('access_token')
+    });
 
-                    callback();
-                });
+    request.get(baseURL + url, function(stream){
+        config.soundcloud_urls['stream'].callback(stream, callback);
+    });
+}
 
-            }.bind(this));
+export function getUserById(id, callback){
+    let url = build_url('user_by_id', {id: id}, {
+        client_id: config.client_id
+    });
 
-        }.bind(this));
-    }
+    request.get(baseURL + url, function(user){
+        callback(user);
+    });
+}
 
-    // Private
-    getMe(callback){
-        let url = this.build_url('me', {}, {
-            oauth_token: this.oauthToken.get('access_token')
+export function getLikedTracks(callback){
+    let url = build_url('liked_tracks', {user_id: window.user.id}, {
+        limit: 100,
+        offset: 0,
+        linked_partitioning: 1,
+        oauth_token: token.get('access_token'),
+    });
+
+    request.get(baseURLv2 + url, function(likedTracks){
+        config.soundcloud_urls['liked_tracks'].callback(likedTracks, callback);
+    });
+}
+
+function getPlaylists(callback){
+    let url = build_url('playlists', {user_id: window.user.id}, {
+        oauth_token: token.get('access_token')
+    });
+
+    request.get(baseURLv2 + url, function(playlists){
+        callback(playlists);
+    });
+}
+
+export function getOwnedPlaylists(callback){
+    getPlaylists(function(response){
+        let playlists = response.collection;
+        let ownedPlaylists = [];
+
+        playlists.forEach(function(playlist){
+            if(playlist.type === 'playlist'){
+                ownedPlaylists.push(playlist);
+            }
         });
 
-        this.request.get(this.baseUrlV2 + url, function(response){
+        callback(ownedPlaylists);
+    });
+}
+
+export function getLikedPlaylists(callback){
+    getPlaylists(function(response){
+        let playlists = response.collection;
+        let likedPlaylists = [];
+
+        playlists.forEach(function(playlist){
+            if(playlist.type === 'playlist-like'){
+                likedPlaylists.push(playlist);
+            }
+        });
+
+        callback(likedPlaylists);
+    });
+}
+
+export function getPlaylist(id, callback){
+    let url = build_url('playlist', {id: id}, {
+        client_id: config.client_id
+    });
+
+    request.get(baseURLv2 + url, function(response){
+        let trackIds = [];
+
+        response.tracks.forEach(function(track){
+            trackIds.push(track.id);
+        });
+
+        getTracksByIds(trackIds, callback);
+    });
+}
+
+function getTracksByIds(trackIds, callback){
+    let url = build_url('tracks_by_ids', {}, {
+        ids: trackIds.join(),
+        client_id: config.client_id
+    });
+
+    request.get(baseURLv2 + url, function(response){
+        callback(response);
+    });
+}
+
+export function search(query, callback){
+    let url = build_url('search', {}, {
+        q: query,
+        facet: 'genre',
+        limit: 200,
+        client_id: config.client_id,
+        linked_partitioning: 1
+    });
+
+    request.get(baseURLv2 + url, function(response){
+        let collection = response.collection;
+        let tracks = [];
+
+        collection.forEach(function(element){
+            if(element.kind === 'track'){
+                tracks.push(element);
+            }
+        });
+
+        callback(tracks);
+    });
+}
+
+export function autocomplete(query, callback){
+    let url = build_url('autocomplete', {}, {
+        q: query,
+        queries_limit: 0,
+        results_limit: 20,
+        client_id: config.client_id,
+        limit: 20,
+        offset: 0,
+        linked_partitioning: 1
+    });
+
+    request.get(baseURLv2 + url, function(response){
+        callback(response.results);
+    });
+}
+
+export function toggleLikedTrack(track){
+    let url = '/users/' + window.user.id + '/favorites/' + track.id + '?oauth_token=' + token.get('access_token');
+
+    this.request.delete(baseURL + url, function(response){});
+    this.request.put(baseURL + url, function(response){});
+}
+
+export function toggleRepostTrack(id, callback){
+    let url = '/e1/me/track_reposts/' + id + '?oauth_token=' + token.get('access_token');
+
+    this.request.delete(baseURLv2 + url, function(response){});
+    this.request.put(baseURLv2 + url, function(response){});
+}
+
+export function getTop50(kind, genre, callback){
+    genre = 'soundcloud:genres:' + genre;
+
+    let url = build_url('top_50', {}, {
+        kind: kind,
+        genre: genre,
+        client_id: config.client_id,
+        limit: 200,
+        offset: 0,
+        linked_partitioning: 1
+    });
+
+    request.get(baseURLv2 + url, function(response){
+        let tracks = [];
+
+        response.collection.forEach(function(element){
+            tracks.push(element.track);
+        });
+
+        callback(tracks);
+    });
+}
+
+export function getNotifications(callback){
+    let url = this.build_url('notifications', {}, {
+        limit: 5,
+        offset: 0,
+        linked_partitioning: 1,
+        oauth_token: token.get('access_token')
+    });
+
+    request.get(baseURLv2 + url, function(response){
+        callback(response.collection);
+    });
+}
+
+export function getPagination(type, callback){
+    if(isPaginationRequestActive){
+        return;
+    }
+
+    isPaginationRequestActive = true;
+
+    let key = key = config.soundcloud_storage[type],
+        url = append_auth_info(config.soundcloud_urls[key].next_href);
+
+    if(url.indexOf('null') !== -1){
+        return;
+    }
+
+    request.get(url, function(response){
+        if(config.soundcloud_urls[key].callback !== undefined){
+            config.soundcloud_urls[key].callback(response, callback);
+        } else {
             callback(response);
-        });
-    }
-
-    getMyTracks(callback){
-        let myTracks = window.dataManager.get('myTracks');
-
-        if(myTracks){
-            callback(myTracks);
-            return;
         }
 
-        let url = this.build_url('my_tracks', {}, {
-            limit: 100,
-            offset: 0,
-            oauth_token: this.oauthToken.get('access_token')
+        isPaginationRequestActive = false;
+    });
+}
+
+function append_auth_info(url){
+    return `${url}&client_id=${config.client_id}&oauth_token=${token.get('access_token')}`;
+}
+
+/*
+ * Internal Functions
+ */
+function initializeToken(callback){
+    token = oauthToken.initialize(function(){
+        initializeApp(callback);
+    });
+}
+
+function initializeApp(callback){
+    let initialState = {
+        user: {},
+        likedTrackIds: [],
+        trackRepostIds: []
+    };
+
+    getMe(function(user){
+        initialState.user = user;
+
+        getLikedTrackIds('', [], function(likedTrackIds){
+            initialState.likedTrackIds = likedTrackIds;
+
+            getTrackRepostIds('', [], function(trackRepostIds){
+                initialState.trackRepostIds = trackRepostIds;
+
+                callback(initialState);
+            });
         });
+    });
+}
 
-        this.request.get(this.baseUrl + url, function(myTracks){
-            window.dataManager.set('myTracks', myTracks);
-            callback(myTracks);
-        })
-    }
+function getMe(callback){
+    let url = this.build_url('me', {}, {
+        oauth_token: this.oauthToken.get('access_token')
+    });
 
-    getStream(callback){
-        let stream = window.dataManager.get('stream');
+    this.request.get(this.baseUrlV2 + url, function(response){
+        callback(response);
+    });
+}
 
-        if(stream){
-            callback(stream);
-            return;
-        }
-
-        let url = this.build_url('stream', {}, {
-            limit: 100,
-            oauth_token: this.oauthToken.get('access_token')
-        });
-
-        this.request.get(this.baseUrl + url, function(response){
-            config.soundcloud_urls['stream'].callback(response, callback);
-        });
-    }
-
-    getUserById(id, callback){
-        let url = this.build_url('user_by_id', {id: id}, {
-            client_id: config.client_id
-        });
-
-        this.request.get(this.baseUrl + url, function(response){
-            callback(response);
-        });
-    }
-
-    getLikedTracks(callback){
-        let liked_tracks = window.dataManager.get('liked_tracks');
-
-        if(liked_tracks){
-            callback(liked_tracks);
-            return;
-        }
-
-        let url = this.build_url('liked_tracks', {user_id: window.user.id}, {
-            limit: 100,
-            offset: 0,
+function getLikedTrackIds(url, array, callback){
+    if(url.length === 0){
+        url = baseURLv2 + build_url('liked_track_ids', {}, {
+            oauth_token: token.get('access_token'),
+            limit: 500,
             linked_partitioning: 1,
-            oauth_token: this.oauthToken.get('access_token'),
-        });
-
-        this.request.get(this.baseUrlV2 + url, function(response){
-            config.soundcloud_urls['liked_tracks'].callback(response, callback);
+            page_number: 0,
+            page_size: 200
         });
     }
 
-    getLikedTrackIds(url, array, callback){
-        let ids = window.dataManager.get('likedTrackIds');
+    request.get(url, function(response){
 
-        if(ids){
-            callback(ids);
-            return;
-        }
-
-        if(url.length === 0){
-            url = this.baseUrl + this.build_url('liked_track_ids', {}, {
-                oauth_token: this.oauthToken.get('access_token'),
-                limit: 500,
-                linked_partitioning: 1,
-                page_number: 0,
-                page_size: 200
-            });
-        }
-
-        this.request.get(url, function(response){
-
-            if(response.collection.length > 0){
-                for(var i = 0; i < response.collection.length; i++){
-                    array.push(response.collection[i]);
-                }
+        if(response.collection.length > 0){
+            for(var i = 0; i < response.collection.length; i++){
+                array.push(response.collection[i]);
             }
-
-            if(response.hasOwnProperty('next_href')){
-                this.getLikedTrackIds(response.next_href, array, callback);
-            } else {
-                callback(array);
-            }
-        }.bind(this));
-    }
-
-    getTrackRepostIds(url, array, callback){
-        let ids = window.dataManager.get('trackRepostIds');
-
-        if(ids){
-            callback(ids);
-            return;
         }
 
-        if(url.length === 0){
-            url = this.baseUrl + this.build_url('track_repost_ids', {}, {
-                oauth_token: this.oauthToken.get('access_token'),
-                limit: 5000,
-                linked_partitioning: 1,
-                page_number: 0,
-                page_size: 200
-            });
-        }
-
-        this.request.get(url, function(response){
-
-            if(response.collection.length > 0){
-                for(var i = 0; i < response.collection.length; i++){
-                    array.push(response.collection[i]);
-                }
-            }
-
-            if(response.hasOwnProperty('next_href')){
-                this.getTrackRepostIds(response.next_href, array, callback);
-            } else {
-                callback(array);
-            }
-        }.bind(this));
-    }
-
-    // Private
-    getPlaylists(callback){
-        let url = this.build_url('playlists', {user_id: window.user.id}, {
-            oauth_token: this.oauthToken.get('access_token')
-        });
-
-        this.request.get(this.baseUrlV2 + url, function(response){
-            callback(response);
-        });
-    }
-
-    getOwnedPlaylists(callback){
-        let ownedPlaylists = window.dataManager.get('ownedPlaylists');
-
-        if(ownedPlaylists){
-            callback(ownedPlaylists);
-            return;
-        }
-
-        this.getPlaylists(function(response){
-            let playlists = response.collection;
-            let ownedPlaylists = [];
-
-            playlists.forEach(function(playlist){
-                if(playlist.type === 'playlist'){
-                    ownedPlaylists.push(playlist);
-                }
-            });
-
-            callback(ownedPlaylists);
-        });
-    }
-
-    getLikedPlaylists(callback){
-        let likedPlaylists = window.dataManager.get('likedPlaylists');
-
-        if(likedPlaylists){
-            callback(likedPlaylists);
-            return;
-        }
-
-        this.getPlaylists(function(response){
-            let playlists = response.collection;
-            let likedPlaylists = [];
-
-            playlists.forEach(function(playlist){
-                if(playlist.type === 'playlist-like'){
-                    likedPlaylists.push(playlist);
-                }
-            });
-
-            callback(likedPlaylists);
-        });
-    }
-
-    getPlaylist(id, callback){
-        let url = this.build_url('playlist', {id: id}, {
-            client_id: config.client_id
-        });
-
-        this.request.get(this.baseUrlV2 + url, function(response){
-            let trackIds = [];
-
-            response.tracks.forEach(function(track){
-                trackIds.push(track.id);
-            });
-
-            this.getTracksByIds(trackIds, callback);
-        }.bind(this));
-    }
-
-    getTracksByIds(trackIds, callback){
-        let url = this.build_url('tracks_by_ids', {}, {
-            ids: trackIds.join(),
-            client_id: config.client_id
-        });
-
-        this.request.get(this.baseUrlV2 + url, function(response){
-            callback(response);
-        });
-    }
-
-    search(query, callback){
-        let url = this.build_url('search', {}, {
-            q: query,
-            facet: 'genre',
-            limit: 200,
-            client_id: config.client_id,
-            linked_partitioning: 1
-        });
-
-        this.request.get(this.baseUrlV2 + url, function(response){
-            let collection = response.collection;
-            let tracks = [];
-
-            collection.forEach(function(element){
-                if(element.kind === 'track'){
-                    tracks.push(element);
-                }
-            });
-
-            callback(tracks);
-        });
-    }
-
-    autocomplete(query, callback){
-        let url = this.build_url('autocomplete', {}, {
-            q: query,
-            queries_limit: 0,
-            results_limit: 20,
-            client_id: config.client_id,
-            limit: 20,
-            offset: 0,
-            linked_partitioning: 1
-        });
-
-        this.request.get(this.baseUrlV2 + url, function(response){
-            callback(response.results);
-        });
-    }
-
-    toggleLikedTrack(track){
-        let url = '/users/' + window.user.id + '/favorites/' + track.id + '?oauth_token=' + this.oauthToken.get('access_token');
-
-        if(window.dataManager.find('likedTrackIds', track.id)){
-            this.request.delete(this.baseUrl + url, function(response){});
-            // delete from trackIds and liked tracks
-            window.dataManager.remove('likedTrackIds', track.id);
-            window.dataManager.removeById('liked_tracks', track.id);
+        if(response.hasOwnProperty('next_href')){
+            getLikedTrackIds(response.next_href, array, callback);
         } else {
-            this.request.put(this.baseUrl + url, function(response){});
-            // add trackIds and liked tracks
-            window.dataManager.unshift('likedTrackIds', track.id);
-            window.dataManager.unshift('liked_tracks', track);
+            callback(array);
         }
+    });
+}
 
-    }
-
-    toggleRepostTrack(id, callback){
-        let url = '/e1/me/track_reposts/' + id + '?oauth_token=' + this.oauthToken.get('access_token');
-
-        if(window.dataManager.find('trackRepostIds', id)){
-            this.request.delete(this.baseUrlV2 + url, function(response){});
-            window.dataManager.remove('trackRepostIds', id);
-        
-        } else {
-            this.request.put(this.baseUrlV2 + url, function(response){});
-            window.dataManager.unshift('trackRepostIds', id);
-        }
-    }
-
-    getTop50(kind, genre, callback){
-        genre = 'soundcloud:genres:' + genre;
-
-        let url = this.build_url('top_50', {}, {
-            kind: kind,
-            genre: genre,
-            client_id: config.client_id,
-            limit: 200,
-            offset: 0,
-            linked_partitioning: 1
-        });
-
-        this.request.get(this.baseUrlV2 + url, function(response){
-            let tracks = [];
-
-            response.collection.forEach(function(element){
-                tracks.push(element.track);
-            });
-
-            callback(tracks);
-        });
-    }
-
-    getNotifications(callback){
-        let url = this.build_url('notifications', {}, {
-            limit: 5,
-            offset: 0,
+function getTrackRepostIds(url, array, callback){
+    if(url.length === 0){
+        url = baseURL + build_url('track_repost_ids', {}, {
+            oauth_token: token.get('access_token'),
+            limit: 5000,
             linked_partitioning: 1,
-            oauth_token: this.oauthToken.get('access_token')
-        });
-
-        this.request.get(this.baseUrlV2 + url, function(response){
-            callback(response.collection);
+            page_number: 0,
+            page_size: 200
         });
     }
 
-    getPagination(type, callback){
-        if(this.isPaginationRequestActive){
-            return;
-        }
+    request.get(url, function(response){
 
-        this.isPaginationRequestActive = true;
-
-        let key = key = config.soundcloud_storage[type],
-            url = this.append_auth_info(config.soundcloud_urls[key].next_href);
-
-        if(url.indexOf('null') !== -1){
-            return;
-        }
-
-        this.request.get(url, function(response){
-            if(config.soundcloud_urls[key].callback !== undefined){
-                config.soundcloud_urls[key].callback(response, callback);
-            } else {
-                callback(response);
+        if(response.collection.length > 0){
+            for(var i = 0; i < response.collection.length; i++){
+                array.push(response.collection[i]);
             }
-
-            this.isPaginationRequestActive = false;
-        }.bind(this));
-    }
-
-    append_auth_info(url){
-        return `${url}&client_id=${config.client_id}&oauth_token=${this.oauthToken.get('access_token')}`;
-    }
-
-    /******** URL BUILDING ********/
-
-    build_url(type, base_function_params, params){
-        if(!this.test_params(type, params)){
-            console.error('Error building url: Mismatched parameters')
         }
 
-        let url;
-
-        if(Object.keys(base_function_params).length > 0){
-            url = this.generate_base_url(type, base_function_params) + '?';
+        if(response.hasOwnProperty('next_href')){
+            getTrackRepostIds(response.next_href, array, callback);
         } else {
-            url = config.soundcloud_urls[type].base + '?';
+            callback(array);
         }
+    });
+}
 
-        for(let key in params){
-            url += `${key}=${params[key]}&`;
-        }
+/******** URL BUILDING ********/
 
-        return url;
+function build_url(type, base_function_params, params){
+    if(!test_params(type, params)){
+        console.error('Error building url: Mismatched parameters')
     }
 
-    generate_base_url(type, params){
-        params = Object.keys(params).map(function (key) {return params[key]});
-        return config.soundcloud_urls[type].base.apply(null, params);
+    let url;
+
+    if(Object.keys(base_function_params).length > 0){
+        url = generate_base_url(type, base_function_params) + '?';
+    } else {
+        url = config.soundcloud_urls[type].base + '?';
     }
 
-    test_params(type, params){
-        if(Object.keys(params).length !== config.soundcloud_urls[type].params.length){
+    for(let key in params){
+        url += `${key}=${params[key]}&`;
+    }
+
+    return url;
+}
+
+function generate_base_url(type, params){
+    params = Object.keys(params).map(function (key) {return params[key]});
+    return config.soundcloud_urls[type].base.apply(null, params);
+}
+
+function test_params(type, params){
+    if(Object.keys(params).length !== config.soundcloud_urls[type].params.length){
+        return false;
+    }
+
+    for(let key in params){
+        if(config.soundcloud_urls[type].params.indexOf(key) === -1){
             return false;
         }
-
-        for(let key in params){
-            if(config.soundcloud_urls[type].params.indexOf(key) === -1){
-                return false;
-            }
-        }
-
-        return true;
     }
+
+    return true;
 }

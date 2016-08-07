@@ -2,7 +2,7 @@ var webpack = require('webpack');
 var path = require('path');
 
 var BUILD_DIR = path.resolve(__dirname, 'dist/js/views');
-var APP_DIR = path.resolve(__dirname, 'src/js/views');
+var APP_DIR = path.resolve(__dirname, 'src/js/components');
 
 var config = {
     entry: APP_DIR + '/index.jsx',
@@ -13,7 +13,7 @@ var config = {
     module: {
     	loaders: [
     		{
-    			test: /\.jsx?/,
+    			test: /\.js?/,
     			include: APP_DIR,
     			loader: 'babel'
     		}
