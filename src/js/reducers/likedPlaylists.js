@@ -2,7 +2,7 @@ import { TOGGLE_LIKE_PLAYLIST } from '../actions/likedPlaylists';
 
 const initialState = [];
 
-export function likedPlaylists(state = initialState, actions){
+function likedPlaylists(state = initialState, action){
     switch(action.type){
 
         case TOGGLE_LIKE_PLAYLIST:
@@ -20,3 +20,5 @@ export function likedPlaylists(state = initialState, actions){
             return state;
     }
 }
+
+export default likedPlaylists;

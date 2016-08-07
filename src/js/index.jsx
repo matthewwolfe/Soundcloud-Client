@@ -20,6 +20,11 @@ import * as storageManager from './core/storageManager';
 let store;
 let history;
 
+render(
+    <SplashScreen />,
+    document.getElementById('app')
+);
+
 // server.load_server();
 
 music.initialize();
@@ -30,16 +35,15 @@ window.storageManager.initialize(function(){
     // Initialize the connection to the SoundCloud API and then render the app
     SC.initialize(function(initialState){
 
-    	store = createStore(reducers, initialState);
+        store = createStore(reducers, initialState);
         history = syncHistoryWithStore(hashHistory, store);
 
-        // just override the splash screen with the app
         render(
-        	<Provider store={store}>
-        		<Router history={history} routes={routes} />
-        	</Provider>,
+            <Provider store={store}>
+                <Router history={history} routes={routes} />
+            </Provider>,
 
-        	document.getElementById('app')
+            document.getElementById('app')
         );
     });
 });

@@ -11,6 +11,7 @@ const baseURLv2 = 'https://api-v2.soundcloud.com';
 /*
  * Variables
  */
+let userID;
 let isPaginationRequestActive = false;
 
 /*
@@ -57,7 +58,7 @@ export function getUserById(id, callback){
 }
 
 export function getLikedTracks(callback){
-    let url = build_url('liked_tracks', {user_id: window.user.id}, {
+    let url = build_url('liked_tracks', {user_id: userID}, {
         limit: 100,
         offset: 0,
         linked_partitioning: 1,
@@ -70,7 +71,7 @@ export function getLikedTracks(callback){
 }
 
 function getPlaylists(callback){
-    let url = build_url('playlists', {user_id: window.user.id}, {
+    let url = build_url('playlists', {user_id: userID}, {
         oauth_token: oauthToken.get('access_token')
     });
 
@@ -176,7 +177,7 @@ export function autocomplete(query, callback){
 }
 
 export function toggleLikedTrack(track){
-    let url = '/users/' + window.user.id + '/favorites/' + track.id + '?oauth_token=' + oauthToken.get('access_token');
+    let url = '/users/' + userID + '/favorites/' + track.id + '?oauth_token=' + oauthToken.get('access_token');
 
     request.delete(baseURL + url, function(response){});
     request.put(baseURL + url, function(response){});
@@ -259,29 +260,70 @@ function append_auth_info(url){
  */
 
 function initializeApp(callback){
+    let requestsRemaining = 8;
+
     let initialState = {
         user: {},
-        likedTracks: {
-            likedTracks: [],
-            likedTrackIds: []
-        },
-        repostedTracks: {
-            repostedTracks: [],
-            repostedTrackIds: []
-        }
+        users: [],
+        stream: [],
+        tracks: [],
+        myTracks: [],
+        likedTrackIds: [],
+        repostedTrackIds: [],
+        playlists: [],
+        likedPlaylists: [],
+        myPlaylists: [],
     };
+
+    function requestsCompleteCheck(){
+        requestsRemaining--;
+
+        if(requestsRemaining === 0){
+            callback(initialState);
+        }
+    }
 
     getMe(function(user){
         initialState.user = user;
+        userID = user.id;
+        requestsCompleteCheck();
+
+        getStream(function(stream){
+            initialState.stream = stream;
+            requestsCompleteCheck();
+        });
 
         getLikedTrackIds('', [], function(likedTrackIds){
-            initialState.likedTracks.likedTrackIds = likedTrackIds;
+            initialState.likedTrackIds = likedTrackIds;
+            requestsCompleteCheck();
+        });
 
-            getTrackRepostIds('', [], function(trackRepostIds){
-                initialState.repostedTracks.trackRepostIds = trackRepostIds;
+        getTrackRepostIds('', [], function(repostedTrackIds){
+            initialState.repostedTrackIds = repostedTrackIds;
+            requestsCompleteCheck();
+        });
 
-                callback(initialState);
-            });
+        getLikedPlaylists(function(playlists){
+            initialState.playlists = initialState.playlists.concat(playlists.map((item) => item.playlist));
+            initialState.likedPlaylists = playlists.map((item) => item.playlist.id);
+            requestsCompleteCheck();
+        });
+
+        getOwnedPlaylists(function(playlists){
+            initialState.playlists = initialState.playlists.concat(playlists.map((item) => item.playlist));
+            initialState.myPlaylists = playlists.map((item) => item.playlist.id);
+            requestsCompleteCheck();
+        });
+
+        getMyTracks(function(tracks){
+            initialState.tracks = initialState.tracks.concat(tracks);
+            initialState.myTracks = tracks.map((track) => track.id);
+            requestsCompleteCheck();
+        });
+
+        getLikedTracks(function(tracks){
+            initialState.tracks = initialState.tracks.concat(tracks);
+            requestsCompleteCheck();
         });
     });
 }

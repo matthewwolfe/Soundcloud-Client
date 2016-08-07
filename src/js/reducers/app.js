@@ -15,16 +15,16 @@ import likedPlaylists from './likedPlaylists';
 import myPlaylists from './myPlaylists';
 
 const reducers = combineReducers({
-	user,
-	users,
-	stream,
-	tracks,
-	myTracks,
-	likedTrackIds,
-	repostedTrackIds,
-	playlists,
-	likedPlaylists,
-	myPlaylists,
+    user,
+    users,
+    stream,
+    tracks,
+    myTracks,
+    likedTrackIds,
+    repostedTrackIds,
+    playlists,
+    likedPlaylists,
+    myPlaylists,
 
     routing: routerReducer
 });

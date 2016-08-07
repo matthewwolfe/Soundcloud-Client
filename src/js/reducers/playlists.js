@@ -9,7 +9,7 @@ function playlist(state, action){
     }
 }
 
-export function playlists(state = initialState, action){
+function playlists(state = initialState, action){
     switch(action.type){
 
         case ADD_PLAYLISTS:
@@ -22,3 +22,5 @@ export function playlists(state = initialState, action){
             return state;
     }
 }
+
+export default playlists;

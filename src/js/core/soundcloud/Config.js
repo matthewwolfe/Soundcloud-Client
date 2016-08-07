@@ -39,7 +39,6 @@ export const soundcloud_urls = {
             });
 
             config.soundcloud_urls['stream'].next_href = response.next_href;
-            window.dataManager.concat('stream', tracks);
 
             callback(tracks);
         }
@@ -118,7 +117,6 @@ export const soundcloud_urls = {
             });
 
             config.soundcloud_urls['liked_tracks'].next_href = response.next_href;
-            window.dataManager.concat('liked_tracks', tracks);
 
             callback(tracks);
         }

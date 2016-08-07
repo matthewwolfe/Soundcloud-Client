@@ -1,4 +1,4 @@
-import { PLAY_TRACK } from '../actions/tracks';
+import { PLAY_TRACK, ADD_TRACKS } from '../actions/tracks';
 
 const initialState = [];
 
@@ -21,7 +21,7 @@ function track(state, action){
     }
 }
 
-export function tracks(state = initialState, action){
+function tracks(state = initialState, action){
     switch(action.type){
 
         case PLAY_TRACK:
@@ -39,3 +39,5 @@ export function tracks(state = initialState, action){
             return state;
     }
 }
+
+export default tracks;

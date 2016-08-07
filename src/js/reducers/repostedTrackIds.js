@@ -2,7 +2,7 @@ import { TOGGLE_REPOST_TRACK } from '../actions/repostedTrackIds';
 
 const initialState = [];
 
-export function repostedTrackIds(state = initialState, action){
+function repostedTrackIds(state = initialState, action){
     switch(action.type){
         
         case TOGGLE_REPOST_TRACK:
@@ -17,3 +17,5 @@ export function repostedTrackIds(state = initialState, action){
             return state;
     }
 }
+
+export default repostedTrackIds;

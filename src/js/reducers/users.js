@@ -2,7 +2,7 @@ import { ADD_USER, REMOVE_USER } from '../actions/users';
 
 const initialState = [];
 
-export function users(state = initialState, action){
+function users(state = initialState, action){
     switch(action.type){
 
         case ADD_USER:
@@ -18,3 +18,5 @@ export function users(state = initialState, action){
             return state;
     }
 }
+
+export default users;

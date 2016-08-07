@@ -2,7 +2,7 @@ import { ADD_MY_TRACK, REMOVE_MY_TRACK } from '../actions/myTracks';
 
 const initialState = [];
 
-export function myTracks(state = initialState, action){
+function myTracks(state = initialState, action){
     switch(action.type){
 
         case ADD_MY_TRACK:
@@ -18,3 +18,5 @@ export function myTracks(state = initialState, action){
             return state;
     }
 }
+
+export default myTracks;

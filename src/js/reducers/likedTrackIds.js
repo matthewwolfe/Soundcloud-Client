@@ -2,7 +2,7 @@ import { TOGGLE_LIKE_TRACK } from '../actions/likedTrackIds';
 
 const initialState = [];
 
-export function likedTrackIds(state = initialState, action){
+function likedTrackIds(state = initialState, action){
     switch(action.type){
 
         case TOGGLE_LIKE_TRACK:
@@ -17,3 +17,5 @@ export function likedTrackIds(state = initialState, action){
             return state;
     }
 }
+
+export default likedTrackIds;
