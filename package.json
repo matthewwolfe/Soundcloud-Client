@@ -6,16 +6,12 @@
     "start": "./node_modules/.bin/electron .",
     "webpack": "webpack -d --watch",
     "build": "webpack -p",
-    "gulp": "gulp",
     "sass": "sass --watch src/css/styles.scss:dist/css/styles.css",
     "package": "electron-packager . --all --overwrite"
   },
   "devDependencies": {
     "electron-packager": "^7.2.0",
     "fs": "0.0.2",
-    "gulp": "^3.9.1",
-    "gulp-babel": "^6.1.2",
-    "gulp-concat": "^2.6.0",
     "path": "^0.12.7",
     "protocol": "^0.4.0",
     "url": "^0.11.0"
