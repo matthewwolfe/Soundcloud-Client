@@ -1,69 +1,44 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 
-class Profile extends React.Component {
+const Profile = ({user}) => {
+    return (
+        <div id="profile">
+            <div className="profile-picture">
+                <img src={user.avatar_url} />
+            </div>
 
-    constructor(props){
-        super(props);
-    }
+            <div className="info-container">
+                <h1 className="username">
+                    {user.username}
+                </h1>
 
-    getAvatarUrl(){
-        if(this.props.data.avatar_url){
-            return this.props.data.avatar_url.replace('large', 't300x300');
-        } else {
-            return '';
-        }
-    }
-
-    getLocation(){
-        if(this.props.data.country !== null && this.props.data.city !== null){
-            return this.props.data.city + ', ' + this.props.data.country;
-
-        } else if(this.props.data.country !== null){
-            return this.props.data.country;
-
-        } else if(this.props.data.city !== null){
-            return this.props.data.city;
-
-        } else {
-            return '';
-        }
-    }
-
-    render(){
-        if(isEmpty(this.props.data)){
-            return null;
-        }
-
-        return (
-            <div id="profile">
-                <div className="profile-picture">
-                    <img src={this.getAvatarUrl()} />
+                <div className="profile-location">
+                    {user.location}
                 </div>
 
-                <div className="info-container">
-                    <h1 className="username">
-                        {this.props.data.username}
-                    </h1>
+                <div className="followers-count">
+                    Followers: {user.followers_count}
+                </div>
 
-                    <div className="profile-location">
-                        {this.getLocation()}
-                    </div>
+                <div className="followings-count">
+                    Following: {user.followings_count}
+                </div>
 
-                    <div className="followers-count">
-                        Followers: {this.props.data.followers_count}
-                    </div>
-
-                    <div className="followings-count">
-                        Following: {this.props.data.followings_count}
-                    </div>
-
-                    <div className="description">
-                        {this.props.data.description}
-                    </div>
+                <div className="description">
+                    {user.description}
                 </div>
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
+
+Profile.propTypes = {
+    avatar_url: PropTypes.string.required,
+    username: PropTypes.string.required,
+    location: PropTypes.string.required,
+    followers_count: PropTypes.number.required,
+    followings_count: PropTypes.number.required,
+    description: PropTypes.string.required
+};
 
 export default Profile;

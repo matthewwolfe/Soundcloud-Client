@@ -5,7 +5,7 @@ var BUILD_DIR = path.resolve(__dirname, 'dist/js/views');
 var APP_DIR = path.resolve(__dirname, 'src/js');
 
 var config = {
-    entry: APP_DIR + '/components/index.jsx',
+    entry: APP_DIR + '/index.jsx',
     output: {
         path: BUILD_DIR,
         filename: 'bundle.js'
@@ -21,11 +21,13 @@ var config = {
     },
     plugins: [
         new webpack.IgnorePlugin(new RegExp("^(fs|ipc)$")),
+        /*
         new webpack.DefinePlugin({
           "process.env": { 
              NODE_ENV: JSON.stringify("production") 
            }
         })
+        */
     ]
 };
 

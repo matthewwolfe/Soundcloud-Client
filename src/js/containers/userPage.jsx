@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Profile from './profile.jsx';
+import Profile from '../components/user/profile.jsx';
 
 class UserPage extends React.Component {
 

@@ -261,18 +261,24 @@ function append_auth_info(url){
 function initializeApp(callback){
     let initialState = {
         user: {},
-        likedTrackIds: [],
-        trackRepostIds: []
+        likedTracks: {
+            likedTracks: [],
+            likedTrackIds: []
+        },
+        repostedTracks: {
+            repostedTracks: [],
+            repostedTrackIds: []
+        }
     };
 
     getMe(function(user){
         initialState.user = user;
 
         getLikedTrackIds('', [], function(likedTrackIds){
-            initialState.likedTrackIds = likedTrackIds;
+            initialState.likedTracks.likedTrackIds = likedTrackIds;
 
             getTrackRepostIds('', [], function(trackRepostIds){
-                initialState.trackRepostIds = trackRepostIds;
+                initialState.repostedTracks.trackRepostIds = trackRepostIds;
 
                 callback(initialState);
             });
