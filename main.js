@@ -6,6 +6,8 @@ let appWillQuit = false;
 
 function createWindow(){
 
+    BrowserWindow.addDevToolsExtension('/Users/matthewwolfe/Library/Application Support/Google/Chrome/Profile 1/Extensions/fmkadmapgofadopljbjfkapdkoienihi/0.15.0_0');
+
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,

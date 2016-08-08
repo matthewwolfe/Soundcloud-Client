@@ -34,5 +34,7 @@
     "searchResults": [],
 
     // whatever side menu item is selected
-    "sideMenuSelected": ""
+    "sideMenuSelected": "",
+    // Tiled vs. List View
+    "isTiledView": false
 }

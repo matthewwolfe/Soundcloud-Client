@@ -1,11 +1,26 @@
-import React from 'react';
+import React, { Component } from 'react';
+
+import { connect } from 'react-redux';
+import { setSelectedSection } from '../actions/section';
 
 import { getOwnedPlaylists as SC_getMyPlaylists } from '../core/soundcloud/soundCloudSDK';
 
-class SideMenu extends React.Component {
+
+let selectedSectionHandler = (dispatch) => {
+    let onClick = (data) => {
+        dispatch(setSelectedSection(data));
+    }
+
+    return onClick;
+};
+
+
+class SideMenu extends Component {
 
     constructor(props){
         super(props);
+
+        this.handleClick = selectedSectionHandler(this.props.dispatch);
 
         this.state = {
             data: {},
@@ -14,6 +29,12 @@ class SideMenu extends React.Component {
         };
 
         this.getPlaylistNames();
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        if(prevState.selected !== this.state.selected){
+            this.handleClick(this.state.selected);
+        }
     }
 
     isActive(value){
@@ -25,8 +46,8 @@ class SideMenu extends React.Component {
     }
 
     getPlaylistNames(){
-        SC_getMyPlaylists(function(response){
-            this.setState({playlists: response});
+        SC_getMyPlaylists(function(playlists){
+            this.setState({playlists: playlists});
         }.bind(this));
     }
 
@@ -84,4 +105,4 @@ class SideMenu extends React.Component {
     }
 }
 
-export default SideMenu;
+export default connect()(SideMenu);

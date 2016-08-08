@@ -14,6 +14,8 @@ import playlists from './playlists';
 import likedPlaylists from './likedPlaylists';
 import myPlaylists from './myPlaylists';
 
+import section from './section';
+
 const reducers = combineReducers({
     user,
     users,
@@ -25,6 +27,7 @@ const reducers = combineReducers({
     playlists,
     likedPlaylists,
     myPlaylists,
+    section,
 
     routing: routerReducer
 });

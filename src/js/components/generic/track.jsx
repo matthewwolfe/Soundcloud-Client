@@ -4,55 +4,12 @@ class Track extends React.Component {
 
     constructor(props){
         super(props);
-
-        this.state = {
-            data: {},
-            playing: false,
-            section: this.props.section
-        };
-
-        if(window.dataManager.find('likedTrackIds', this.props.data.id)){
-            this.state.liked = true;
-        }
-    }
-
-    componentWillMount(){
-        if(window.music.currentlyPlaying !== null){
-            if(window.music.currentlyPlaying.track.id === this.props.data.id){
-                this.state.playing = true;
-            }
-        }
-
-        this.musicStateSubscription = window.messenger.subscribe(
-            'music-state-change',
-            function(data){
-                if(data.playing && data.id.toString() === this.props.data.id.toString()){
-                    this.setState({playing: true});
-                } else {
-                    this.setState({playing: false});
-                }
-            }.bind(this)
-        );
-
-        this.trackLikeSubscription = window.messenger.subscribe(
-            'track-like',
-            function(data){
-                if(data.id === this.props.data.id){
-                    this.setState({liked: data.liked});
-                }
-            }.bind(this)
-        );
     }
 
     componentDidUpdate(){
         if(this.state.playing){
             window.messenger.publish('music-list-update-music-track-list', {});
         }
-    }
-
-    componentWillUnmount(){
-        this.musicStateSubscription.remove();
-        this.trackLikeSubscription.remove();
     }
 
     playTrack(props){
