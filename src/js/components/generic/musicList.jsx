@@ -20,10 +20,14 @@ class MusicList extends React.Component {
     }
 
     render () {
-        let musicView = <ListMusicList tracks={this.props.tracks} selectedSection={this.props.selectedSection} />
+        let musicView = <ListMusicList tracks={this.props.tracks}
+                                       selectedSection={this.props.selectedSection}
+                                       toggleLikeTrack={this.props.toggleLikeTrack} />
 
         if(this.state.isTiledView){
-            musicView = <TiledMusicList tracks={this.props.tracks} selectedSection={this.props.selectedSection} />
+            musicView = <TiledMusicList tracks={this.props.tracks}
+                                        selectedSection={this.props.selectedSection}
+                                        toggleLikeTrack={this.props.toggleLikeTrack} />
         }
 
         return musicView;

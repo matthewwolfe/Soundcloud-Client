@@ -13,10 +13,13 @@ const ListTrack = (props) => {
         downloadClass += ' hide';
     }
 
+    if(props.data.liked){
+        likedClass += ' liked';
+    }
+
     if(props.data.type !== 'offline'){
-        
         options = <td className="track-options">
-                    <span className={likedClass}></span>
+                    <span className={likedClass} onClick={props.toggleLikeTrack.bind(this, props.data.id, props.data.liked)}></span>
                     <span className={downloadClass}></span>
                   </td>
     }

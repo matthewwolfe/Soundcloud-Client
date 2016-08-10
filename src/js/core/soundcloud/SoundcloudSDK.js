@@ -176,11 +176,14 @@ export function autocomplete(query, callback){
     });
 }
 
-export function toggleLikedTrack(track){
-    let url = '/users/' + userID + '/favorites/' + track.id + '?oauth_token=' + oauthToken.get('access_token');
-
-    request.delete(baseURL + url, function(response){});
+export function likeTrack(id){
+    let url = '/users/' + userID + '/favorites/' + id + '?oauth_token=' + oauthToken.get('access_token');
     request.put(baseURL + url, function(response){});
+}
+
+export function unlikeTrack(id){
+    let url = '/users/' + userID + '/favorites/' + id + '?oauth_token=' + oauthToken.get('access_token');
+    request.delete(baseURL + url, function(response){});
 }
 
 export function toggleRepostTrack(id, callback){
