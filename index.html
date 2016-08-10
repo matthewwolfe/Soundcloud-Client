@@ -10,6 +10,12 @@
         <div id="app"></div>
 
         <script src="dist/js/plugins/soundmanager2/script/soundmanager2-nodebug-jsmin.js"></script>
-        <script src="dist/js/views/bundle.js" type="text/javascript"></script>
+        <script>
+          (function() {
+            const script = document.createElement('script');
+            script.src = process.env.ENV === 'development' ? 'http://localhost:9000/dist/bundle.js' : 'dist/js/views/bundle.js';
+            document.write(script.outerHTML);
+          }());
+        </script>
     </body>
 </html>
