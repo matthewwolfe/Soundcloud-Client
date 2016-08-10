@@ -1,12 +1,12 @@
 const {app, BrowserWindow, globalShortcut} = require('electron');
-const fs = require('fs');
+const config = require('./local');
 
 let mainWindow;
 let appWillQuit = false;
 
 function createWindow(){
 
-    BrowserWindow.addDevToolsExtension('/Users/matthewwolfe/Library/Application Support/Google/Chrome/Profile 1/Extensions/fmkadmapgofadopljbjfkapdkoienihi/0.15.0_0');
+    BrowserWindow.addDevToolsExtension(config.REACT_DEV_TOOLS_PATH);
 
     mainWindow = new BrowserWindow({
         width: 800,

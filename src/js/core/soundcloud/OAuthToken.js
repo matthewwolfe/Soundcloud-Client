@@ -1,4 +1,5 @@
 import * as request from './request';
+import * as config from './config';
 
 /*
  * Variables
@@ -63,7 +64,7 @@ function getAuthorizationCode(callback){
     if(url.indexOf('=') !== -1){
         callback(authorizationCode);
 
-    // if we don't yet have the authentication code, 
+    // if we don't yet have the authentication code,
     // then the user needs to connect and authorize the application
     } else {
         window.location.href = config.connection_url;

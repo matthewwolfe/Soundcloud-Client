@@ -6,6 +6,15 @@ export const client_id = '173bf9df509c48cf53b70c83eaf5cbbd';
 export const client_secret = '7ddbd6fcdc2d313abfb65758c751486e';
 export const connection_url = 'https://api.soundcloud.com/connect?client_id=173bf9df509c48cf53b70c83eaf5cbbd&redirect_uri=my-app%3A%2F%2Fcallback.html&response_type=code';
 
+export const node = {
+    fs: window.require('electron').remote.require('fs'),
+    electron: window.require('electron'),
+    renderer: window.require('electron').ipcRenderer,
+    request: window.require('request'),
+    id3_writer: window.require('node-id3'),
+    id3_reader: window.require('id3js')
+};
+
 // other stuff
 export const music_download_path = `${node.electron.remote.app.getPath('appData')}/Soundcloud-Client/music`;
 
@@ -38,7 +47,7 @@ export const soundcloud_urls = {
                 }
             });
 
-            config.soundcloud_urls['stream'].next_href = response.next_href;
+            soundcloud_urls['stream'].next_href = response.next_href;
 
             callback(tracks);
         }
@@ -104,7 +113,7 @@ export const soundcloud_urls = {
             'limit',
             'offset',
             'linked_partitioning',
-            'oauth_token'    
+            'oauth_token'
         ],
         next_href: null,
         callback: function(response, callback){
@@ -116,7 +125,7 @@ export const soundcloud_urls = {
                 }
             });
 
-            config.soundcloud_urls['liked_tracks'].next_href = response.next_href;
+            soundcloud_urls['liked_tracks'].next_href = response.next_href;
 
             callback(tracks);
         }

@@ -10,21 +10,24 @@ var config = {
         path: BUILD_DIR,
         filename: 'bundle.js'
     },
+    node: {
+        fs: 'empty'
+    },
     module: {
-    	loaders: [
-    		{
-    			test: /\.js?/,
-    			include: APP_DIR,
-    			loader: 'babel'
-    		}
-    	]
+        loaders: [
+            {
+                test: /\.js?/,
+                include: APP_DIR,
+                loader: 'babel'
+            }
+        ]
     },
     plugins: [
-        new webpack.IgnorePlugin(new RegExp("^(fs|ipc)$")),
+        new webpack.IgnorePlugin(new RegExp('^(fs|ipc)$')),
         new webpack.DefinePlugin({
-          "process.env": { 
-             NODE_ENV: JSON.stringify("production") 
-           }
+            'process.env': {
+                NODE_ENV: JSON.stringify('production')
+            }
         })
     ]
 };

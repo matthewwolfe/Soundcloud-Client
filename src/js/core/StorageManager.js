@@ -1,3 +1,5 @@
+import { node } from './soundcloud/config';
+
 /*
  * Constants
  */
@@ -18,8 +20,8 @@ let data = {};
 export function initialize(callback){
     initializeStorage();
 
-    readFromStorage(function(data){
-        data = data;
+    readFromStorage(function(dataFromStorage){
+        data = dataFromStorage;
         callback();
 
     });
