@@ -42,6 +42,7 @@ class ListMusicList extends Component {
                         {
                             this.props.tracks.map((track, index) => {
                                 return <ListTrack toggleLikeTrack={this.props.toggleLikeTrack}
+                                                  playTrack={this.props.playTrack}
                                                   section={this.props.selectedSection}
                                                   data={track}
                                                   key={index} />;

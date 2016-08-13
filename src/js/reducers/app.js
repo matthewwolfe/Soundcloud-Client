@@ -17,17 +17,17 @@ import myPlaylists from './myPlaylists';
 import section from './section';
 
 const reducers = combineReducers({
-    user,
-    users,
-    stream,
-    tracks,
-    myTracks,
-    likedTrackIds,
-    repostedTrackIds,
-    playlists,
-    likedPlaylists,
-    myPlaylists,
-    section,
+    user: user,
+    users: users,
+    stream: stream,
+    tracks: tracks,
+    myTracks: myTracks,
+    likedTrackIds: likedTrackIds,
+    repostedTrackIds: repostedTrackIds,
+    playlists: playlists,
+    likedPlaylists: likedPlaylists,
+    myPlaylists: myPlaylists,
+    section: section,
 
     routing: routerReducer
 });

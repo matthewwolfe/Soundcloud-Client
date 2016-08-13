@@ -22,12 +22,14 @@ class MusicList extends React.Component {
     render () {
         let musicView = <ListMusicList tracks={this.props.tracks}
                                        selectedSection={this.props.selectedSection}
-                                       toggleLikeTrack={this.props.toggleLikeTrack} />
+                                       toggleLikeTrack={this.props.toggleLikeTrack}
+                                       playTrack={this.props.playTrack} />
 
         if(this.state.isTiledView){
             musicView = <TiledMusicList tracks={this.props.tracks}
                                         selectedSection={this.props.selectedSection}
-                                        toggleLikeTrack={this.props.toggleLikeTrack} />
+                                        toggleLikeTrack={this.props.toggleLikeTrack}
+                                        playTrack={this.props.playTrack} />
         }
 
         return musicView;

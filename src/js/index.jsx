@@ -13,7 +13,7 @@ import SplashScreen from './components/splash_screen/splashScreen.jsx';
 
 // Core stuff
 import * as SC from './core/soundcloud/soundCloudSDK';
-import * as music from './core/music';
+import * as music from './core/music/player.js';
 import * as storageManager from './core/storageManager';
 // import * as server from '../core/server/server';
 

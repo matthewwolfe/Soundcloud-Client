@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 
 import { toggleLikeTrack } from '../actions/likedTrackIds';
+import { playTrack } from '../actions/tracks';
 
 import MusicList from '../components/generic/musicList.jsx';
 
@@ -58,6 +59,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         toggleLikeTrack: (id, liked) => {
             dispatch(toggleLikeTrack(id, liked));
+        },
+        playTrack: (id) => {
+            dispatch(playTrack(id));
         }
     };
 };

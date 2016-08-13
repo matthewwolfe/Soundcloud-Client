@@ -26,7 +26,8 @@ const ListTrack = (props) => {
 
     return (
         <tr className={trackClass} 
-            id={props.data.id}>
+            id={props.data.id}
+            onDoubleClick={props.playTrack.bind(this, props.data.id)}>
 
             <td className="track-title">
                 <p>{props.data.title}</p>
