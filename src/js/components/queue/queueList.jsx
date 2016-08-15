@@ -25,7 +25,7 @@ class QueueList extends React.Component {
         }
 
         return (
-            <div id="queue-list" className={!this.state.hidden ? 'hide' : ''}>
+            <div id="queue-list" className={this.state.hidden ? 'hide' : ''}>
                 {queueItems}
             </div>
         );
