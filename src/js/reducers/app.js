@@ -15,6 +15,8 @@ import likedPlaylists from './likedPlaylists';
 import myPlaylists from './myPlaylists';
 
 import section from './section';
+import player from './player';
+import queue from './queue';
 
 const reducers = combineReducers({
     user: user,
@@ -28,6 +30,8 @@ const reducers = combineReducers({
     likedPlaylists: likedPlaylists,
     myPlaylists: myPlaylists,
     section: section,
+    player: player,
+    queue: queue,
 
     routing: routerReducer
 });

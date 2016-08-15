@@ -36,5 +36,12 @@
     // whatever side menu item is selected
     "sideMenuSelected": "",
     // Tiled vs. List View
-    "isTiledView": false
+    "isTiledView": false,
+
+    "player": {
+        "id": null,
+        "position": null,
+        "isPlaying": false,
+        "volume": 50
+    }
 }

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import { toggleLikeTrack } from '../actions/likedTrackIds';
-import { playTrack } from '../actions/tracks';
+import { playTrack } from '../actions/player';
 
 import MusicList from '../components/generic/musicList.jsx';
 

@@ -30,27 +30,19 @@ class MusicPlayer extends React.Component {
     }
 
     toggleRepeat(){
-        window.music.toggleRepeat();
         this.setState({isRepeating: window.music.isRepeating});
     }
 
     toggleShuffle(){
-        window.music.toggleShuffle();
         this.setState({isShuffle: window.music.isShuffle});
     }
 
     toggleTiledView(){
-        let tiledView = !this.state.isTiledView;
-
-        this.setState({isTiledView: tiledView});
-        window.messenger.publish('music-list-toggle-view', {isTiledView: tiledView});
+        this.setState({isTiledView: !this.state.isTiledView});
     }
 
     toggleQueue(){
-        let isQueueShowing = !this.state.isQueueShowing;
-
-        this.setState({isQueueShowing: isQueueShowing});
-        window.messenger.publish('toggle-queue-showing', {isQueueShowing: isQueueShowing});
+        this.setState({isQueueShowing: !this.state.isQueueShowing});
     }
 
     render () {

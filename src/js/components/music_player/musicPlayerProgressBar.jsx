@@ -5,7 +5,9 @@ class MusicPlayerProgressBar extends React.Component {
     constructor(props){
         super(props);
 
-        this.state = {position: 0, duration: 0, hover: false};
+        this.state = {
+            hover: false
+        };
     }
 
     mouseOver(){
@@ -17,18 +19,15 @@ class MusicPlayerProgressBar extends React.Component {
     }
 
     trackClick(e){
-        if(window.music.currentSoundObject !== null){
-
         var clickPosition = e.pageX - e.target.getBoundingClientRect().left,
             initialPosition = Math.round((clickPosition / 400 * window.music.currentSoundObject.duration) / 1000) * 1000;
 
         
-            if(initialPosition > 2000){
-                initialPosition -= 2000;
-            }
-
-            window.music.updatePosition(initialPosition);
+        if(initialPosition > 2000){
+            initialPosition -= 2000;
         }
+
+        initialPosition;
     }
 
     render(){
