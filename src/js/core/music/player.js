@@ -21,7 +21,6 @@ let isPlayerReady = false;
 let isRepeating = false;
 let isShuffle = false;
 
-
 /*
  * External functions
  */
@@ -48,12 +47,20 @@ export function find(id){
     }
 }
 
-export function play(track){
+/*
+ * track - track object
+ * index - index of the clicked on track, if applicable, otherwise undefined
+ */
+export function play(track, index){
     if(!isPlayerReady){
         return;
     }
 
-    let tracks = Array.from(document.querySelectorAll('#music-list .track')).map((element) => parseInt(element.id));
+    if(index === undefined){
+        index = 0;
+    }
+
+    let tracks = Array.from(document.querySelectorAll('#music-list .track')).map((element) => parseInt(element.id)).slice(index);
     store.dispatch(setQueue(tracks));
 
     stop();
@@ -143,15 +150,4 @@ function reset(){
         currentSoundObject.clearOnPosition();
     }
     currentSoundObject = null;
-}
-
-/*
- * Internal functions
- */
-
-function convertDuration(millis){
-    var hours = Math.floor(millis / 36e5),
-        mins = Math.floor((millis % 36e5) / 6e4),
-        secs = Math.floor((millis % 6e4) / 1000); 
-    return (hours > 0 ? hours + ":" : '') + (mins < 10 && hours > 0 ? '0' : '') + mins + ":" + (secs < 10 ? '0' : '') + secs;
 }

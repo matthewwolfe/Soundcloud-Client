@@ -60,8 +60,12 @@ const mapDispatchToProps = (dispatch) => {
         toggleLikeTrack: (id, liked) => {
             dispatch(toggleLikeTrack(id, liked));
         },
-        playTrack: (id) => {
-            dispatch(playTrack(id));
+        playTrack: (id, event) => {
+            let index = Array.from(
+                document.querySelectorAll('#music-list .track')
+            ).indexOf(event.target.closest('.track'));
+            
+            dispatch(playTrack(id, index));
         }
     };
 };

@@ -15,9 +15,9 @@ export const UPDATE_DURATION = 'UPDATE_DURATION';
  * Action creators
  */
 
-export function playTrack(id){
+export function playTrack(id, index){
     let track = player.find(id);
-    player.play(track);
+    player.play(track, index);
     
     return {type: PLAY_TRACK, id: id, duration: track.duration};
 }
