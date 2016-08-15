@@ -6,6 +6,6 @@ dist/js/index.js
 dist/css/styles.css
 dist/css/styles.css.map
 storage/
-music/
+/music/
 npm-debug.log
 local.js
