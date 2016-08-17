@@ -8,10 +8,6 @@ class QueueList extends React.Component {
 
     constructor(props){
         super(props);
-
-        this.state = {
-            hidden: true
-        };
     }
 
     render(){
@@ -25,7 +21,7 @@ class QueueList extends React.Component {
         }
 
         return (
-            <div id="queue-list" className={this.state.hidden ? 'hide' : ''}>
+            <div id="queue-list" className={this.props.hidden ? 'hide' : ''}>
                 {queueItems}
             </div>
         );
@@ -34,11 +30,12 @@ class QueueList extends React.Component {
 
 const getQueueTracks = (queue, tracks) => {
     return queue.map((id) => tracks.filter((track) => track.id === id)[0]);
-}
+};
 
 const mapStateToProps = (state) => {
     return {
-        queue: getQueueTracks(state.queue, state.tracks)
+        queue: getQueueTracks(state.queue.queue, state.tracks),
+        hidden: state.queue.hidden
     };
 };
 

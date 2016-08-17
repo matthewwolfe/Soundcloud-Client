@@ -12,7 +12,7 @@ let playerState = {
     id: null,
     position: null,
     isPlaying: false,
-    volume: 50
+    volume: 50,
 };
 
 let currentSoundObject = null;
@@ -83,16 +83,21 @@ export function play(track, index){
 
     currentSoundObject.play({
         onplay: function(){
+            store.dispatch(updateDuration(this.duration));
         },
 
         whileplaying: function(){
             store.dispatch(updatePosition(this.position));
         },
-        
+
         onfinish: function(){
             playNext();
         }
     });
+}
+
+export function pause(){
+    soundManager.pauseAll();
 }
 
 function stop(){
@@ -108,23 +113,8 @@ function playNext(){
     }
 }
 
-function pause(){
-    if(currentlyPlaying !== null){
-        if(currentlyPlaying.isPlaying){
-            currentlyPlaying.isPlaying = false;
-            soundManager.pauseAll();
-        }
-    }
-}
-
-function resume(){
-    if(currentlyPlaying !== null){
-        if(!currentlyPlaying.isPlaying){
-            if(currentSoundObject !== null){
-                currentSoundObject.resume();
-            }
-        }
-    }
+export function resume(){
+    currentSoundObject.resume();
 }
 
 function setPosition(newPosition){

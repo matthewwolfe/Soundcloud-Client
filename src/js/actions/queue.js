@@ -4,6 +4,7 @@
 export const SET_QUEUE = 'SET_QUEUE';
 export const SHIFT_QUEUE = 'SHIFT_QUEUE';
 export const REMOVE_FROM_QUEUE = 'REMOVE_FROM_QUEUE';
+export const QUEUE_TOGGLE_HIDDEN = 'TOGGLE_HIDDEN';
 
 /*
  * Action creators
@@ -19,4 +20,8 @@ export function shiftQueue(){
 
 export function removeFromQueue(id, index){
     return {type: REMOVE_FROM_QUEUE, id: id, index: index};
+}
+
+export function toggleHidden(){
+    return {type: QUEUE_TOGGLE_HIDDEN};
 }

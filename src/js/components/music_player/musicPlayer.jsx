@@ -1,5 +1,10 @@
 import React from 'react';
 
+import { connect } from 'react-redux';
+
+import { toggleHidden } from '../../actions/queue';
+import { resumeTrack, pauseTrack } from '../../actions/player';
+
 import VolumeControl from './volumeControl.jsx';
 import MusicPlayerProgressBar from './musicPlayerProgressBar.jsx';
 
@@ -12,21 +17,8 @@ class MusicPlayer extends React.Component {
             data: {},
             isRepeating: false,
             isShuffle: false,
-            isTiledView: false,
-            isQueueShowing: false
+            isTiledView: false
         };
-    }
-
-    play(){
-        if(window.music.resume()){
-            this.setState({playing: true});
-        }
-    }
-
-    pause(){
-        if(window.music.pause()){
-            this.setState({playing: false});
-        }
     }
 
     toggleRepeat(){
@@ -41,10 +33,6 @@ class MusicPlayer extends React.Component {
         this.setState({isTiledView: !this.state.isTiledView});
     }
 
-    toggleQueue(){
-        this.setState({isQueueShowing: !this.state.isQueueShowing});
-    }
-
     render () {
         var playClass = 'glyphicon glyphicon-play';
         var pauseClass = 'glyphicon glyphicon-pause';
@@ -53,9 +41,7 @@ class MusicPlayer extends React.Component {
         var tiledClass = 'glyphicon glyphicon-th pull-right';
         var queueClass = 'glyphicon glyphicon-list pull-right';
 
-        var trackName = '';
-
-        if(this.state.playing){
+        if(this.props.isPlaying){
             playClass += ' hide';
         } else {
             pauseClass += ' hide';
@@ -73,32 +59,33 @@ class MusicPlayer extends React.Component {
             tiledClass += ' active';
         }
 
-        if(this.state.isQueueShowing){
+        if(!this.props.queueHidden){
             queueClass += ' active';
         }
 
         return (
             <div id="music-player">
                 <span id="play-button"
-                      onClick={this.play.bind(this)}
+                      onClick={this.props.resume}
                       className={playClass}>
                 </span>
 
                 <span id="pause-button"
-                      onClick={this.pause.bind(this)}
+                      onClick={this.props.pause}
                       className={pauseClass}>
                 </span>
 
                 <span id="volume-control"
                       className="glyphicon glyphicon-volume-up">
                 </span>
+
                 <VolumeControl />
 
                 <MusicPlayerProgressBar />
 
                 <span id="queue-button"
                       className={queueClass}
-                      onClick={this.toggleQueue.bind(this)}>
+                      onClick={this.props.toggleQueueHidden}>
                 </span>
 
                 <span id="random-button"
@@ -120,4 +107,29 @@ class MusicPlayer extends React.Component {
     }
 }
 
-export default MusicPlayer;
+const mapStateToProps = (state) => {
+    return {
+        queueHidden: state.queue.hidden,
+        isPlaying: state.player.isPlaying,
+        volume: state.player.volume,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        resume: () => {
+            dispatch(resumeTrack());
+        },
+        pause: () => {
+            dispatch(pauseTrack());
+        },
+        toggleQueueHidden: () => {
+            dispatch(toggleHidden());
+        }
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(MusicPlayer);

@@ -43,5 +43,10 @@
         "position": null,
         "isPlaying": false,
         "volume": 50
+    },
+
+    "queue": {
+        hidden: true,
+        queue: []
     }
 }
