@@ -1,29 +1,25 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
-class VolumeControl extends React.Component {
+const VolumeControl = (props) => {
+    return (
+        <div id="volume-controller" onClick={(e) => {
+            let volume = e.pageX - e.target.getBoundingClientRect().left;
+            props.setVolume(volume);
+        }}>
+            <div id="volume-background"></div>
 
-    constructor(props){
-        super(props);
-    }
-
-    handleClick(e){
-        let volume = e.pageX - e.target.getBoundingClientRect().left;
-        this.props.setVolume(volume);
-    }
-
-    render(){
-        return (
-            <div id="volume-controller" onClick={this.handleClick.bind(this)}>
-                <div id="volume-background"></div>
-
-                <div id="volume-bar" style={{width: this.props.volume + 'px'}}>
-                </div>
-
-                <div id="volume-bar-handle" style={{left: this.props.volume - 4 + 'px'}}>
-                </div>
+            <div id="volume-bar" style={{width: props.volume + 'px'}}>
             </div>
-        );
-    }
-}
+
+            <div id="volume-bar-handle" style={{left: props.volume - 4 + 'px'}}>
+            </div>
+        </div>
+    );
+};
+
+VolumeControl.propTypes = {
+    volume: PropTypes.number.isRequired,
+    setVolume: PropTypes.func.isRequired
+};
 
 export default VolumeControl;

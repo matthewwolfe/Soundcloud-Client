@@ -14,7 +14,6 @@ class MusicPlayer extends React.Component {
         super(props);
 
         this.state = {
-            data: {},
             isRepeating: false,
             isShuffle: false,
             isTiledView: false
