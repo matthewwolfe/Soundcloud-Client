@@ -4,17 +4,11 @@ class VolumeControl extends React.Component {
 
     constructor(props){
         super(props);
-
-        this.state = {
-            volume: 50
-        };
     }
 
     handleClick(e){
         let volume = e.pageX - e.target.getBoundingClientRect().left;
-
-        this.setState({volume: volume});
-        window.music.setVolume(volume);
+        this.props.setVolume(volume);
     }
 
     render(){
@@ -22,10 +16,10 @@ class VolumeControl extends React.Component {
             <div id="volume-controller" onClick={this.handleClick.bind(this)}>
                 <div id="volume-background"></div>
 
-                <div id="volume-bar" style={{width: this.state.volume + 'px'}}>
+                <div id="volume-bar" style={{width: this.props.volume + 'px'}}>
                 </div>
 
-                <div id="volume-bar-handle" style={{left: this.state.volume - 4 + 'px'}}>
+                <div id="volume-bar-handle" style={{left: this.props.volume - 4 + 'px'}}>
                 </div>
             </div>
         );

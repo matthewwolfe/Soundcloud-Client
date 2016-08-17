@@ -4,13 +4,15 @@ import {
     RESUME_TRACK,
     PLAY_NEXT_TRACK,
     UPDATE_POSITION,
-    UPDATE_DURATION
+    UPDATE_DURATION,
+    UPDATE_VOLUME
 } from '../actions/player';
 
 const initialState = {
     id: null,
     position: null,
-    isPlaying: false
+    isPlaying: false,
+    volume: 50
 };
 
 function playTrack(state, action){
@@ -40,6 +42,12 @@ function updatePosition(state, action){
     });
 }
 
+function updateVolume(state, volume){
+    return Object.assign({}, state, {
+        volume: volume
+    });
+}
+
 function player(state = initialState, action){
 
     switch(action.type){
@@ -58,6 +66,9 @@ function player(state = initialState, action){
 
         case UPDATE_POSITION:
             return updatePosition(state, action);
+
+        case UPDATE_VOLUME:
+            return updateVolume(state, action.volume);
 
         default:
             return state;

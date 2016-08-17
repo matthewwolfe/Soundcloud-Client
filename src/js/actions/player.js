@@ -11,6 +11,7 @@ export const RESUME_TRACK = 'RESUME_TRACK';
 export const PLAY_NEXT_TRACK = 'PLAY_NEXT_TRACK';
 export const UPDATE_POSITION = 'UPDATE_POSITION';
 export const UPDATE_DURATION = 'UPDATE_DURATION';
+export const UPDATE_VOLUME = 'UPDATE_VOLUME';
 
 /*
  * Action creators
@@ -46,5 +47,6 @@ export function updateDuration(duration){
 }
 
 export function updateVolume(volume){
+    player.setVolume(volume);
     return {type: UPDATE_VOLUME, volume: volume};
 }

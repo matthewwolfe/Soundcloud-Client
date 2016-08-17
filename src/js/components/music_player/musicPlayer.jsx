@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { toggleHidden } from '../../actions/queue';
-import { resumeTrack, pauseTrack } from '../../actions/player';
+import { resumeTrack, pauseTrack, updateVolume } from '../../actions/player';
 
 import VolumeControl from './volumeControl.jsx';
 import MusicPlayerProgressBar from './musicPlayerProgressBar.jsx';
@@ -79,7 +79,7 @@ class MusicPlayer extends React.Component {
                       className="glyphicon glyphicon-volume-up">
                 </span>
 
-                <VolumeControl />
+                <VolumeControl setVolume={this.props.setVolume} volume={this.props.volume} />
 
                 <MusicPlayerProgressBar />
 
@@ -125,6 +125,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         toggleQueueHidden: () => {
             dispatch(toggleHidden());
+        },
+        setVolume: (volume) => {
+            dispatch(updateVolume(volume));
         }
     };
 };

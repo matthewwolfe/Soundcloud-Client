@@ -117,7 +117,7 @@ export function resume(){
     currentSoundObject.resume();
 }
 
-function setPosition(newPosition){
+export function setPosition(newPosition){
     if(playerState.id !== null && playerState.isPlaying){
         soundManager.setPosition(currentSoundObject.id, newPosition);
     }
@@ -131,7 +131,7 @@ function toggleShuffle(){
     isShuffle = !isShuffle;
 }
 
-function setVolume(volume){
+export function setVolume(volume){
     soundManager.setVolume(volume);
 }
 
