@@ -106,11 +106,7 @@ function stop(){
 }
 
 function playNext(){
-    if(queue.length > 1){
-        shiftQueue();
-
-        play(queue[0]);
-    }
+    console.log('play next');
 }
 
 export function resume(){
@@ -118,9 +114,7 @@ export function resume(){
 }
 
 export function setPosition(newPosition){
-    if(playerState.id !== null && playerState.isPlaying){
-        soundManager.setPosition(currentSoundObject.id, newPosition);
-    }
+    soundManager.setPosition(currentSoundObject.id, newPosition);
 }
 
 function toggleRepeat(){

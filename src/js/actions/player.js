@@ -38,7 +38,11 @@ export function playNextTrack(){
     return {type: PLAY_NEXT_TRACK};
 }
 
-export function updatePosition(position){
+export function updatePosition(position, skipTo){
+    if(skipTo !== undefined){
+        player.setPosition(position);
+    }
+
     return {type: UPDATE_POSITION, position: position};
 }
 

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { convertDuration } from '../../core/utils';
+
 class MusicPlayerProgressBar extends React.Component {
 
     constructor(props){
@@ -20,22 +22,24 @@ class MusicPlayerProgressBar extends React.Component {
 
     trackClick(e){
         var clickPosition = e.pageX - e.target.getBoundingClientRect().left,
-            initialPosition = Math.round((clickPosition / 400 * window.music.currentSoundObject.duration) / 1000) * 1000;
+            initialPosition = Math.round((clickPosition / 400 * this.props.track.duration) / 1000) * 1000;
 
-        
+
         if(initialPosition > 2000){
             initialPosition -= 2000;
         }
 
-        initialPosition;
+        this.props.setPosition(initialPosition);
     }
 
     render(){
-        return null;
-        /*
+        if(this.props.position === null && this.props.track === undefined){
+            return null;
+        }
+
         return (
             <div id="progress-bar">
-                <div id="current-time">{window.music.convertDuration(this.state.position)}</div>
+                <div id="current-time">{convertDuration(this.props.position)}</div>
 
                 <div id="track-timeline"
                      onMouseOver={this.mouseOver.bind(this)}
@@ -44,20 +48,19 @@ class MusicPlayerProgressBar extends React.Component {
 
                     <div id="progress-background"></div>
 
-                    <div id="progress-bar" 
-                         style={{width: this.state.position / this.state.duration * 400 + 'px'}}>
+                    <div id="progress-bar"
+                         style={{width: this.props.position / this.props.track.duration * 400 + 'px'}}>
                     </div>
 
-                    <div id="progress-bar-handle" 
-                         style={{left: this.state.position / this.state.duration * 400 + 'px'}}
-                         className={(this.state.hover && window.music.currentlyPlaying !== null) ? '' : 'hide'}>
+                    <div id="progress-bar-handle"
+                         style={{left: this.props.position / this.props.track.duration * 400 + 'px'}}
+                         className={(this.state.hover && this.props.isPlaying) ? '' : 'hide'}>
                     </div>
                 </div>
 
-                <div id="duration-time">{window.music.convertDuration(this.state.duration)}</div>
+                <div id="duration-time">{convertDuration(this.props.track.duration)}</div>
             </div>
         );
-        */
     }
 }
 

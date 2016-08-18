@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { toggleHidden } from '../../actions/queue';
-import { resumeTrack, pauseTrack, updateVolume } from '../../actions/player';
+import { resumeTrack, pauseTrack, updateVolume, updatePosition } from '../../actions/player';
 
 import VolumeControl from './volumeControl.jsx';
 import MusicPlayerProgressBar from './musicPlayerProgressBar.jsx';
@@ -78,9 +78,13 @@ class MusicPlayer extends React.Component {
                       className="glyphicon glyphicon-volume-up">
                 </span>
 
-                <VolumeControl setVolume={this.props.setVolume} volume={this.props.volume} />
+                <VolumeControl setVolume={this.props.setVolume}
+                               volume={this.props.volume} />
 
-                <MusicPlayerProgressBar />
+                <MusicPlayerProgressBar position={this.props.position}
+                                        track={this.props.currentlyPlaying}
+                                        isPlaying={this.props.isPlaying}
+                                        setPosition={this.props.setPosition} />
 
                 <span id="queue-button"
                       className={queueClass}
@@ -106,11 +110,17 @@ class MusicPlayer extends React.Component {
     }
 }
 
+const getCurrentlyPlaying = (tracks, track_id) => {
+    return tracks.filter((track) => track.id === track_id)[0];
+};
+
 const mapStateToProps = (state) => {
     return {
         queueHidden: state.queue.hidden,
         isPlaying: state.player.isPlaying,
         volume: state.player.volume,
+        position: state.player.position,
+        currentlyPlaying: getCurrentlyPlaying(state.tracks, state.player.id),
     };
 };
 
@@ -127,6 +137,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         setVolume: (volume) => {
             dispatch(updateVolume(volume));
+        },
+        setPosition: (position) => {
+            dispatch(updatePosition(position, true));
         }
     };
 };
