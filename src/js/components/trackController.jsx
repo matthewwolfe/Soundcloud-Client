@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 
 class TrackController extends React.Component {
 
@@ -6,15 +8,12 @@ class TrackController extends React.Component {
         super(props);
 
         this.state = {
-            track: {},
-            playing: false,
             title_position: 0,
             isScrolling: false
         };
 
         this.timer = null;
     }
-
 
     handleMouseOver(){
         if(!this.state.isScrolling){
@@ -42,31 +41,25 @@ class TrackController extends React.Component {
         }.bind(this), 40);
     }
 
-    usernameOnClick(){
-    }
-
     render () {
-
-        if(this.state.playing){ 
+        if(this.props.isPlaying){
             return (
                 <div id="track-controller-container">
                     <div id="track-controller">
 
                         <img id="track-image"
-                             src={!this.state.track.artwork_url ? 'dist/images/default.png' : this.state.track.artwork_url}
+                             src={!this.props.track.artwork_url ? 'dist/images/default.png' : this.props.track.artwork_url}
                         />
 
                         <div id="track-title"
                              style={{marginLeft: this.state.title_position}}
                              onMouseOver={this.handleMouseOver.bind(this)}>
 
-                            {this.state.track.title}
+                            {this.props.track.title}
                         </div>
 
-                        <div id="track-creator"
-                             onClick={this.usernameOnClick.bind(this)}>
-
-                             {this.state.track.user.username}
+                        <div id="track-creator">
+                             {this.props.track.user.username}
                         </div>
                     </div>
                 </div>
@@ -77,4 +70,17 @@ class TrackController extends React.Component {
     }
 }
 
-export default TrackController;
+const getCurrentlyPlaying = (tracks, track_id) => {
+    return tracks.filter((track) => track.id === track_id)[0];
+};
+
+const mapStateToProps = (state) => {
+    return {
+        isPlaying: state.player.isPlaying,
+        track: getCurrentlyPlaying(state.tracks, state.player.id),
+    };
+};
+
+export default connect(
+    mapStateToProps
+)(TrackController);
