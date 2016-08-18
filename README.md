@@ -11,9 +11,9 @@ git clone https://github.com/matthewwolfe/Soundcloud-Client.git
 
 // set up the build tools
 npm install
-npm run gulp
-npm run sass
-npm run webpack
+
+// start the hot reload server
+npm run server
 
 // start the application
 npm run start
