@@ -215,7 +215,7 @@ export function getTop50(kind, genre, callback){
 
         response.collection.forEach((track) => {
             // only add the track to the store if it isn't already there
-            if(store_tracks.indexOf(track.track.id) === -1){
+            if(!store_tracks.filter((store_track) => store_track.id === track.track.id).length){
                 tracks.push(track.track);
             }
             track_ids.push(track.track.id);

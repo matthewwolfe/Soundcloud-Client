@@ -7,7 +7,7 @@ import * as SC from '../core/soundcloud/soundCloudSDK';
  */
 
 export const SET_TOP_50 = 'SET_TOP_50';
-export const SET_TOP_50_TYPE = 'SET_TOP_50_TYPE';
+export const SET_TOP_50_KIND = 'SET_TOP_50_TYPE';
 export const SET_TOP_50_GENRE = 'SET_TOP_50_GENRE';
 
 /*
@@ -18,8 +18,8 @@ export function setTop50(tracks){
     return {type: SET_TOP_50, tracks: tracks};
 }
 
-export function setTop50Type(type){
-    return {type: SET_TOP_50_TYPE, topType: type};
+export function setTop50Kind(kind){
+    return {type: SET_TOP_50_KIND, kind: kind};
 }
 
 export function setTop50Genre(genre){
@@ -29,19 +29,19 @@ export function setTop50Genre(genre){
 /*
  * Async functions, not action creators
  */
-let currentType = undefined;
+let currentKind = undefined;
 let currentGenre = undefined;
 
 export function getTracks(callback){
-    let type = store.getState().top50.type;
+    let kind = store.getState().top50.kind;
     let genre = store.getState().top50.genre;
 
-    if(type !== currentType || genre !== currentGenre){
+    if(kind !== currentKind || genre !== currentGenre){
 
-        currentType = type;
+        currentKind = kind;
         currentGenre = genre;
 
-        SC.getTop50(type, genre, (tracks, track_ids) => {
+        SC.getTop50(kind, genre, (tracks, track_ids) => {
             if(tracks.length){
                 store.dispatch(addTracks(tracks));
             }
