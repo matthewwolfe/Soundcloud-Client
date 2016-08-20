@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import { toggleLikeTrack } from '../actions/likedTrackIds';
 import { playTrack } from '../actions/player';
+import { setQueue } from '../actions/queue';
 
 import MusicList from '../components/generic/musicList.jsx';
 
@@ -60,12 +61,11 @@ const mapDispatchToProps = (dispatch) => {
         toggleLikeTrack: (id, liked) => {
             dispatch(toggleLikeTrack(id, liked));
         },
-        playTrack: (id, event) => {
-            let index = Array.from(
-                document.querySelectorAll('#music-list .track')
-            ).indexOf(event.target.closest('.track'));
-            
-            dispatch(playTrack(id, index));
+        playTrack: (id, index, tracks) => {
+            dispatch(playTrack(id));
+
+            let queue = tracks.slice(index).map((track) => track.id);
+            dispatch(setQueue(queue));
         }
     };
 };

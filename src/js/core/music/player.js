@@ -1,8 +1,8 @@
 import * as queue from './queue';
 import { store } from '../../index.jsx';
 
-import { setQueue } from '../../actions/queue';
-import { updatePosition, updateDuration } from '../../actions/player';
+import { setQueue, shiftQueue } from '../../actions/queue';
+import { playTrack, updatePosition, updateDuration } from '../../actions/player';
 
 /*
  * Variables
@@ -51,17 +51,10 @@ export function find(id){
  * track - track object
  * index - index of the clicked on track, if applicable, otherwise undefined
  */
-export function play(track, index){
+export function play(track){
     if(!isPlayerReady){
         return;
     }
-
-    if(index === undefined){
-        index = 0;
-    }
-
-    let tracks = Array.from(document.querySelectorAll('#music-list .track')).map((element) => parseInt(element.id)).slice(index);
-    store.dispatch(setQueue(tracks));
 
     stop();
 
@@ -106,7 +99,12 @@ function stop(){
 }
 
 function playNext(){
-    console.log('play next');
+    store.dispatch(shiftQueue());
+    let queue = store.getState().queue.queue;
+
+    if(queue.length){
+        store.dispatch(playTrack(queue[0]));
+    } 
 }
 
 export function resume(){

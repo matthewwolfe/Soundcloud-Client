@@ -45,6 +45,8 @@ class ListMusicList extends Component {
                                                   playTrack={this.props.playTrack}
                                                   section={this.props.selectedSection}
                                                   data={track}
+                                                  tracks={this.props.tracks}
+                                                  index={index}
                                                   key={index} />;
                             })
                         }

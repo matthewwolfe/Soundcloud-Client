@@ -26,13 +26,6 @@ class Track extends React.Component {
         });
     }
 
-    convertDuration(millis){
-        var hours = Math.floor(millis / 36e5),
-            mins = Math.floor((millis % 36e5) / 6e4),
-            secs = Math.floor((millis % 6e4) / 1000); 
-        return (hours > 0 ? hours + ":" : '') + (mins < 10 && hours > 0 ? '0' : '') + mins + ":" + (secs < 10 ? '0' : '') + secs;
-    }
-
     contextMenu(e){
         if(this.props.data.type !== 'offline'){
             window.messenger.publish('context-menu-toggle',

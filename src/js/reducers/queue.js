@@ -21,8 +21,8 @@ function setQueue(state, tracks){
 function shiftQueue(state){
     let nextState = [];
 
-    if(state.length >= 2){
-        nextState = state.slice(1);
+    if(state.queue.length >= 2){
+        nextState = state.queue.slice(1);
     }
 
     return Object.assign({}, state, {
