@@ -13,7 +13,18 @@ const getVisibleTracks = (states, section) => {
     switch(section){
 
         case 'stream':
-            return states.stream;
+            states.stream.forEach((track_id) => {
+                let track = states.tracks.filter((track) => track.id === track_id);
+                if(track.length === 1){
+                    if(states.likedTrackIds.indexOf(track[0].id) !== -1){
+                        track[0].liked = true;
+                    } else {
+                        track[0].liked = false;
+                    }
+                    tracks.push(track[0]);
+                }
+            });
+            return tracks;
 
         case 'likes':
             states.likedTrackIds.forEach((track_id) => {

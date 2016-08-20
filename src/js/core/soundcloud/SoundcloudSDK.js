@@ -292,7 +292,13 @@ function initializeApp(callback){
         requestsCompleteCheck();
 
         getStream(function(stream){
-            initialState.stream = stream;
+            stream.forEach((track) => {
+                if(initialState.stream.indexOf(track.id) === -1){
+                    initialState.stream.push(track.id);
+                    initialState.tracks.push(track);
+                }
+            });
+
             requestsCompleteCheck();
         });
 
