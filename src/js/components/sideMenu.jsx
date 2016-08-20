@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
+import { getTracks } from '../actions/top50';
 import { setSelectedSection } from '../actions/section';
 
 import { getOwnedPlaylists as SC_getMyPlaylists } from '../core/soundcloud/soundCloudSDK';
@@ -8,6 +9,9 @@ import { getOwnedPlaylists as SC_getMyPlaylists } from '../core/soundcloud/sound
 
 let selectedSectionHandler = (dispatch) => {
     let onClick = (data) => {
+        if(data === 'top 50'){
+            getTracks();
+        }
         dispatch(setSelectedSection(data));
     }
 

@@ -81,10 +81,12 @@ class MusicPlayer extends React.Component {
                 <VolumeControl setVolume={this.props.setVolume}
                                volume={this.props.volume} />
 
-                <MusicPlayerProgressBar position={this.props.position}
-                                        track={this.props.currentlyPlaying}
-                                        isPlaying={this.props.isPlaying}
-                                        setPosition={this.props.setPosition} />
+                {(this.props.currentlyPlaying) ? 
+                    <MusicPlayerProgressBar position={this.props.position}
+                        track={this.props.currentlyPlaying}
+                        isPlaying={this.props.isPlaying}
+                        setPosition={this.props.setPosition} />
+                : ''}
 
                 <span id="queue-button"
                       className={queueClass}
@@ -110,7 +112,11 @@ class MusicPlayer extends React.Component {
     }
 }
 
-const getCurrentlyPlaying = (tracks, track_id) => {
+const getCurrentlyPlaying = (isPlaying, tracks, track_id) => {
+    if(!isPlaying){
+        return null;
+    }
+
     return tracks.filter((track) => track.id === track_id)[0];
 };
 
@@ -120,7 +126,7 @@ const mapStateToProps = (state) => {
         isPlaying: state.player.isPlaying,
         volume: state.player.volume,
         position: state.player.position,
-        currentlyPlaying: getCurrentlyPlaying(state.tracks, state.player.id),
+        currentlyPlaying: getCurrentlyPlaying(state.player.isPlaying, state.tracks, state.player.id),
     };
 };
 

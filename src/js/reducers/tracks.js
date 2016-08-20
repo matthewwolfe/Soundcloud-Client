@@ -15,7 +15,7 @@ function tracks(state = initialState, action){
         case ADD_TRACKS:
             return [
                 ...state,
-                action.track
+                ...action.tracks
             ];
 
         default:

@@ -2,6 +2,8 @@ import * as request from './request';
 import * as oauthToken from './oauthToken';
 import * as config from './config';
 
+import { store } from '../../index.jsx';
+
 /*
  * Constants
  */
@@ -207,12 +209,19 @@ export function getTop50(kind, genre, callback){
 
     request.get(baseURLv2 + url, function(response){
         let tracks = [];
+        let track_ids = [];
 
-        response.collection.forEach(function(element){
-            tracks.push(element.track);
+        let store_tracks = store.getState().tracks;
+
+        response.collection.forEach((track) => {
+            // only add the track to the store if it isn't already there
+            if(store_tracks.indexOf(track.track.id) === -1){
+                tracks.push(track.track);
+            }
+            track_ids.push(track.track.id);
         });
 
-        callback(tracks);
+        callback(tracks, track_ids);
     });
 }
 

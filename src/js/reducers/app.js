@@ -5,6 +5,7 @@ import { routerReducer } from 'react-router-redux';
 // Reducers
 import user from './user';
 import users from './users';
+import top50 from './top50';
 import stream from './stream';
 import tracks from './tracks';
 import myTracks from './myTracks';
@@ -21,6 +22,7 @@ import queue from './queue';
 const reducers = combineReducers({
     user: user,
     users: users,
+    top50: top50,
     stream: stream,
     tracks: tracks,
     myTracks: myTracks,

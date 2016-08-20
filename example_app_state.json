@@ -33,6 +33,9 @@
     // latest search results
     "searchResults": [],
 
+    // ids of tracks of top 50 view
+    "top50": [],
+
     // whatever side menu item is selected
     "sideMenuSelected": "",
     // Tiled vs. List View

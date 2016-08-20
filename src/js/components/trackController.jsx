@@ -82,14 +82,18 @@ class TrackController extends React.Component {
     }
 }
 
-const getCurrentlyPlaying = (tracks, track_id) => {
+const getCurrentlyPlaying = (isPlaying, tracks, track_id) => {
+    if(!isPlaying){
+        return null;
+    }
+    
     return tracks.filter((track) => track.id === track_id)[0];
 };
 
 const mapStateToProps = (state) => {
     return {
         isPlaying: state.player.isPlaying,
-        track: getCurrentlyPlaying(state.tracks, state.player.id),
+        track: getCurrentlyPlaying(state.player.isPlaying, state.tracks, state.player.id),
     };
 };
 

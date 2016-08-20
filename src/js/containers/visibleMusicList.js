@@ -12,6 +12,21 @@ const getVisibleTracks = (states, section) => {
 
     switch(section){
 
+        case 'top 50':
+            states.top50.forEach((track_id) => {
+                let track = states.tracks.filter((track) => track.id === track_id);
+                if(track.length === 1){
+                    if(states.likedTrackIds.indexOf(track[0].id) !== -1){
+                        track[0].liked = true;
+                    } else {
+                        track[0].liked = false;
+                    }
+                    tracks.push(track[0]);
+                }
+            });
+
+            return tracks;
+
         case 'stream':
             states.stream.forEach((track_id) => {
                 let track = states.tracks.filter((track) => track.id === track_id);
@@ -59,7 +74,8 @@ const mapStateToProps = (state) => {
                 tracks: state.tracks,
                 stream: state.stream,
                 likedTrackIds: state.likedTrackIds,
-                myTracks: state.myTracks
+                myTracks: state.myTracks,
+                top50: state.top50.top50
             },
             state.section.selectedSection
         ),
