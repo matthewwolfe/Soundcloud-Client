@@ -7,7 +7,9 @@ const QueueItem = (props) => {
                 {props.queueOrder}
             </div>
 
-            <span className="remove-icon glyphicon glyphicon-remove"></span>
+            <span className="remove-icon glyphicon glyphicon-remove"
+                  onClick={props.removeFromQueue.bind(this, props.data.id, props.queueOrder - 1)}>
+            </span>
 
             <div className="title">
                 {props.data.title}

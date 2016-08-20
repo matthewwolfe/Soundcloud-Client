@@ -31,14 +31,14 @@ function shiftQueue(state){
 }
 
 function removeFromQueue(state, id, index){
-    if(state[index] !== id){
+    if(state.queue[index] !== id){
         return state;
     }
 
     return Object.assign({}, state, {
         queue: [
-            ...state.slice(0, index),
-            ...state.slice(index + 1)
+            ...state.queue.slice(0, index),
+            ...state.queue.slice(index + 1)
         ]
     });
 }

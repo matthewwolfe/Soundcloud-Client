@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
+import { removeFromQueue } from '../../actions/queue';
+
 import QueueItem from './queueItem.jsx';
 
 const QueueList = (props) => {
@@ -9,7 +11,9 @@ const QueueList = (props) => {
     for(var i = 0; i < props.queue.length; i++){
         queueItems.push(
             <QueueItem data={props.queue[i]}
-                       key={i} queueOrder={i+1}/>
+                       key={i}
+                       queueOrder={i+1}
+                       removeFromQueue={props.removeFromQueue}/>
         );
     }
 
@@ -36,6 +40,15 @@ const mapStateToProps = (state) => {
     };
 };
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        removeFromQueue: (id, index) => {
+            dispatch(removeFromQueue(id, index));
+        }
+    };
+};
+
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(QueueList);
