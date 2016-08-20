@@ -15,6 +15,19 @@ class TrackController extends React.Component {
         this.timer = null;
     }
 
+    componentWillUpdate(nextProps, nextState){
+        if(this.props.track && nextProps.track){
+            if(nextProps.track.id !== this.props.track.id){
+                this.resetState();
+            }
+        }
+    }
+
+    resetState(){
+        clearInterval(this.timer);
+        this.setState({title_position: 0, isScrolling: false});
+    }
+
     handleMouseOver(){
         if(!this.state.isScrolling){
             let titleWidth = document.getElementById('track-title').scrollWidth;
@@ -33,8 +46,7 @@ class TrackController extends React.Component {
 
             }
             if(this.state.title_position === 1){
-                this.setState({title_position: 0, isScrolling: false});
-                clearInterval(this.timer);
+                this.resetState();
             }
 
             this.setState({title_position: this.state.title_position - 1});
