@@ -11,7 +11,6 @@ export const QUEUE_TOGGLE_HIDDEN = 'TOGGLE_HIDDEN';
  */
 
 export function setQueue(tracks){
-    console.log('here');
     return {type: SET_QUEUE, tracks: tracks};
 }
 
