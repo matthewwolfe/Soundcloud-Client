@@ -1,4 +1,3 @@
-import * as queue from './queue';
 import { store } from '../../index.jsx';
 
 import { setQueue, shiftQueue } from '../../actions/queue';
