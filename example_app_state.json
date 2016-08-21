@@ -51,5 +51,8 @@
     "queue": {
         hidden: true,
         queue: []
-    }
+    },
+
+    // ids of tracks from the search results
+    "search": []
 }

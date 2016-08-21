@@ -149,16 +149,22 @@ export function search(query, callback){
     });
 
     request.get(baseURLv2 + url, function(response){
-        let collection = response.collection;
         let tracks = [];
+        let track_ids = [];
 
-        collection.forEach(function(element){
-            if(element.kind === 'track'){
-                tracks.push(element);
+        let store_tracks = store.getState().tracks;
+
+        response.collection.forEach((track) => {
+            if(track.kind === 'track'){
+                // only add the track to the store if it isn't already there
+                if(!store_tracks.filter((store_track) => store_track.id === track.id).length){
+                    tracks.push(track);
+                }
+                track_ids.push(track.id);
             }
         });
 
-        callback(tracks);
+        callback(tracks, track_ids);
     });
 }
 

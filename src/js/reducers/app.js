@@ -18,6 +18,7 @@ import myPlaylists from './myPlaylists';
 import section from './section';
 import player from './player';
 import queue from './queue';
+import search from './search';
 
 const reducers = combineReducers({
     user: user,
@@ -34,6 +35,7 @@ const reducers = combineReducers({
     section: section,
     player: player,
     queue: queue,
+    search: search,
 
     routing: routerReducer
 });
