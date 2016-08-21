@@ -39,7 +39,8 @@ export function initialize(){
 
 export function find(id){
     let result = store.getState().tracks.filter((track) => track.id === id);
-    if(result.length === 1){
+
+    if(result.length){
         return result[0];
     } else {
         return undefined;

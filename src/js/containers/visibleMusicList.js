@@ -10,6 +10,10 @@ import MusicList from '../components/generic/musicList.jsx';
 const getVisibleTracks = (states, section) => {
     let tracks = [];
 
+    if(section.indexOf('playlist-') !== -1){
+        return getPlaylistTracks(section, states);
+    }
+
     switch(section){
 
         case 'search':
@@ -81,6 +85,23 @@ const getVisibleTracks = (states, section) => {
     }
 };
 
+const getPlaylistTracks = (section, states) => {
+    let id = parseInt(section.substring(9));
+    let playlist = states.playlists.filter((playlist) => playlist.id === id)[0];
+
+    return playlist.tracks;
+};
+
+const getSectionName = (playlists, section) => {
+    if(section.indexOf('playlist-') === -1){
+        return section;
+    }
+
+    let id = parseInt(section.substring(9));
+    let playlist = playlists.filter((playlist) => playlist.id === id)[0];
+    return playlist.title;
+}
+
 const mapStateToProps = (state) => {
     return {
         tracks: getVisibleTracks(
@@ -90,11 +111,14 @@ const mapStateToProps = (state) => {
                 likedTrackIds: state.likedTrackIds,
                 myTracks: state.myTracks,
                 top50: state.top50.top50,
-                search: state.search
+                search: state.search,
+                myPlaylists: state.myPlaylists,
+                likedPlaylists: state.likedPlaylists,
+                playlists: state.playlists
             },
             state.section.selectedSection
         ),
-        selectedSection: state.section.selectedSection,
+        selectedSection: getSectionName(state.playlists, state.section.selectedSection),
     };
 };
 

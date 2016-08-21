@@ -77,14 +77,37 @@ function getPlaylists(callback){
         oauth_token: oauthToken.get('access_token')
     });
 
-    request.get(baseURLv2 + url, function(playlists){
-        callback(playlists);
+    request.get(baseURLv2 + url, function(response){
+        let count = response.collection.length;
+        let numCompleted = 0;
+
+        let playlists = [];
+
+        response.collection.forEach((collection_item) => {
+            let playlist = collection_item.playlist;
+            playlist.type = collection_item.type;
+            playlists.push(playlist);
+        });
+
+        playlists.forEach((playlist) => {
+
+            getPlaylist(playlist.id, (playlist_tracks) => {
+                playlist.tracks = playlist_tracks;
+                numCompleted++;
+                checkCompleted(count, numCompleted, playlists, callback);
+            });
+        });
     });
+
+    function checkCompleted(count, numCompleted, playlists, callback){
+        if(count === numCompleted){
+            callback(playlists);
+        }
+    }
 }
 
 export function getOwnedPlaylists(callback){
-    getPlaylists(function(response){
-        let playlists = response.collection;
+    getPlaylists(function(playlists){
         let ownedPlaylists = [];
 
         playlists.forEach(function(playlist){
@@ -98,8 +121,7 @@ export function getOwnedPlaylists(callback){
 }
 
 export function getLikedPlaylists(callback){
-    getPlaylists(function(response){
-        let playlists = response.collection;
+    getPlaylists(function(playlists){
         let likedPlaylists = [];
 
         playlists.forEach(function(playlist){
@@ -124,7 +146,11 @@ export function getPlaylist(id, callback){
             trackIds.push(track.id);
         });
 
-        getTracksByIds(trackIds, callback);
+        if(trackIds.length){
+            getTracksByIds(trackIds, callback);
+        } else {
+            callback(trackIds);
+        }
     });
 }
 
@@ -319,34 +345,48 @@ function initializeApp(callback){
 
         getLikedTrackIds('', [], function(likedTrackIds){
             initialState.likedTrackIds = likedTrackIds;
+            
             requestsCompleteCheck();
         });
 
         getTrackRepostIds('', [], function(repostedTrackIds){
             initialState.repostedTrackIds = repostedTrackIds;
+
             requestsCompleteCheck();
         });
 
         getLikedPlaylists(function(playlists){
-            initialState.playlists = initialState.playlists.concat(playlists.map((item) => item.playlist));
-            initialState.likedPlaylists = playlists.map((item) => item.playlist.id);
+            playlists.forEach((playlist) => {
+                initialState.tracks = initialState.tracks.concat(playlist.tracks);
+            });
+
+            initialState.playlists = initialState.playlists.concat(playlists);
+            initialState.likedPlaylists = playlists.map((playlist) => playlist.id);
+
             requestsCompleteCheck();
         });
 
         getOwnedPlaylists(function(playlists){
-            initialState.playlists = initialState.playlists.concat(playlists.map((item) => item.playlist));
-            initialState.myPlaylists = playlists.map((item) => item.playlist.id);
+            playlists.forEach((playlist) => {
+                initialState.tracks = initialState.tracks.concat(playlist.tracks);
+            });
+            
+            initialState.playlists = initialState.playlists.concat(playlists);
+            initialState.myPlaylists = playlists.map((playlist) => playlist.id);
+
             requestsCompleteCheck();
         });
 
         getMyTracks(function(tracks){
             initialState.tracks = initialState.tracks.concat(tracks);
             initialState.myTracks = tracks.map((track) => track.id);
+
             requestsCompleteCheck();
         });
 
         getLikedTracks(function(tracks){
             initialState.tracks = initialState.tracks.concat(tracks);
+
             requestsCompleteCheck();
         });
     });

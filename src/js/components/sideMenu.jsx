@@ -7,37 +7,20 @@ import { setSelectedSection } from '../actions/section';
 import { getOwnedPlaylists as SC_getMyPlaylists } from '../core/soundcloud/soundCloudSDK';
 
 
-let selectedSectionHandler = (dispatch) => {
-    let onClick = (data) => {
-        if(data === 'top 50'){
-            getTracks();
-        }
-        dispatch(setSelectedSection(data));
-    }
-
-    return onClick;
-};
-
-
 class SideMenu extends Component {
 
     constructor(props){
         super(props);
 
-        this.handleClick = selectedSectionHandler(this.props.dispatch);
-
         this.state = {
             data: {},
-            selected: 'stream',
-            playlists: []
+            selected: 'stream'
         };
-
-        this.getPlaylistNames();
     }
 
     componentDidUpdate(prevProps, prevState){
         if(prevState.selected !== this.state.selected){
-            this.handleClick(this.state.selected);
+            this.props.handleClick(this.state.selected);
         }
     }
 
@@ -49,24 +32,18 @@ class SideMenu extends Component {
         this.setState({selected: value});
     }
 
-    getPlaylistNames(){
-        SC_getMyPlaylists(function(playlists){
-            this.setState({playlists: playlists});
-        }.bind(this));
-    }
-
     render(){
         let playlists = [];
 
-        if(this.state.playlists !== undefined){
-            for(var i = 0; i < this.state.playlists.length; i++){
+        if(this.props.playlists !== undefined){
+            for(var i = 0; i < this.props.playlists.length; i++){
                 playlists.push(
                     <li key={i} 
-                        onClick={this.setActive.bind(this, 'playlist-' + this.state.playlists[i].playlist.id)}
-                        className={'playlist ' + this.isActive('playlist-' + this.state.playlists[i].playlist.id)}>
+                        onClick={this.setActive.bind(this, 'playlist-' + this.props.playlists[i].id)}
+                        className={'playlist ' + this.isActive('playlist-' + this.props.playlists[i].id)}>
                         
                         <span className="glyphicon glyphicon-tags"></span>
-                        {this.state.playlists[i].playlist.title}
+                        {this.props.playlists[i].title}
                     </li>
                 );
             }
@@ -109,4 +86,29 @@ class SideMenu extends Component {
     }
 }
 
-export default connect()(SideMenu);
+const getOwnedPlaylists = (playlists, myPlaylists) => {
+    return playlists.filter((playlist) => myPlaylists.indexOf(playlist.id) !== -1);
+};
+
+const mapStateToProps = (state) => {
+    return {
+        playlists: getOwnedPlaylists(state.playlists, state.myPlaylists)
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        handleClick: (data) => {
+            if(data === 'top 50'){
+                getTracks();
+            }
+
+            dispatch(setSelectedSection(data));
+        }
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SideMenu);

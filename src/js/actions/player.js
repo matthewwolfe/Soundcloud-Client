@@ -19,6 +19,7 @@ export const UPDATE_VOLUME = 'UPDATE_VOLUME';
 
 export function playTrack(id, index){
     let track = player.find(id);
+
     player.play(track, index);
 
     return {type: PLAY_TRACK, id: id, duration: track.duration};
