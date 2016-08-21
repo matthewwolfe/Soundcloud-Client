@@ -115,7 +115,10 @@ p, span {
         }
 
         #side-menu {
+            border-top: 1px solid $secondary-color;
             margin-top: 40px;
+            height: calc(100% - 410px);
+            overflow-y: auto;
 
             ul {
                 list-style-type: none;
@@ -158,6 +161,7 @@ p, span {
             height: 170px;
             width: 240px;
             border-top: 1px solid $secondary-color;
+            background-color: #282828;
 
             #track-controller {
                 margin-left: 10px;
