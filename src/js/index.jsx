@@ -14,6 +14,7 @@ import SplashScreen from './components/splash_screen/splashScreen.jsx';
 // Core stuff
 import * as SC from './core/soundcloud/soundCloudSDK';
 import { initialize as PLAYER_initialize } from './core/music/player';
+import * as Listener from './core/listener';
 import * as storageManager from './core/storageManager';
 // import * as server from '../core/server/server';
 
@@ -34,7 +35,10 @@ window.storageManager.initialize(function(){
     SC.initialize(function(initialState){
 
         store = createStore(reducers, initialState);
+
         PLAYER_initialize();
+        Listener.initialize();
+
         history = syncHistoryWithStore(hashHistory, store);
 
         render(

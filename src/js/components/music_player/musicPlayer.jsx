@@ -113,7 +113,7 @@ class MusicPlayer extends React.Component {
 }
 
 const getCurrentlyPlaying = (isPlaying, tracks, track_id) => {
-    if(!isPlaying){
+    if(track_id === null){
         return null;
     }
 

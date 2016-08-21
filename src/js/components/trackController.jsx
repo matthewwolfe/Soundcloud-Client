@@ -54,7 +54,7 @@ class TrackController extends React.Component {
     }
 
     render () {
-        if(this.props.isPlaying){
+        if(this.props.isPlaying || this.props.track !== null){
             return (
                 <div id="track-controller-container">
                     <div id="track-controller">
@@ -83,7 +83,7 @@ class TrackController extends React.Component {
 }
 
 const getCurrentlyPlaying = (isPlaying, tracks, track_id) => {
-    if(!isPlaying){
+    if(track_id === null){
         return null;
     }
     

@@ -97,7 +97,7 @@ function stop(){
     reset();
 }
 
-function playNext(){
+export function playNext(){
     store.dispatch(shiftQueue());
     let queue = store.getState().queue.queue;
 
