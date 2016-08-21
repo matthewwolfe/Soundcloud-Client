@@ -11,6 +11,8 @@ class AutocompleteItem extends React.Component {
     }
 
     handleClick(){
+        this.props.hideAutocomplete();
+
         if(this.props.data.kind === 'track'){
             this.props.fetchSearchResults(this.props.data.output);
         } else if(this.props.data.kind === 'user'){

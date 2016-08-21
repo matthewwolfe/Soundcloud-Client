@@ -74,7 +74,9 @@ class SearchBar extends React.Component {
                        value={this.state.value}
                        onChange={this.handleChange.bind(this)} />
 
-                <Autocomplete data={this.state.autocompleteResults} hidden={this.state.isAutocompleteHidden} />
+                <Autocomplete data={this.state.autocompleteResults}
+                              hidden={this.state.isAutocompleteHidden}
+                              hideAutocomplete={this.hideAutocomplete.bind(this)} />
 
                 <SettingsMenu />
                 <NotificationsMenu />
