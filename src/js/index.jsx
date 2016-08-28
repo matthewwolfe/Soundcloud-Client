@@ -1,8 +1,9 @@
 import React from 'react';
-import {render} from 'react-dom';
-import {Provider} from 'react-redux';
-import {createStore} from 'redux';
-import {Router, hashHistory} from 'react-router';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+import thunkMiddleware from 'redux-thunk'
+import { createStore, applyMiddleware } from 'redux';
+import { Router, hashHistory } from 'react-router';
 
 // Redux stuff
 import reducers from './reducers/app.js';
@@ -32,7 +33,13 @@ window.storageManager.initialize(function(){
     // Initialize the connection to the SoundCloud API and then render the app
     SC.initialize(function(initialState){
 
-        store = createStore(reducers, initialState);
+        store = createStore(
+            reducers,
+            initialState,
+            applyMiddleware(
+                thunkMiddleware
+            )
+        );
 
         PLAYER_initialize();
         Listener.initialize();

@@ -1,4 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Link, hashHistory } from 'react-router';
+
+import { getUser } from '../actions/users';
 
 import Profile from '../components/user/profile.jsx';
 
@@ -7,41 +11,43 @@ class UserPage extends React.Component {
     constructor(props){
         super(props);
 
-        this.state = {
-            hidden: true,
-            user: {}
-        };
-    }
-
-    componentWillMount(){
-        this.toggleSubscription = window.messenger.subscribe('user-page-open', function(data){
-            window.messenger.publish('hide-autocomplete', {});
-            this.getUser(data.id);
-        }.bind(this));
-    }
-
-    getUser(id){
-        window.soundCloudAPI.getUserById(id, function(user){
-            this.setState({hidden: false, user: user});
-        }.bind(this));
-    }
-
-    hide(){
-        this.setState({
-            hidden: true,
-            user: {}
-        });
+        // the split/pop returns the id in /:user/:id
+        user_id = parseInt(this.props.location.pathname.split("/").pop());
+        this.props.fetchUser(user_id);
     }
 
     render(){
         return (
-            <div id="user-page" className={this.state.hidden ? 'hide' : ''}>
-                <span onClick={this.hide.bind(this)} className="glyphicon glyphicon-remove"></span>
+            <div id="user-page">
+                <Link to="/" className="link pull-right glyphicon glyphicon-remove"></Link>
 
-                <Profile data={this.state.user} />
+                <h1>User</h1>
+
+                {this.props.user === undefined ? '' : 
+                    <Profile user={this.props.user} />
+                }
             </div>
         );
     }
 }
 
-export default UserPage;
+let user_id;
+
+const mapStateToProps = (state) => {
+    return {
+        user: state.users.filter((user) => user.id  === user_id)[0]
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchUser: (id) => {
+            dispatch(getUser(id));
+        }
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(UserPage);

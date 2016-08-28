@@ -1,6 +1,10 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
+
+import { pretty_number } from '../../core/utils';
+
 
 const Profile = ({user}) => {
+
     return (
         <div id="profile">
             <div className="profile-picture">
@@ -17,11 +21,11 @@ const Profile = ({user}) => {
                 </div>
 
                 <div className="followers-count">
-                    Followers: {user.followers_count}
+                    Followers: {pretty_number(user.followers_count)}
                 </div>
 
                 <div className="followings-count">
-                    Following: {user.followings_count}
+                    Following: {pretty_number(user.followings_count)}
                 </div>
 
                 <div className="description">
@@ -33,12 +37,14 @@ const Profile = ({user}) => {
 };
 
 Profile.propTypes = {
-    avatar_url: PropTypes.string.required,
-    username: PropTypes.string.required,
-    location: PropTypes.string.required,
-    followers_count: PropTypes.number.required,
-    followings_count: PropTypes.number.required,
-    description: PropTypes.string.required
+    user: PropTypes.shape({
+        avatar_url: PropTypes.string.required,
+        username: PropTypes.string.required,
+        location: PropTypes.string.required,
+        followers_count: PropTypes.number.required,
+        followings_count: PropTypes.number.required,
+        description: PropTypes.string.required
+    })
 };
 
 export default Profile;

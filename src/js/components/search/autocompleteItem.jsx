@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { hashHistory } from 'react-router';
 
 import { fetchSearchResults } from '../../actions/search';
 import { setSelectedSection } from '../../actions/section';
@@ -16,7 +17,7 @@ class AutocompleteItem extends React.Component {
         if(this.props.data.kind === 'track'){
             this.props.fetchSearchResults(this.props.data.output);
         } else if(this.props.data.kind === 'user'){
-            this.props.fetchSearchResults(this.props.data.entity.id);
+            hashHistory.push('/user/' + this.props.data.entity.id);
         }
     }
 

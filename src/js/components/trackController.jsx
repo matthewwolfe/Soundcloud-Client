@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { hashHistory } from 'react-router';
 
 
 class TrackController extends React.Component {
@@ -21,6 +22,10 @@ class TrackController extends React.Component {
                 this.resetState();
             }
         }
+    }
+
+    handleUserClick(){
+        hashHistory.push('/user/' + this.props.track.user.id);
     }
 
     resetState(){
@@ -70,7 +75,9 @@ class TrackController extends React.Component {
                             {this.props.track.title}
                         </div>
 
-                        <div id="track-creator">
+                        <div id="track-creator"
+                             onClick={this.handleUserClick.bind(this)}>
+                             
                              {this.props.track.user.username}
                         </div>
                     </div>
