@@ -5,13 +5,17 @@ import {
     PLAY_NEXT_TRACK,
     UPDATE_POSITION,
     UPDATE_DURATION,
-    UPDATE_VOLUME
+    UPDATE_VOLUME,
+    TOGGLE_SHUFFLE,
+    TOGGLE_REPEAT
 } from '../actions/player';
 
 const initialState = {
     id: null,
     position: null,
     isPlaying: false,
+    isShuffle: false,
+    isRepeat: false,
     volume: 50
 };
 
@@ -48,6 +52,18 @@ function updateVolume(state, volume){
     });
 }
 
+function toggleShuffle(state){
+    return Object.assign({}, state, {
+        isShuffle: !state.isShuffle
+    });
+}
+
+function toggleRepeat(state){
+    return Object.assign({}, state, {
+        isRepeat: !state.isRepeat
+    });
+}
+
 function player(state = initialState, action){
 
     switch(action.type){
@@ -69,6 +85,12 @@ function player(state = initialState, action){
 
         case UPDATE_VOLUME:
             return updateVolume(state, action.volume);
+
+        case TOGGLE_SHUFFLE:
+            return toggleShuffle(state);
+
+        case TOGGLE_REPEAT:
+            return toggleRepeat(state);
 
         default:
             return state;

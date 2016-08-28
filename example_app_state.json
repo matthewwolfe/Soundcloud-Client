@@ -45,6 +45,8 @@
         "id": null,
         "position": null,
         "isPlaying": false,
+        "isShuffle": false,
+        "isRepeat": false,
         "volume": 50
     },
 

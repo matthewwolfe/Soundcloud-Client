@@ -3,113 +3,79 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { toggleHidden } from '../../actions/queue';
-import { resumeTrack, pauseTrack, updateVolume, updatePosition } from '../../actions/player';
+import { resumeTrack, pauseTrack, updateVolume, updatePosition, toggleShuffle, toggleRepeat } from '../../actions/player';
 
 import VolumeControl from './volumeControl.jsx';
 import MusicPlayerProgressBar from './musicPlayerProgressBar.jsx';
 
-class MusicPlayer extends React.Component {
+const MusicPlayer = (props) => {
 
-    constructor(props){
-        super(props);
+    var playClass = 'glyphicon glyphicon-play';
+    var pauseClass = 'glyphicon glyphicon-pause';
+    var repeatClass = 'glyphicon glyphicon-retweet pull-right';
+    var shuffleClass = 'glyphicon glyphicon-random pull-right';
+    var queueClass = 'glyphicon glyphicon-list pull-right';
 
-        this.state = {
-            isRepeating: false,
-            isShuffle: false,
-            isTiledView: false
-        };
+    if(props.isPlaying){
+        playClass += ' hide';
+    } else {
+        pauseClass += ' hide';
     }
 
-    toggleRepeat(){
-        this.setState({isRepeating: window.music.isRepeating});
+    if(props.isRepeat){
+        repeatClass += ' active';
     }
 
-    toggleShuffle(){
-        this.setState({isShuffle: window.music.isShuffle});
+    if(props.isShuffle){
+        shuffleClass += ' active';
     }
 
-    toggleTiledView(){
-        this.setState({isTiledView: !this.state.isTiledView});
+    if(!props.queueHidden){
+        queueClass += ' active';
     }
 
-    render () {
-        var playClass = 'glyphicon glyphicon-play';
-        var pauseClass = 'glyphicon glyphicon-pause';
-        var repeatClass = 'glyphicon glyphicon-retweet pull-right';
-        var shuffleClass = 'glyphicon glyphicon-random pull-right';
-        var tiledClass = 'glyphicon glyphicon-th pull-right';
-        var queueClass = 'glyphicon glyphicon-list pull-right';
+    return (
+        <div id="music-player">
+            <span id="play-button"
+                  onClick={props.resume}
+                  className={playClass}>
+            </span>
 
-        if(this.props.isPlaying){
-            playClass += ' hide';
-        } else {
-            pauseClass += ' hide';
-        }
+            <span id="pause-button"
+                  onClick={props.pause}
+                  className={pauseClass}>
+            </span>
 
-        if(this.state.isRepeating){
-            repeatClass += ' active';
-        }
+            <span id="volume-control"
+                  className="glyphicon glyphicon-volume-up">
+            </span>
 
-        if(this.state.isShuffle){
-            shuffleClass += ' active';
-        }
+            <VolumeControl setVolume={props.setVolume}
+                           volume={props.volume} />
 
-        if(this.state.isTiledView){
-            tiledClass += ' active';
-        }
+            {(props.currentlyPlaying) ? 
+                <MusicPlayerProgressBar position={props.position}
+                    track={props.currentlyPlaying}
+                    isPlaying={props.isPlaying}
+                    setPosition={props.setPosition} />
+            : ''}
 
-        if(!this.props.queueHidden){
-            queueClass += ' active';
-        }
+            <span id="queue-button"
+                  className={queueClass}
+                  onClick={props.toggleQueueHidden}>
+            </span>
 
-        return (
-            <div id="music-player">
-                <span id="play-button"
-                      onClick={this.props.resume}
-                      className={playClass}>
-                </span>
+            <span id="random-button"
+                  className={shuffleClass}
+                  onClick={props.updateShuffle}>
+            </span>
 
-                <span id="pause-button"
-                      onClick={this.props.pause}
-                      className={pauseClass}>
-                </span>
-
-                <span id="volume-control"
-                      className="glyphicon glyphicon-volume-up">
-                </span>
-
-                <VolumeControl setVolume={this.props.setVolume}
-                               volume={this.props.volume} />
-
-                {(this.props.currentlyPlaying) ? 
-                    <MusicPlayerProgressBar position={this.props.position}
-                        track={this.props.currentlyPlaying}
-                        isPlaying={this.props.isPlaying}
-                        setPosition={this.props.setPosition} />
-                : ''}
-
-                <span id="queue-button"
-                      className={queueClass}
-                      onClick={this.props.toggleQueueHidden}>
-                </span>
-
-                <span id="random-button"
-                      className={shuffleClass}
-                      onClick={this.toggleShuffle.bind(this)}>
-                </span>
-
-                <span id="repeat-button"
-                      className={repeatClass}
-                      onClick={this.toggleRepeat.bind(this)}>
-                </span>
-
-                <span id="tile-view-button"
-                      className={tiledClass}
-                      onClick={this.toggleTiledView.bind(this)}>
-                </span>
-            </div>
-        );
-    }
+            <span id="repeat-button"
+                  className={repeatClass}
+                  onClick={props.updateRepeat}>
+            </span>
+        </div>
+    );
 }
 
 const getCurrentlyPlaying = (isPlaying, tracks, track_id) => {
@@ -124,6 +90,8 @@ const mapStateToProps = (state) => {
     return {
         queueHidden: state.queue.hidden,
         isPlaying: state.player.isPlaying,
+        isShuffle: state.player.isShuffle,
+        isRepeat: state.player.isRepeat,
         volume: state.player.volume,
         position: state.player.position,
         currentlyPlaying: getCurrentlyPlaying(state.player.isPlaying, state.tracks, state.player.id),
@@ -146,6 +114,12 @@ const mapDispatchToProps = (dispatch) => {
         },
         setPosition: (position) => {
             dispatch(updatePosition(position, true));
+        },
+        updateShuffle: () => {
+            dispatch(toggleShuffle());
+        },
+        updateRepeat: () => {
+            dispatch(toggleRepeat());
         }
     };
 };

@@ -13,6 +13,9 @@ export const UPDATE_POSITION = 'UPDATE_POSITION';
 export const UPDATE_DURATION = 'UPDATE_DURATION';
 export const UPDATE_VOLUME = 'UPDATE_VOLUME';
 
+export const TOGGLE_SHUFFLE = 'TOGGLE_SHUFFLE';
+export const TOGGLE_REPEAT = ' TOGGLE_REPEAT';
+
 /*
  * Action creators
  */
@@ -54,4 +57,12 @@ export function updateDuration(duration){
 export function updateVolume(volume){
     player.setVolume(volume);
     return {type: UPDATE_VOLUME, volume: volume};
+}
+
+export function toggleShuffle(){
+    return {type: TOGGLE_SHUFFLE};
+}
+
+export function toggleRepeat(){
+    return {type: TOGGLE_REPEAT};
 }

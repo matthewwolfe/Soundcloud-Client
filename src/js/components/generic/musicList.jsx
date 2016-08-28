@@ -23,31 +23,17 @@ class MusicList extends React.Component {
     componentDidUpdate(prevProps, prevState){
         if(this.props.tracks !== prevProps.tracks){
             this.setState({isLoading: false});
-
-            let queue = [];
-            this.props.tracks.forEach((track) => {
-                queue.push(track.id);
-            });
-
-            // store.dispatch(setQueue(queue));
         }
     }
 
     render () {
-        let musicView = <ListMusicList tracks={this.props.tracks}
-                                       selectedSection={this.props.selectedSection}
-                                       toggleLikeTrack={this.props.toggleLikeTrack}
-                                       playTrack={this.props.playTrack}
-                                       tracks={this.props.tracks} />
-
-        if(this.state.isTiledView){
-            musicView = <TiledMusicList tracks={this.props.tracks}
-                                        selectedSection={this.props.selectedSection}
-                                        toggleLikeTrack={this.props.toggleLikeTrack}
-                                        playTrack={this.props.playTrack} />
-        }
-
-        return musicView;
+        return (
+            <ListMusicList tracks={this.props.tracks}
+                       selectedSection={this.props.selectedSection}
+                       toggleLikeTrack={this.props.toggleLikeTrack}
+                       playTrack={this.props.playTrack}
+                       tracks={this.props.tracks} />
+        );
     }
 }
 
