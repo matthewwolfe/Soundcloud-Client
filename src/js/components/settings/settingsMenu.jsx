@@ -1,4 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router';
+
+import * as config from '../../core/soundcloud/config';
+
 
 class SettingsMenu extends React.Component {
 
@@ -14,19 +18,9 @@ class SettingsMenu extends React.Component {
         this.setState({hidden: !this.state.hidden});
     }
 
-    openSettingsPage(){
-        this.toggleHidden();
-        window.messenger.publish('settings-page-open', {});
-    }
-
     openDownloadedMusicDirectory(){
         this.toggleHidden();
-        node.electron.shell.openItem(config.music_download_path);
-    }
-
-    clearCache(){
-        this.toggleHidden();
-        window.dataManager.clear();
+        config.node.electron.shell.openItem(config.music_download_path);
     }
 
     logout(){
@@ -45,10 +39,17 @@ class SettingsMenu extends React.Component {
                 <div id="settings-menu"
                      className={this.state.hidden ? 'hide' : ''}>
                     <ul>
-                        <li onClick={this.openSettingsPage.bind(this)}>Settings</li>
-                        <li onClick={this.openDownloadedMusicDirectory.bind(this)}>View downloads</li>
-                        <li onClick={this.clearCache.bind(this)}>Clear stored data</li>
-                        <li onClick={this.logout.bind(this)}>Logout</li>
+                        <li onClick={this.toggleHidden.bind(this)}>
+                            <Link to="settings" className="link">Settings</Link>
+                        </li>
+
+                        <li onClick={this.openDownloadedMusicDirectory.bind(this)}>
+                            View downloads
+                        </li>
+
+                        <li onClick={this.logout.bind(this)}>
+                            Logout
+                        </li>
                     </ul>
                 </div>
             </span>

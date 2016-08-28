@@ -4,7 +4,6 @@ import { store } from '../../index.jsx';
 import { setQueue } from '../../actions/queue';
 
 import ListMusicList from '../tracks_list/listMusicList.jsx';
-import TiledMusicList from '../tracks_tiled/tiledMusicList.jsx';
 
 class MusicList extends React.Component {
 

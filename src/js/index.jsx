@@ -3,7 +3,6 @@ import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import {Router, hashHistory} from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
 
 // Redux stuff
 import reducers from './reducers/app.js';
@@ -19,7 +18,6 @@ import * as storageManager from './core/storageManager';
 // import * as server from '../core/server/server';
 
 export let store;
-let history;
 
 render(
     <SplashScreen />,
@@ -39,11 +37,9 @@ window.storageManager.initialize(function(){
         PLAYER_initialize();
         Listener.initialize();
 
-        history = syncHistoryWithStore(hashHistory, store);
-
         render(
             <Provider store={store}>
-                <Router history={history} routes={routes} />
+                {routes}
             </Provider>,
 
             document.getElementById('app')

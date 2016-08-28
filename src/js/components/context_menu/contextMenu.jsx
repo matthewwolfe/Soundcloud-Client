@@ -12,10 +12,16 @@ class ContextMenu extends React.Component {
         this.state = {
             isHidden: true
         };
+
+        this.handleClick = this.contextMenuClick.bind(this)
     }
 
     componentDidMount(){
-        window.addEventListener('mousedown', this.contextMenuClick.bind(this), false);
+        window.addEventListener('mousedown', this.handleClick);
+    }
+
+    componentWillUnmount(){
+        window.removeEventListener('mousedown', this.handleClick);
     }
 
     contextMenuClick(){
