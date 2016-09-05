@@ -1,5 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
+import { showMenu, initializeMenu } from '../../actions/contextMenu';
 import { convertDuration } from '../../core/utils';
 
 
@@ -19,7 +21,10 @@ const ListTrack = (props) => {
 
     if(props.data.type !== 'offline'){
         options = <td className="track-options">
-                    <span className={likedClass} onClick={props.toggleLikeTrack.bind(this, props.data.id, props.data.liked)}></span>
+                    <span className={likedClass}
+                          onClick={props.toggleLikeTrack.bind(this, props.data.id, props.data.liked)}>
+                    </span>
+                    
                     <span className={downloadClass}></span>
                   </td>
     }
@@ -27,7 +32,8 @@ const ListTrack = (props) => {
     return (
         <tr className={trackClass} 
             id={props.data.id}
-            onDoubleClick={props.playTrack.bind(this, props.data.id, props.index, props.tracks)}>
+            onDoubleClick={props.playTrack.bind(this, props.data.id, props.index, props.tracks)}
+            onContextMenu={(e) => (props.initializeContextMenu(e, props.data))}>
 
             <td className="track-title">
                 <p>{props.data.title}</p>
@@ -44,4 +50,20 @@ const ListTrack = (props) => {
     );
 }
 
-export default ListTrack;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        initializeContextMenu: (e, data) => {
+            dispatch(initializeMenu(
+                'track',
+                data,
+                {x: e.pageX, y: e.pageY}
+            ));
+            dispatch(showMenu());
+        }
+    }
+};
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(ListTrack);

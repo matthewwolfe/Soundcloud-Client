@@ -1,99 +1,43 @@
 import React from 'react';
 
-class TrackMenu extends React.Component {
+import { node } from '../../core/soundcloud/config';
 
-    constructor(props){
-        super(props);
 
-        this.state = {
-            liked: false,
-            reposted: false
-        };
+const TrackMenu = (props) => {
 
-        window.messenger.subscribe('track-like', function(data){
-            if(data.id === this.props.track.id){
-                this.setState({liked: data.liked});
-            }
-        }.bind(this));
+    console.log(props);
 
-        window.messenger.subscribe('track-repost', function(data){
-            if(data.id === this.props.track.id){
-                this.setState({reposted: data.reposted});
-            }
-        }.bind(this));
+    let likeText = 'Like';
+    let repostText = 'Repost';
+
+    if(props.track.liked){
+        likeText = 'Unlike';
     }
 
-    componentWillMount(){
-        if(window.dataManager.find('likedTrackIds', this.props.track.id)){
-            this.setState({liked: true});
-        }
-
-        if(window.dataManager.find('trackRepostIds', this.props.track.id)){
-            this.setState({reposted: true});
-        }
+    if(props.track.reposted){
+        repostText = 'Unpost';
     }
 
-    toggleLike(){
-        window.soundCloudAPI.toggleLikedTrack(this.props.track.id);
-        window.messenger.publish('track-like', {
-            id: this.props.track.id,
-            liked: !this.state.liked
-        });
+    return (
+        <ul className="context-menu-list">
 
-        this.closeMenu();
-    }
+            <li className="list-item">
+                {likeText}
+            </li>
 
-    toggleRepost(){
-        window.soundCloudAPI.toggleRepostTrack(this.props.track.id);
-        window.messenger.publish('track-repost', {
-            id: this.props.track.id,
-            reposted: !this.state.reposted
-        });
+            <li className="list-item">
+                {repostText}
+            </li>
 
-        this.closeMenu();
-    }
+            <li className="list-item">
+                Add to playlist
+            </li>
 
-    openInBrowser(){
-        node.electron.shell.openExternal(this.props.track.permalink_url);
-    }
-
-    closeMenu(){
-        window.messenger.publish('context-menu-close', {});
-    }
-
-    render(){
-        let likeText = 'Like';
-        let repostText = 'Repost';
-
-        if(this.state.liked){
-            likeText = 'Unlike';
-        }
-
-        if(this.state.reposted){
-            repostText = 'Unpost';
-        }
-
-        return (
-            <ul className="context-menu-list">
-
-                <li className="list-item" onClick={this.toggleLike.bind(this)}>
-                    {likeText}
-                </li>
-
-                <li className="list-item" onClick={this.toggleRepost.bind(this)}>
-                    {repostText}
-                </li>
-
-                <li className="list-item">
-                    Add to playlist
-                </li>
-
-                <li className="list-item" onClick={this.openInBrowser.bind(this)}>
-                    View on Soundcloud
-                </li>
-            </ul>
-        );
-    }
+            <li className="list-item" onClick={() => (node.electron.shell.openExternal(props.track.permalink_url))}>
+                View on Soundcloud
+            </li>
+        </ul>
+    );
 }
 
 export default TrackMenu;

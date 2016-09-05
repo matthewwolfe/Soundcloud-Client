@@ -20,6 +20,8 @@ import player from './player';
 import queue from './queue';
 import search from './search';
 
+import contextMenu from './contextMenu';
+
 const reducers = combineReducers({
     user: user,
     users: users,
@@ -36,6 +38,7 @@ const reducers = combineReducers({
     player: player,
     queue: queue,
     search: search,
+    contextMenu: contextMenu,
 
     routing: routerReducer
 });

@@ -10,6 +10,7 @@ var config = {
         'webpack-hot-middleware/client?reload=true&path=http://localhost:9000/__webpack_hmr',
         APP_DIR + '/index.jsx'
     ],
+    devtool: 'source-map',
     output: {
         path: BUILD_DIR,
         publicPath: 'http://localhost:9000/dist/',

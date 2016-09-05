@@ -1,6 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { hideMenu } from '../../actions/contextMenu';
 
 import TrackMenu from './trackMenu.jsx';
+
 
 class ContextMenu extends React.Component {
 
@@ -8,11 +12,6 @@ class ContextMenu extends React.Component {
         super(props);
 
         this.mouseDownOnMenu = false;
-
-        this.state = {
-            isHidden: true
-        };
-
         this.handleClick = this.contextMenuClick.bind(this)
     }
 
@@ -29,9 +28,8 @@ class ContextMenu extends React.Component {
             return;
         }
 
-        this.setState({
-            isHidden: true
-        });
+        // dispatch setting the state to hidden
+        this.props.hide();
     }
 
     onMouseDown(){
@@ -42,34 +40,25 @@ class ContextMenu extends React.Component {
         this.mouseDownOnMenu = false;
     }
 
-    initializeMenu(type, data, coordinates){
-        this.setState({
-            isHidden: false,
-            type: type,
-            data: data,
-            coordinates: coordinates
-        });
-    }
-
     getMenuOfType(){
         let menu;
 
-        if(this.state.type === 'track'){
-            menu = <TrackMenu track={this.state.data} />;
+        if(this.props.type === 'track'){
+            menu = <TrackMenu track={this.props.data} />;
         }
 
         return menu;
     }
 
     render (){
+        if(this.props.hidden){
+            return null;
+        }
+
         let styles = {};
 
-        if(!this.state.isHidden){
-            styles = {top: this.state.coordinates.y, left: this.state.coordinates.x};
-
-
-        } else {
-            styles = {display: 'none'};
+        if(!this.props.isHidden){
+            styles = {top: this.props.coordinates.y, left: this.props.coordinates.x};
         }
 
         let menu = this.getMenuOfType();
@@ -86,4 +75,24 @@ class ContextMenu extends React.Component {
     }
 }
 
-export default ContextMenu;
+const mapStateToProps = (state) => {
+    return {
+        hidden: state.contextMenu.hidden,
+        type: state.contextMenu.type,
+        data: state.contextMenu.data,
+        coordinates: state.contextMenu.coordinates
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        hide: () => {
+            dispatch(hideMenu());
+        }
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ContextMenu);
