@@ -44,7 +44,7 @@ class ContextMenu extends React.Component {
         let menu;
 
         if(this.props.type === 'track'){
-            menu = <TrackMenu track={this.props.data} />;
+            menu = <TrackMenu track={this.props.data} hide={this.props.hide} />;
         }
 
         return menu;

@@ -5,8 +5,6 @@ import { node } from '../../core/soundcloud/config';
 
 const TrackMenu = (props) => {
 
-    console.log(props);
-
     let likeText = 'Like';
     let repostText = 'Repost';
 
@@ -21,19 +19,37 @@ const TrackMenu = (props) => {
     return (
         <ul className="context-menu-list">
 
-            <li className="list-item">
+            <li className="list-item" onClick={(e) => {
+                    props.hide();
+                }}>
                 {likeText}
             </li>
 
-            <li className="list-item">
+            <li className="list-item" onClick={(e) => {
+                    props.hide();
+                }}>
                 {repostText}
             </li>
 
-            <li className="list-item">
+            <li className="list-item" onClick={(e) => {
+                    props.hide();
+                }}>
+
                 Add to playlist
             </li>
 
-            <li className="list-item" onClick={() => (node.electron.shell.openExternal(props.track.permalink_url))}>
+            <li className="list-item" onClick={(e) => {
+                    props.hide();
+                }}>
+
+                Add to queue
+            </li>
+
+            <li className="list-item" onClick={() => {
+                    node.electron.shell.openExternal(props.track.permalink_url);
+                    props.hide();
+                }}>
+
                 View on Soundcloud
             </li>
         </ul>
