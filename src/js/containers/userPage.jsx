@@ -21,8 +21,6 @@ class UserPage extends React.Component {
             <div id="user-page">
                 <Link to="/" className="link pull-right glyphicon glyphicon-remove"></Link>
 
-                <h1>User</h1>
-
                 {this.props.user === undefined ? '' : 
                     <Profile user={this.props.user} />
                 }

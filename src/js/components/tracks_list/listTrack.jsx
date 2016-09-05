@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { hashHistory } from 'react-router';
 
 import { showMenu, initializeMenu } from '../../actions/contextMenu';
 import { convertDuration } from '../../core/utils';
@@ -38,9 +39,15 @@ const ListTrack = (props) => {
             <td className="track-title">
                 <p>{props.data.title}</p>
             </td>
-            <td className="track-user-username">
+            
+            <td className="track-user-username"
+                onClick={() => (
+                    hashHistory.push('/user/' + props.data.user.id)
+                )}>
+
                 <p>{props.data.user.username}</p>
             </td>
+
             <td className="track-duration">
                 <p>{convertDuration(props.data.duration)}</p>
             </td>
