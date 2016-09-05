@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { toggleLikeTrack } from '../../actions/likedTrackIds';
 
 import { node } from '../../core/soundcloud/config';
 
@@ -20,6 +23,7 @@ const TrackMenu = (props) => {
         <ul className="context-menu-list">
 
             <li className="list-item" onClick={(e) => {
+                    props.toggleLiked(props.track.id, props.track.liked);
                     props.hide();
                 }}>
                 {likeText}
@@ -56,4 +60,15 @@ const TrackMenu = (props) => {
     );
 }
 
-export default TrackMenu;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        toggleLiked: (id, liked) => {
+            dispatch(toggleLikeTrack(id, liked));
+        }
+    };
+};
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(TrackMenu);

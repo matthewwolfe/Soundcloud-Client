@@ -217,13 +217,13 @@ export function likeTrack(id){
 
 export function unlikeTrack(id){
     let url = '/users/' + userID + '/favorites/' + id + '?oauth_token=' + oauthToken.get('access_token');
-    request.delete(baseURL + url, function(response){});
+    request.delete_request(baseURL + url, function(response){});
 }
 
 export function toggleRepostTrack(id, callback){
     let url = '/e1/me/track_reposts/' + id + '?oauth_token=' + oauthToken.get('access_token');
 
-    request.delete(baseURLv2 + url, function(response){});
+    request.delete_request(baseURLv2 + url, function(response){});
     request.put(baseURLv2 + url, function(response){});
 }
 
