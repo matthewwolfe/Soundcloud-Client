@@ -61,5 +61,13 @@
     // context menu
     "contextMenu": {
         "hidden": true
+    },
+
+    // modal that displays and performs track downloads
+    // progress is 0-100 percent
+    "downloader": {
+        "track": {},
+        "progress": 0,
+        "hidden": true
     }
 }

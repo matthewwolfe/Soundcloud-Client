@@ -5,6 +5,8 @@ import { hashHistory } from 'react-router';
 import { showMenu, initializeMenu } from '../../actions/contextMenu';
 import { convertDuration } from '../../core/utils';
 
+import { downloadTrack } from '../../actions/downloader';
+
 
 const ListTrack = (props) => {
     let trackClass = 'track list';
@@ -26,7 +28,9 @@ const ListTrack = (props) => {
                           onClick={props.toggleLikeTrack.bind(this, props.data.id, props.data.liked)}>
                     </span>
                     
-                    <span className={downloadClass}></span>
+                    <span className={downloadClass}
+                          onClick={() => (props.download(props.data))}>
+                    </span>
                   </td>
     }
 
@@ -66,8 +70,11 @@ const mapDispatchToProps = (dispatch) => {
                 {x: e.pageX, y: e.pageY}
             ));
             dispatch(showMenu());
+        },
+        download: (data) => {
+            dispatch(downloadTrack(data));
         }
-    }
+    };
 };
 
 export default connect(

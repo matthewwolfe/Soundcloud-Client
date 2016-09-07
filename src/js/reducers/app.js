@@ -22,6 +22,8 @@ import search from './search';
 
 import contextMenu from './contextMenu';
 
+import downloader from './downloader';
+
 const reducers = combineReducers({
     user: user,
     users: users,
@@ -39,6 +41,7 @@ const reducers = combineReducers({
     queue: queue,
     search: search,
     contextMenu: contextMenu,
+    downloader: downloader,
 
     routing: routerReducer
 });
